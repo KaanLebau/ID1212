@@ -10,17 +10,24 @@ public class ClientHandler implements Runnable{
     private BufferedReader in;
     private PrintWriter out;
     private ChatServer server;
-
     private ExceptionHandler exceptionhandler;
-private String message;
+    private String message;
+    private String username;
+
     public  ClientHandler(Socket client) {
         try{
             this.client = client;
-            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            out = new PrintWriter(client.getOutputStream(),true);
-            exceptionhandler = new ExceptionHandler();
-        }catch (IOException e){
+            this.in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            this.out = new PrintWriter(client.getOutputStream(),true);
+            this.exceptionhandler = new ExceptionHandler();
+            this.username = in.readLine();
+            clients.add(this);
 
+            System.out.println("Clienthandler is running");
+            broadcast(this.username + " has joined the chat.");
+            
+        }catch (IOException e){
+            exceptionhandler.chCreationHandler(e.toString());
         }
     }
 
@@ -31,6 +38,7 @@ private String message;
     @Override
     public void run() {
         String message;
+
         while(client.isConnected()){
             try {
                 message = in.readLine();
@@ -39,7 +47,6 @@ private String message;
                 exceptionhandler.clientInHandler(e.toString());
                 break;
             }
-
         }
     }
 
@@ -59,14 +66,13 @@ private String message;
     }
 
     private void closeConnection(Socket client, BufferedReader in, PrintWriter out) {
-
         try {
             closeReader(in);
             closeWriter(out);
             closeSocket(client);
             removeClient();
         } catch (IOException e) {
-            exceptionhandler.clientClosingException(e.toString());
+            exceptionhandler.clientClosingHandler(e.toString());
         }
 
     }

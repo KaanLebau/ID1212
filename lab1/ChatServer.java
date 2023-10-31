@@ -10,36 +10,35 @@ public class ChatServer{
     private final int PORT = 8088;
     private ServerSocket serverSocket;
     private ClientHandler client;
-private ExceptionHandler exceptionHandler;
+    private ExceptionHandler exceptionHandler;
+    
     public ChatServer(){
         try {
             this.serverSocket = new ServerSocket(PORT);
-            exceptionHandler = new ExceptionHandler();
+            this.exceptionHandler = new ExceptionHandler();
 
         }catch(IOException e){
-            //TODO handle exception
+            exceptionHandler.serverCreationException(e.toString());
         }
     }
 public void initialize(){
         try {
             while(!serverSocket.isClosed()){
                 client = new ClientHandler(serverSocket.accept());
+                Thread ch = new Thread(client);
+                ch.start();
             }
         }catch (Exception e){
-            //TODO
+            exceptionHandler.serverInitException(e.toString());
         }
 }
 
 
 
     public static void main(String[] args) throws IOException {
-
         ChatServer cs = new ChatServer();
 
-
-        System.out.println("Hello There!");
-
-
+        System.out.println("Server is running");
     }
 }
 
