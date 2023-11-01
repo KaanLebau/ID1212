@@ -1,5 +1,3 @@
-import com.sun.security.jgss.GSSUtil;
-
 import java.io.*;
 import java.net.Socket;
 import java.util.*;
@@ -10,6 +8,7 @@ public class Client {
     private PrintWriter out;
     private ExceptionHandler exceptionHandler;
     private String username;
+    private boolean done = false;
     private  String serverAddress = "localhost";
 
     private Scanner scanner;
@@ -39,10 +38,11 @@ public class Client {
 
             scanner = new Scanner(System.in);
 
-            while(socket.isConnected()) {
+            while(!done) {
                 String message = scanner.nextLine();
                 out.println(this.username + ": " + message);
             }
+            System.out.println("Disconnected.");
         } catch (Exception e) {
             exceptionHandler.clientSendHandler(e.toString());
             closeConnection(socket, in, out);
@@ -55,10 +55,17 @@ public class Client {
             public void run() {
                 String incommingMsg;
 
-                while(socket.isConnected()){
+                while(!done){
                     try{
                         incommingMsg = in.readLine();
-                        System.out.println(incommingMsg);
+                        if(incommingMsg.equals("**QUIT**")){
+                            System.out.println("Disconnecting..");
+                            done = true;
+                            break;
+                        }
+                        if(incommingMsg != null){
+                            System.out.println(incommingMsg);
+                        }
                     }catch (IOException e){
                         closeConnection(socket, in, out);
                     }
@@ -106,6 +113,5 @@ public class Client {
         Client client = new Client(username, serverAddress);
         client.getMessage();
         client.sendMessage();
-
     }
 }
