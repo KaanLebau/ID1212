@@ -23,7 +23,7 @@ public class ClientHandler implements Runnable{
             this.username = in.readLine();
             clients.add(this);
 
-            System.out.println("Clienthandler is running");
+            System.out.println("new user > " + this.username);
             broadcast(this.username + " has joined the chat.");
             
         }catch (IOException e){
@@ -51,20 +51,31 @@ public class ClientHandler implements Runnable{
     }
 
     public void broadcast(String msg){
+        msg = messageCheck(msg);
         for (ClientHandler client : clients){
             try{
-                if(client.getClientSocket().getPort() != getClientSocket().getPort()){
-                    client.out.println(msg);
+                if(client.username != this.username){
+                    System.out.println("Broadcasting: " + this.username + " = " + msg );
+                    client.out.println(this.username + ": " + msg);
                 }
 
             }catch (Exception e){
                 exceptionhandler.clientOutHandler(e.toString());
-            }finally {
-                closeConnection(client.getClientSocket(), in, out);
+                closeConnection(client.client, client.in, client.out);
             }
         }
     }
+    public String messageCheck(String msg){
+        String info = msg;
+        if(msg.startsWith("/quit")){
+            info = "You are disconnecting from server";
+            closeConnection(this.client, this.in, this.out);
+            return info;
+        }else {
+            return info;
+        }
 
+    }
     private void closeConnection(Socket client, BufferedReader in, PrintWriter out) {
         try {
             closeReader(in);
@@ -72,6 +83,7 @@ public class ClientHandler implements Runnable{
             closeSocket(client);
             removeClient();
         } catch (IOException e) {
+            System.out.println("shit");
             exceptionhandler.clientClosingHandler(e.toString());
         }
 

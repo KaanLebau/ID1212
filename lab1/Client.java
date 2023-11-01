@@ -1,3 +1,5 @@
+import com.sun.security.jgss.GSSUtil;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.*;
@@ -8,35 +10,87 @@ public class Client {
     private PrintWriter out;
     private ExceptionHandler exceptionHandler;
     private String username;
-    private static final String serverAddress = "localhost";
-    private static final int PORT = 8088;
+    private  String serverAddress = "localhost";
 
-    public Client(Socket socket, String username){
+    private Scanner scanner;
+    private final int PORT = 8088;
+
+    public Client(String username, String serverAddress){
         exceptionHandler = new ExceptionHandler();
+        this.username = username;
+        if(serverAddress != "")
+            this.serverAddress = serverAddress;
         try{
-            this.socket = socket;
+            this.socket = new Socket(this.serverAddress, PORT);
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.out = new PrintWriter(socket.getOutputStream(),true);
-            this.username = username;
+
 
         }catch (Exception e){
             exceptionHandler.clientCreationException(e.toString());
+            closeConnection(socket, in, out);
         }
     }
 
     public void sendMessage() {
         try{
             //Connect to the chat and enter username
-            out.write(username);
+            out.println(username);
 
-            Scanner sc = new Scanner(System.in);
+            scanner = new Scanner(System.in);
 
             while(socket.isConnected()) {
-                String message = sc.nextLine();
-                out.write(username + ": " + message);
+                String message = scanner.nextLine();
+                out.println(message);
             }
         } catch (Exception e) {
             exceptionHandler.clientSendHandler(e.toString());
+            closeConnection(socket, in, out);
+        }
+    }
+
+    public void getMessage(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String incommingMsg;
+
+                while(socket.isConnected()){
+                    try{
+                        incommingMsg = in.readLine();
+                        System.out.println(incommingMsg);
+                    }catch (IOException e){
+                        closeConnection(socket, in, out);
+                    }
+                }
+            }
+        }).start();
+    }
+    private void closeConnection(Socket client, BufferedReader in, PrintWriter out) {
+        try {
+            closeReader(in);
+            closeWriter(out);
+            closeSocket(client);
+        } catch (IOException e) {
+            exceptionHandler.clientClosingHandler(e.toString());
+        }
+
+    }
+
+    private void closeSocket(Socket client) throws IOException {
+        if(client != null){
+            client.close();
+        }
+
+    }
+    private void closeReader(BufferedReader in) throws IOException {
+        if(in != null){
+            in.close();
+        }
+    }
+    private void closeWriter(PrintWriter out){
+        if(out != null){
+            out.close();
         }
     }
 
@@ -44,8 +98,14 @@ public class Client {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter username: ");
         String username = sc.nextLine();
+
+        System.out.println("Enter Chat server address: ");
+        String serverAddress = sc.nextLine();
         
-        Socket socket = new Socket(serverAddress, PORT);
-        Client client = new Client(socket, username);
+
+        Client client = new Client(username, serverAddress);
+        client.getMessage();
+        client.sendMessage();
+
     }
 }

@@ -38,7 +38,8 @@ public void initialize(){
     public static void main(String[] args) throws IOException {
         ChatServer cs = new ChatServer();
 
-        System.out.println("Server is running");
+        System.out.println("Server is running ");
+        cs.initialize();
     }
 }
 
