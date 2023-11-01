@@ -38,9 +38,14 @@ public class Client {
 
             scanner = new Scanner(System.in);
 
-            while(!done) {
+            while(!done && !socket.isClosed()) {
                 String message = scanner.nextLine();
                 out.println(this.username + ": " + message);
+
+                if(message.startsWith("/quit")){
+                    done = true;
+                    break;
+                }
             }
             System.out.println("Disconnected.");
         } catch (Exception e) {
@@ -55,18 +60,11 @@ public class Client {
             public void run() {
                 String incommingMsg;
 
-                while(!done){
+                while(!done && !socket.isClosed()){
                     try{
                         incommingMsg = in.readLine();
-                        if(incommingMsg.equals("**QUIT**")){
-                            System.out.println("Disconnecting..");
-                            done = true;
-                            break;
-                        }
-                        if(incommingMsg != null){
-                            System.out.println(incommingMsg);
-                        }
-                    }catch (IOException e){
+                        System.out.println(incommingMsg);
+                    } catch (IOException e){
                         closeConnection(socket, in, out);
                     }
                 }

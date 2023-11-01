@@ -69,7 +69,6 @@ public class ClientHandler implements Runnable {
 
     public boolean messageCheck(String msg) {
         if (msg.startsWith(this.username + ": /quit")) {
-            this.out.println("**QUIT**");
             closeConnection(this);
             return false;
         } else {
