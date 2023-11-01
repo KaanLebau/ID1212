@@ -43,11 +43,11 @@ public class Client {
                 out.println(this.username + ": " + message);
 
                 if(message.startsWith("/quit")){
+                    System.out.println("Disconnecting..");
                     done = true;
                     break;
                 }
             }
-            System.out.println("Disconnected.");
         } catch (Exception e) {
             exceptionHandler.clientSendHandler(e.toString());
             closeConnection(socket, in, out);
@@ -63,11 +63,14 @@ public class Client {
                 while(!done && !socket.isClosed()){
                     try{
                         incommingMsg = in.readLine();
-                        System.out.println(incommingMsg);
+                        if(incommingMsg != null){
+                            System.out.println(incommingMsg);
+                        }
                     } catch (IOException e){
                         closeConnection(socket, in, out);
                     }
                 }
+                System.out.println("Lost connection to the server.");
             }
         }).start();
     }
