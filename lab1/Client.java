@@ -41,7 +41,7 @@ public class Client {
 
             while(socket.isConnected()) {
                 String message = scanner.nextLine();
-                out.println(message);
+                out.println(this.username + ": " + message);
             }
         } catch (Exception e) {
             exceptionHandler.clientSendHandler(e.toString());

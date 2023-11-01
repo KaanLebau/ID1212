@@ -23,7 +23,7 @@ public class ClientHandler implements Runnable{
             this.username = in.readLine();
             clients.add(this);
 
-            System.out.println("new user > " + this.username);
+            System.out.println("New user: " + this.username + ". Number of users: " + clients.size());
             broadcast(this.username + " has joined the chat.");
             
         }catch (IOException e){
@@ -45,6 +45,7 @@ public class ClientHandler implements Runnable{
                 broadcast(message);
             } catch (IOException e) {
                 exceptionhandler.clientInHandler(e.toString());
+                closeConnection(client, in, out);
                 break;
             }
         }
@@ -55,8 +56,8 @@ public class ClientHandler implements Runnable{
         for (ClientHandler client : clients){
             try{
                 if(client.username != this.username){
-                    System.out.println("Broadcasting: " + this.username + " = " + msg );
-                    client.out.println(this.username + ": " + msg);
+                    System.out.println("Broadcasting: " + msg );
+                    client.out.println(msg);
                 }
 
             }catch (Exception e){
@@ -67,8 +68,8 @@ public class ClientHandler implements Runnable{
     }
     public String messageCheck(String msg){
         String info = msg;
-        if(msg.startsWith("/quit")){
-            info = "You are disconnecting from server";
+        if(msg.startsWith(this.username + ": /quit")){
+            info = (this.username + " disconnected.");
             closeConnection(this.client, this.in, this.out);
             return info;
         }else {
@@ -78,10 +79,15 @@ public class ClientHandler implements Runnable{
     }
     private void closeConnection(Socket client, BufferedReader in, PrintWriter out) {
         try {
+            for(ClientHandler arrclient : clients){
+            System.out.println(arrclient.username);
+            }
+            System.out.println("Socket is connected: " + client.isConnected());
             closeReader(in);
             closeWriter(out);
             closeSocket(client);
             removeClient();
+            System.out.println("Socket is connected: " + client.isConnected());
         } catch (IOException e) {
             System.out.println("shit");
             exceptionhandler.clientClosingHandler(e.toString());
@@ -91,23 +97,29 @@ public class ClientHandler implements Runnable{
 
     private void closeSocket(Socket client) throws IOException {
         if(client != null){
+            System.out.println("Closing socket: " + client);
             client.close();
         }
 
     }
     private void closeReader(BufferedReader in) throws IOException {
         if(in != null){
+            System.out.println("Closing reader: " + in);
             in.close();
         }
     }
     private void closeWriter(PrintWriter out){
         if(out != null){
+            System.out.println("Closing writer: " + out);
             out.close();
         }
     }
 
     private void removeClient(){
-        clients.remove(this.client);
+        System.out.println("Connected clients: " + clients.size());
+        System.out.println("Removing client: " + this.username);
+        clients.remove(this);
+        System.out.println("Connected clients: " + clients.size());
     }
 
 }
