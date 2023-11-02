@@ -3,7 +3,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class ClientHandler implements Runnable {
+/**
+ *
+ *
+ *  @author Kaan Özsan
+ *  @author Dan Ljungström
+ */
+public class ClientHandler extends ExceptionHandler implements Runnable {
 
     public static ArrayList<ClientHandler> clients = new ArrayList<>();
     private Socket socket;
@@ -27,7 +33,7 @@ public class ClientHandler implements Runnable {
             broadcast(this.username + " has joined the chat.");
 
         } catch (IOException e) {
-            exceptionhandler.chCreationHandler(e.toString());
+            creationHandler(e, "Client handler");
         }
     }
 
@@ -44,7 +50,7 @@ public class ClientHandler implements Runnable {
                 message = in.readLine();
                 broadcast(message);
             } catch (IOException e) {
-                exceptionhandler.clientInHandler(e.toString());
+                inHandler(e,"Client handler");
                 closeConnection(this);
                 break;
             }
@@ -60,7 +66,7 @@ public class ClientHandler implements Runnable {
                         client.out.println(msg);
                     }
                 } catch (Exception e) {
-                    exceptionhandler.clientOutHandler(e.toString());
+                    outHandler(e,"Client handler");
                     closeConnection(this);
                 }
             }
@@ -84,7 +90,7 @@ public class ClientHandler implements Runnable {
             removeClient(client);
         } catch (IOException e) {
             System.out.println("shit");
-            exceptionhandler.clientClosingHandler(e.toString());
+            closingHandler(e,"Client handler");
         }
 
     }
