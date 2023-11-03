@@ -4,7 +4,21 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
+ * <p>
+ * This class handles clients that have connected to the chat server.
+ * </p>
  *
+ * <p>
+ * The class functionality is as follows
+ * </p>
+ *
+ * <ul>
+ * <li>Receive messages from a client
+ * <li>Broadcast incoming message to all clients including the server.
+ * <li>Server related commands from clients
+ * <li>Close a client's connection to the server.
+ * <li>Remove a client from the client list
+ * </ul>
  *
  *  @author Kaan Özsan
  *  @author Dan Ljungström

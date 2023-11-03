@@ -1,9 +1,19 @@
 import java.io.IOException;
 
+/**
+ * This class handles exceptions from the <i><b><code>ChatServer, ClientHandler and Client</code></b></i> classes.
+ *
+ * All exceptions thrown from these classes are caught by that class and handled by throwing custom exceptions.
+ * @author Kaan Özsan
+ * @author Dan Ljungström
+ */
 public class ExceptionHandler {
 
     /**
-     * TODO
+     * <p>
+     * Handling exceptions can occur while the class tries to send messages
+     * the following classes <i><b>ClientHandler, Client</b></i>.
+     * </p>
      * @param errMsg message contains which class throws the exception
      */
     public void outHandler(Exception e, String errMsg){
@@ -11,7 +21,10 @@ public class ExceptionHandler {
     }
 
     /**
-     * TODO
+     * <p>
+     * Handling exceptions can occur while the class listens to the incoming message
+     * the following classes <i><b>ClientHandler, Client</b></i>.
+     * </p>
      * @param errMsg message contains which class throws the exception
      */
     public void inHandler(Exception e, String errMsg){
