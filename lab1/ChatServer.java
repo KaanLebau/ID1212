@@ -6,19 +6,23 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ChatServer{
+/**
+ *
+ *
+ *  @author Kaan Özsan
+ *  @author Dan Ljungström
+ */
+public class ChatServer extends ExceptionHandler{
     private final int PORT = 8088;
     private ServerSocket serverSocket;
     private ClientHandler client;
-    private ExceptionHandler exceptionHandler;
+
     
     public ChatServer(){
         try {
             this.serverSocket = new ServerSocket(PORT);
-            this.exceptionHandler = new ExceptionHandler();
-
         }catch(IOException e){
-            exceptionHandler.serverCreationException(e.toString());
+            creationHandler(e, "Server");
         }
     }
 public void initialize(){
@@ -29,11 +33,9 @@ public void initialize(){
                 ch.start();
             }
         }catch (Exception e){
-            exceptionHandler.serverInitException(e.toString());
+            initializeHandler(e, "Server");
         }
 }
-
-
 
     public static void main(String[] args) throws IOException {
         ChatServer cs = new ChatServer();

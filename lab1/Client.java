@@ -1,8 +1,13 @@
 import java.io.*;
 import java.net.Socket;
 import java.util.*;
-
-public class Client {
+/**
+ *
+ *
+ *  @author Kaan Özsan
+ *  @author Dan Ljungström
+ */
+public class Client extends ExceptionHandler{
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
@@ -26,7 +31,7 @@ public class Client {
 
 
         }catch (Exception e){
-            exceptionHandler.clientCreationException(e.toString());
+            creationHandler(e,"Client");
             closeConnection(socket, in, out);
         }
     }
@@ -49,7 +54,7 @@ public class Client {
                 }
             }
         } catch (Exception e) {
-            exceptionHandler.clientSendHandler(e.toString());
+            outHandler(e,"Client");
             closeConnection(socket, in, out);
         }
     }
@@ -67,6 +72,7 @@ public class Client {
                             System.out.println(incommingMsg);
                         }
                     } catch (IOException e){
+                        inHandler(e, "Client");
                         closeConnection(socket, in, out);
                     }
                 }
@@ -80,7 +86,7 @@ public class Client {
             closeWriter(out);
             closeSocket(client);
         } catch (IOException e) {
-            exceptionHandler.clientClosingHandler(e.toString());
+            closingHandler(e,"Client");
         }
 
     }
