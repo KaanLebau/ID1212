@@ -79,9 +79,10 @@ public class GameServer extends ExceptionHandler {
     }
 
     public static void main(String[] args) throws IOException {
-        GameServer gs = new GameServer();
 
-        System.out.println("Server is running ");
+		GameServer gs = new GameServer();
+		System.out.println("Server is running ");
         gs.initialize();
+
     }
 }
