@@ -27,13 +27,11 @@ public class GameServer extends ExceptionHandler {
 
     public synchronized void initialize() {
         try {
-            String folder = System.getProperty("user.dir") + "\\guessing_game\\src\\";
-            //String folder = "C:\\Users\\danlj\\OneDrive\\Dokument\\KTH\\Nätverksprogrammering\\ID1212\\lab2\\guessing_game\\src\\";
-            System.out.println("Creating Serversocket");
-            ServerSocket ss = new ServerSocket(1234);
+            String index = System.getProperty("user.dir") + "\\guessing_game\\src\\index.html";
+
             while (true) {
                 System.out.println("Waiting for client...");
-                Socket s = ss.accept();
+                Socket s = serverSocket.accept();
                 System.out.println("Client connected");
 
                 BufferedReader request = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -47,22 +45,11 @@ public class GameServer extends ExceptionHandler {
                 PrintStream response = new PrintStream(s.getOutputStream());
                 response.println("HTTP/1.1 200 OK");
                 response.println("Server: Guessing Game");
-
-                if ((requestedDocument.length() == 1))
-                    requestedDocument = folder + "index.html";
-                else
-                    requestedDocument += folder + requestedDocument;
-
-                if (requestedDocument.indexOf(".html") != -1)
-                    response.println("Content-Type: text/html");
-                if (requestedDocument.indexOf(".jpg") != -1)
-                    response.println("Content-Type: image/jpg");
-
                 response.println("Set-Cookie: clientId=1; expires=Wednesday,31-Dec-23 21:00:00 GMT");
 
                 response.println();
-                if (!"\favicon.ico".equals(requestedDocument)) { // Ignore any additional request to retrieve the bookmark-icon.
-                    File f = new File("" + requestedDocument);
+                if (!"\favicon.ico".equals(index)) { // Ignore any additional request to retrieve the bookmark-icon.
+                    File f = new File("" + index);
                     FileInputStream infil = new FileInputStream(f);
                     byte[] b = new byte[1024];
                     
