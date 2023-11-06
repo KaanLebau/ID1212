@@ -18,20 +18,16 @@ public class GameServer extends ExceptionHandler{
     private ClientHandler clientHandler;
     
     public GameServer(){
-        try {
-            this.serverSocket = new ServerSocket(PORT);
-        }catch(IOException e){
-            //TODO: handle exception
-        }
+
     }
     public synchronized void initialize() {
         try{
-    String folder = "/";
+    String folder = "\\home\\kaan\\Documents\\ID1212\\lab2\\guessing_game\\src\\";
     System.out.println("Creating Serversocket");
-	ServerSocket ss = new ServerSocket(1234);
+	serverSocket = new ServerSocket(PORT);
 	while(true){
 	    System.out.println("Waiting for client...");
-	    Socket s = ss.accept();
+	    Socket s = serverSocket.accept();
 	    System.out.println("Client connected");
 	    BufferedReader request =
 		new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -81,9 +77,10 @@ public class GameServer extends ExceptionHandler{
 }
 
     public static void main(String[] args) throws IOException {
-        GameServer gs = new GameServer();
 
-        System.out.println("Server is running ");
+		GameServer gs = new GameServer();
+		System.out.println("Server is running ");
         gs.initialize();
+
     }
 }
