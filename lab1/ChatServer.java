@@ -25,7 +25,7 @@ public class ChatServer extends ExceptionHandler{
             creationHandler(e, "Server");
         }
     }
-public void initialize(){
+public synchronized void initialize(){
         try {
             while(!serverSocket.isClosed()){
                 client = new ClientHandler(serverSocket.accept());

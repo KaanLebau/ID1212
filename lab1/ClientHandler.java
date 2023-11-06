@@ -39,7 +39,6 @@ public class ClientHandler extends ExceptionHandler implements Runnable {
             this.socket = socket;
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.out = new PrintWriter(socket.getOutputStream(), true);
-            this.exceptionhandler = new ExceptionHandler();
             this.username = in.readLine();
             clients.add(this);
 
@@ -51,9 +50,6 @@ public class ClientHandler extends ExceptionHandler implements Runnable {
         }
     }
 
-    public Socket getClientSocket() {
-        return socket;
-    }
 
     @Override
     public void run() {
@@ -71,7 +67,7 @@ public class ClientHandler extends ExceptionHandler implements Runnable {
         }
     }
 
-    public void broadcast(String msg) {
+    public synchronized void broadcast(String msg) {
         if (messageCheck(msg)) {
             System.out.println("Broadcasting: " + msg);
             for (ClientHandler client : clients) {
@@ -96,14 +92,13 @@ public class ClientHandler extends ExceptionHandler implements Runnable {
         }
     }
 
-    private void closeConnection(ClientHandler client) {
+    private synchronized void closeConnection(ClientHandler client) {
         try {
             closeReader(client.in);
             closeWriter(client.out);
             closeSocket(client.socket);
             removeClient(client);
         } catch (IOException e) {
-            System.out.println("shit");
             closingHandler(e,"Client handler");
         }
 

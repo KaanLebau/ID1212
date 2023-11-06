@@ -11,7 +11,6 @@ public class Client extends ExceptionHandler{
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
-    private ExceptionHandler exceptionHandler;
     private String username;
     private boolean done = false;
     private  String serverAddress = "localhost";
@@ -20,7 +19,6 @@ public class Client extends ExceptionHandler{
     private final int PORT = 8088;
 
     public Client(String username, String serverAddress){
-        exceptionHandler = new ExceptionHandler();
         this.username = username;
         if(serverAddress != "")
             this.serverAddress = serverAddress;
@@ -36,7 +34,7 @@ public class Client extends ExceptionHandler{
         }
     }
 
-    public void sendMessage() {
+    public synchronized void sendMessage() {
         try{
             //Connect to the chat and enter username
             out.println(username);
@@ -48,6 +46,7 @@ public class Client extends ExceptionHandler{
                 out.println(this.username + ": " + message);
 
                 if(message.startsWith("/quit")){
+                    System.out.println("Disconnecting..");
                     done = true;
                     break;
                 }
@@ -59,7 +58,7 @@ public class Client extends ExceptionHandler{
         }
     }
 
-    public void getMessage(){
+    public synchronized void getMessage(){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -68,12 +67,15 @@ public class Client extends ExceptionHandler{
                 while(!done && !socket.isClosed()){
                     try{
                         incommingMsg = in.readLine();
-                        System.out.println(incommingMsg);
+                        if(incommingMsg != null){
+                            System.out.println(incommingMsg);
+                        }
                     } catch (IOException e){
                         inHandler(e, "Client");
                         closeConnection(socket, in, out);
                     }
                 }
+                System.out.println("Lost connection to the server.");
             }
         }).start();
     }
