@@ -11,7 +11,6 @@ public class Client extends ExceptionHandler{
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
-    private ExceptionHandler exceptionHandler;
     private String username;
     private boolean done = false;
     private  String serverAddress = "localhost";
@@ -20,7 +19,6 @@ public class Client extends ExceptionHandler{
     private final int PORT = 8088;
 
     public Client(String username, String serverAddress){
-        exceptionHandler = new ExceptionHandler();
         this.username = username;
         if(serverAddress != "")
             this.serverAddress = serverAddress;
@@ -36,7 +34,7 @@ public class Client extends ExceptionHandler{
         }
     }
 
-    public void sendMessage() {
+    public synchronized void sendMessage() {
         try{
             //Connect to the chat and enter username
             out.println(username);
@@ -59,7 +57,7 @@ public class Client extends ExceptionHandler{
         }
     }
 
-    public void getMessage(){
+    public synchronized void getMessage(){
         new Thread(new Runnable() {
             @Override
             public void run() {
