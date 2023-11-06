@@ -1,5 +1,5 @@
 import java.io.*;
-public class PageHandler {
+public class PageHandler extends ExceptionHandler{
 
     String welcomePage = "<!-- index.html -->\n" +
             "<!DOCTYPE html>\n" +
@@ -43,10 +43,21 @@ public class PageHandler {
             writer.write(welcomePage);
             System.out.println("Welcome page content has been written to index.html");
         } catch (IOException e) {
-            e.printStackTrace();
+            fileHandler(e, "Page handler");
         }
     }
 
+    /**
+     * This method informs the client about wrong type input
+     */
+    public void errMsg(){}
+
+    /**
+     * This method writes over the index.html file with current game status
+     *
+     * @param result [High, Success, Low]
+     * @param numberOfAttempts number of attemts
+     */
     public void handlePageUpdate(String result, int numberOfAttempts) {
         try {
             String filename = "index.html";
@@ -74,7 +85,7 @@ public class PageHandler {
 
             System.out.println("index.html file has been updated with additional game data.");
         } catch (IOException e) {
-            e.printStackTrace();
+            outHandler(e, "Page Handler");
         }
     }
 }

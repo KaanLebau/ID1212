@@ -44,6 +44,8 @@ public class GuessGameModel {
     }
     public int getAttempt(){ return attempt;}
 
+    public boolean isGameIsOn() {return gameIsOn;}
+
     public void newGame(){
         int lastGameNumber = this.theNumber;
         attempt = 0;

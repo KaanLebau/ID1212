@@ -4,7 +4,7 @@ import java.net.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class GameServer {
+public class GameServer extends ExceptionHandler{
     private final int PORT = 8088;
     private ConnectionHandler connectionHandler;
     ServerSocket serverSocket;
@@ -25,7 +25,7 @@ public class GameServer {
                     pool.execute(new ConnectionHandler(clientSocket));
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                initializeHandler(e, "Game server");
             }
         }
 

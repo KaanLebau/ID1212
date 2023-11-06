@@ -1,13 +1,15 @@
 import java.io.*;
 import java.net.Socket;
 
-public class ConnectionHandler implements Runnable {
+public class ConnectionHandler extends ExceptionHandler implements Runnable {
     private final Socket clientSocket;
     GameController gameController;
+    CookieHandler cookieHandler;
 
     ConnectionHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
-        this.gameController = new GameController(this);
+        this.cookieHandler = new CookieHandler();
+        this.gameController = new GameController(this, this.cookieHandler);
     }
 
     @Override
@@ -53,15 +55,15 @@ public class ConnectionHandler implements Runnable {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+           outHandler(e, "Connection Handler");
         }
     }
     public void requestPageRerender() {
-        try (Socket socket = new Socket("localhost", 8080)) {
+        try (Socket socket = new Socket("localhost", 8088)) {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             out.println("rerender");
         } catch (IOException e) {
-            e.printStackTrace();
+            outHandler(e, "Connection Handler");
         }
     }
     private String readFile(String filename) {
@@ -77,7 +79,7 @@ public class ConnectionHandler implements Runnable {
                 System.err.println("File not found: " + filename);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            fileHandler(e, "Connection handler");
         }
         return content.toString();
     }
