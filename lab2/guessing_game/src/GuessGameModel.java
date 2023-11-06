@@ -21,16 +21,28 @@ public class GuessGameModel {
         attempt = 0;
     }
 
-    public void clientGuess(int guess){
+    /**
+     * This method receives an integer from Controller
+     * returns following results
+     * <ul>
+     *     <li>High</li>
+     *     <li>Success</li>
+     *     <li>Low</li>
+     * </ul>
+     *
+     * @param guess clients guess
+     */
+    public String clientGuess(int guess){
         if(!gameIsOn)
             newGame();
         attempt++;
         if(theNumber == guess){
-            correctResponse(guess);
+            return correctResponse(guess);
         }else{
-            wrongResponse(guess);
+            return wrongResponse(guess);
         }
     }
+    public int getAttempt(){ return attempt;}
 
     public void newGame(){
         int lastGameNumber = this.theNumber;
@@ -42,18 +54,18 @@ public class GuessGameModel {
         }
     }
 
-    private void wrongResponse(int guess) {
+    private String wrongResponse(int guess) {
         if(guess < theNumber){
-            System.out.println(guess + " is to low");
+            return "Low";
         }else {
-            System.out.println(guess + "is to high");
+            return"High";
         }
     }
 
-    private int correctResponse(int guess) {
+    private String correctResponse(int guess) {
         System.out.println("this is the correct one");
         gameIsOn = false;
-        return attempt;
+        return "Success";
     }
 
 

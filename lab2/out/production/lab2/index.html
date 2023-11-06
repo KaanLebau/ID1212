@@ -1,21 +1,31 @@
+<!-- index.html -->
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
-    <head>
-        <title>Guessing Game</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <!--
-        <img src="kth.jpg">
-        -->
-        <div>Guessing Game</div>
-        <input type="text">
-        <button>Guess</button>
-    </body>
+<head>
+  <title>Welcome to Guessing Game!</title>
+</head>
+<body>
+<h1>Welcome to Guessing Game!</h1>
+<form id="dataForm">
+  <input type="text" id="textInput" placeholder="Enter the number">
+  <input type="submit" value="Is it?">
+
+</form>
+"<!-- Additional Data Placeholder -->"
+<script>
+        document.getElementById('dataForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            var inputValue = document.getElementById('textInput').value;
+
+            // Send a POST request with the entered text to the server
+            fetch('/', {
+                method: 'POST',
+                body: inputValue,
+                headers: {
+                    'Content-Type': 'text/plain'
+                }
+            });
+        });
+    </script>
+</body>
 </html>
