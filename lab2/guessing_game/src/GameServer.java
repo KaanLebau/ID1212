@@ -30,6 +30,7 @@ public class GameServer extends ExceptionHandler{
         }
 
         public static void main(String[] args) {
+            System.out.println("the name of the game GUESS");
             GameServer gs = new GameServer();
 
             gs.initialize();

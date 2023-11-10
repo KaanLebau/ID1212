@@ -50,6 +50,10 @@ public class ConnectionHandler extends ExceptionHandler implements Runnable {
                     out.println();
                     out.println("Received POST data: " + requestData.toString());
                     gameController.takeAGuess(requestData.toString());
+                    //TODO remove below
+                    GameStateDTO state = gameController.currentGameState();
+                    System.out.println("From Connection handler");
+                    System.out.println(state);
 
 
                 }

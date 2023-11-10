@@ -12,7 +12,7 @@ public class PageHandler extends ExceptionHandler{
             "<form id=\"dataForm\">\n" +
             "  <input type=\"text\" id=\"textInput\" placeholder=\"Enter the number\">\n" +
             "  <input type=\"submit\" value=\"Is it?\">\n" +
-            "    \"<!-- Additional Data Placeholder -->\"\n" +
+            "    <!-- Additional Data Placeholder -->\n" +
             "</form>\n" +
             "\n" +
             "<script>\n" +
@@ -33,7 +33,8 @@ public class PageHandler extends ExceptionHandler{
             "</body>\n" +
             "</html>\n";
     public PageHandler(){
-        writeWelcomeContentToIndex();
+
+        //writeWelcomeContentToIndex();
     }
 
 

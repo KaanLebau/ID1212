@@ -4,9 +4,11 @@ public class GameController {
     private PageHandler pageHandler;
     private ConnectionHandler connectionHandler;
     private CookieHandler cookieHandler;
+    private GameStateDTO curentState;
     private int numberofgames;
     private int sumOfAttemts;
     private double successRatio;
+    private int currentGuess;
     public GameController(ConnectionHandler connectionHandler, CookieHandler cookieHandler){
         guessGameModel = new GuessGameModel();
         pageHandler = new PageHandler();
@@ -17,8 +19,9 @@ public class GameController {
     public void takeAGuess(String guess){
         if (inputCheck(guess))
             pageHandler.errMsg();
-        System.out.println("guess from Controller"+ Integer.parseInt(guess));
-        validate(guessGameModel.clientGuess(Integer.parseInt(guess)));
+        currentGuess = Integer.parseInt(guess);
+        System.out.println("guess from Controller"+ currentGuess);
+        validate(guessGameModel.clientGuess(currentGuess));
     }
     //TODO
     private boolean inputCheck(String input){
@@ -32,10 +35,16 @@ public class GameController {
             calculateScore();
             cookieHandler.update_cookie(this.numberofgames, this.sumOfAttemts, this.successRatio);
     }
+
+    public GameStateDTO currentGameState(){
+        return new GameStateDTO(guessGameModel.getAttempt(), currentGuess, guessGameModel.isGameIsOn());
+    }
     private void calculateScore(){
         sumOfAttemts += guessGameModel.getAttempt();
         numberofgames++;
         successRatio = sumOfAttemts / numberofgames;
     }
+
+
 
 }
