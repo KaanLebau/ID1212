@@ -41,7 +41,7 @@ public class PageHandler extends ExceptionHandler{
     public void writeWelcomeContentToIndex() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("index.html"))) {
             // Write the content of the welcome page to index.html
-            writer.write(welcomePage);
+            //writer.write(welcomePage);
             System.out.println("Welcome page content has been written to index.html");
         } catch (IOException e) {
             fileHandler(e, "Page handler");

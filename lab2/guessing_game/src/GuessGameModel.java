@@ -36,13 +36,17 @@ public class GuessGameModel {
         if(!gameIsOn)
             newGame();
         attempt++;
+        System.out.println("model attempt clientGuess " + attempt);//TODO Remove
         if(theNumber == guess){
             return correctResponse(guess);
         }else{
             return wrongResponse(guess);
         }
     }
-    public int getAttempt(){ return attempt;}
+    public int getAttempt(){
+        System.out.println("model attempt getAttempt " + attempt);//TODO Remove
+        return attempt;
+    }
 
     public boolean isGameIsOn() {return gameIsOn;}
 
@@ -71,13 +75,5 @@ public class GuessGameModel {
     }
 
 
-    public static void main(String[] args) {
-        GuessGameModel ggm = new GuessGameModel();
-        System.out.println(ggm.theNumber);
-        ggm.newGame();
-        System.out.println(ggm.theNumber);
-        ggm.newGame();
-        System.out.println(ggm.theNumber);
-    }
 
 }

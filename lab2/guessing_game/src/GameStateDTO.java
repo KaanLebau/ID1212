@@ -4,6 +4,7 @@ public class GameStateDTO {
     boolean gameIsOn;
 
     public GameStateDTO(int numberOfAttempt, int currentGuess, boolean gameIsOn){
+        System.out.println("DTO create attempt " + numberOfAttempt);//TODO Remove
         this.numberOfAttempt = numberOfAttempt;
         this.currentGuess = currentGuess;
         this.gameIsOn = gameIsOn;

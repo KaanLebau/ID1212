@@ -30,7 +30,6 @@ public class GameController {
 
     public void validate(String result){
         pageHandler.handlePageUpdate(result, guessGameModel.getAttempt());
-        connectionHandler.requestPageRerender();
         if(!guessGameModel.isGameIsOn())
             calculateScore();
             cookieHandler.update_cookie(this.numberofgames, this.sumOfAttemts, this.successRatio);
