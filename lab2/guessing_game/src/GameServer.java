@@ -6,7 +6,6 @@ import java.util.concurrent.Executors;
 
 public class GameServer extends ExceptionHandler{
     private final int PORT = 8088;
-    private ConnectionHandler connectionHandler;
     ServerSocket serverSocket;
     ExecutorService pool;
 
@@ -34,9 +33,5 @@ public class GameServer extends ExceptionHandler{
             GameServer gs = new GameServer();
 
             gs.initialize();
-
-
-
         }
 }
-

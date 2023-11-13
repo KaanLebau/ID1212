@@ -1,37 +1,46 @@
-
-
-
-
 <!-- index.html -->
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Welcome to Guessing Game!</title>
 </head>
+
 <body>
-<h1>Welcome to Guessing Game!</h1>
-<form id="dataForm">
-  <input type="text" id="textInput" placeholder="Enter the number">
-  <input type="submit" value="Is it?">
+  <h1>Welcome to Guessing Game!</h1>
+  <form id="dataForm">
+    <input type="text" id="textInput" placeholder="Enter the number">
+    <input type="submit" value="Is it?">
 
-</form>
-<!-- Additional Data Placeholder -->
-<script>
-        document.getElementById('dataForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-            var inputValue = document.getElementById('textInput').value;
+  </form>
+  <div id="additionalData">
+    <!-- Additional Data Placeholder -->
+  </div>
+  <script>
+    document.getElementById('dataForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      var inputValue = document.getElementById('textInput').value;
 
-            // Send a POST request with the entered text to the server
-            fetch('/', {
-                method: 'POST',
-                body: inputValue,
-                headers: {
-                    'Content-Type': 'text/plain'
-                }
-            }).then(response => {
-                window.location.reload();
-            });
+      // Send a POST request with the entered text to the server
+      fetch('/', {
+        method: 'POST',
+        body: inputValue,
+        headers: {
+          'Content-Type': 'text/plain'
+        }
+      }).then(response => response.text())
+        .then(text => {
+          // Handle the response text (e.g., updating the page or showing a message)
+          console.log(text);
+          // Update the "Additional Data Placeholder" with the response
+          // This assumes you have an element with the ID 'additionalData' where you want to show the response
+          document.getElementById('additionalData').innerHTML = text;
+        }).catch(error => {
+          // Handle any errors that occurred during fetch
+          console.error('Error:', error);
         });
-    </script>
+    });
+  </script>
 </body>
+
 </html>

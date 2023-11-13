@@ -15,6 +15,7 @@ public class GuessGameModel {
     private int theNumber;
     private int attempt;
     private boolean gameIsOn;
+
     public GuessGameModel(){
         this.theNumber = (int) ((Math.random() * (100 - 0)) + 0);
         this.gameIsOn = true;
@@ -33,8 +34,8 @@ public class GuessGameModel {
      * @param guess clients guess
      */
     public String clientGuess(int guess){
-        if(!gameIsOn)
-            newGame();
+        //if(!gameIsOn)
+            //newGame();
         attempt++;
         System.out.println("model attempt clientGuess " + attempt);//TODO Remove
         if(theNumber == guess){
@@ -73,7 +74,4 @@ public class GuessGameModel {
         gameIsOn = false;
         return "Success";
     }
-
-
-
 }

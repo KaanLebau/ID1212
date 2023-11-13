@@ -1,15 +1,17 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.Map;
 
 public class ConnectionHandler extends ExceptionHandler implements Runnable {
     private final Socket clientSocket;
     GameController gameController;
     CookieHandler cookieHandler;
+    GameSessions sessions;
 
     ConnectionHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
         this.cookieHandler = new CookieHandler();
-        this.gameController = new GameController(this, this.cookieHandler);
+        this.sessions = new GameSessions();
     }
 
     @Override
@@ -17,52 +19,98 @@ public class ConnectionHandler extends ExceptionHandler implements Runnable {
         try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
              PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
 
-            String request;
-            while ((request = in.readLine()) != null) {
-                System.out.println("Received request: " + request);
-
-                // Handle GET or POST request here
-                if (request.startsWith("GET")) {
-                    receivedGetRequest(out, request);
-
-                } else if (request.startsWith("POST")) {
-                    recivedPostRequest(out, in, request);
-
+                String requestLine = in.readLine();
+                String headerLine;
+                String cookiesHeader = "";
+                if (requestLine == null || requestLine.contains("favicon")) {
+                    return;
                 }
-            }
+    
+                // Read the rest of the HTTP header and look for cookies
+                while (!(headerLine = in.readLine()).isEmpty()) {
+                    if (headerLine.toLowerCase().startsWith("cookie:")) {
+                        cookiesHeader = headerLine.substring("Cookie:".length()).trim();
+                        break; // Assuming cookies are all in one line, otherwise keep reading headers
+                    }
+                }
+    
+                Map<String, String> cookies = cookieHandler.parseCookies(cookiesHeader);
+                String sessionId = cookieHandler.getCookieValue(cookies, "sessionID");
+                if (sessionId.isEmpty()) {
+                    sessionId = cookieHandler.generateSessionId();
+                }
+        
+                // Extract the method from the request line
+                String method = requestLine.split(" ")[0];
+        
+                switch (method) {
+                    case "GET":
+                        receivedGetRequest(out, requestLine, sessionId);
+                        break;
+                    case "POST":
+                    System.out.println("POST:" + requestLine);
+                        receivedPostRequest(out, in, requestLine, sessionId);
+                        break;
+                    // Add additional cases for other HTTP methods if needed
+                    default:
+                        // Handle unsupported methods or provide a default case
+                        out.println("HTTP/1.1 501 Not Implemented");
+                        out.println();
+                        out.flush();
+                        break;
+                }
         } catch (IOException e) {
            outHandler(e, "Connection Handler");
         }
     }
 
-    private void recivedPostRequest(PrintWriter out, BufferedReader in, String request) throws IOException {
+    private void receivedPostRequest(PrintWriter out, BufferedReader in, String request, String sessionId) throws IOException {
         StringBuilder requestData = new StringBuilder();
         int contentLength = 0;
+        
         while (!(request = in.readLine()).isEmpty()) {
             if (request.contains("Content-Length:")) {
                 contentLength = Integer.parseInt(request.substring(request.indexOf("Content-Length:") + 16).trim());
             }
         }
-        for (int i = 0; i < contentLength; i++) {
-            requestData.append((char) in.read());
+        if(contentLength > 0) {
+            char[] bodyChars = new char[contentLength];
+            in.read(bodyChars);
+            requestData.append(new String(bodyChars));
         }
-        sendResponse(out, requestData.toString());
 
+        // Retrieve or create the GuessGameModel instance for this session
+        GuessGameModel gameModel = sessions.getOrCreateGameModel(sessionId);
+        gameController = new GameController(gameModel);
+
+        // Process the guess with the retrieved or new game model
+        gameController.takeAGuess(requestData.toString());
+        sendResponse(out, requestData.toString(), sessionId);
     }
 
-    private void sendResponse(PrintWriter out, String requestData){
+    private void sendResponse(PrintWriter out, String requestData, String sessionId){
+        // Set the cookie in the response
+        String cookieHeader = cookieHandler.createSessionCookie(sessionId, 3600);
+
         out.println("HTTP/1.1 200 OK");
         out.println("Content-Type: text/plain");
+        out.println("Set-Cookie: " + cookieHeader);
         out.println();
         out.println("Received POST data: " + requestData);
+        if(gameController == null){
+            // Retrieve or create the GuessGameModel instance for this session
+            GuessGameModel gameModel = sessions.getOrCreateGameModel(sessionId);
+            gameController = new GameController(gameModel);
+        }
         gameController.takeAGuess(requestData);
-        System.out.println(gameController.currentGameState());
-
     }
 
-    private void receivedGetRequest(PrintWriter out, String request){
+    private void receivedGetRequest(PrintWriter out, String request, String sessionId){
+        System.out.println(request);
+        String cookieHeader = cookieHandler.createSessionCookie(sessionId, 3600); // 1 hour for session expiry
         out.println("HTTP/1.1 200 OK");
         out.println("Content-Type: text/html");
+        out.println("Set-Cookie: " + cookieHeader);
         out.println();
         out.println(readFile("index.html"));
     }
