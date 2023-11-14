@@ -2,12 +2,12 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SessionHandler {
-    private final ConcurrentHashMap<String, GuessGameModel> sessions = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, GameController> sessions = new ConcurrentHashMap<>();
 
-    public GuessGameModel getOrCreateGameModel(String sessionId) {
+    public GameController getOrCreateGameController(String sessionId) {
         // If a game model for this session ID already exists, return it
         // Otherwise, create a new game model, save it, and return it
-        return sessions.computeIfAbsent(sessionId, id -> new GuessGameModel());
+        return sessions.computeIfAbsent(sessionId, id -> new GameController());
     }
 
             // Method to parse cookies from the request header

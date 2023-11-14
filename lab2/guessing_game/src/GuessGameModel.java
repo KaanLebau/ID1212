@@ -54,7 +54,7 @@ public class GuessGameModel {
         attempt = 0;
         while(true){
             theNumber = (int) ((Math.random() * (100 - 0)) + 0);
-            if (theNumber != lastGameNumber)
+            if (theNumber != lastGameNumber)    
                 break;
         }
     }

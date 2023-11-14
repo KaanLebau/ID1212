@@ -4,11 +4,11 @@ public class GameController {
     private PageHandler pageHandler;
     private int numberofgames;
     private int sumOfAttemts;
-    private double successRatio;
+    private double successRatio; //TODO
     private int currentGuess;
 
-    public GameController(GuessGameModel gameModel) {
-        guessGameModel = gameModel;
+    public GameController() {
+        guessGameModel = new GuessGameModel();
         pageHandler = new PageHandler();
     }
 
@@ -17,6 +17,10 @@ public class GameController {
             pageHandler.errMsg();
         currentGuess = Integer.parseInt(guess);
         return validate(guessGameModel.clientGuess(currentGuess));
+    }
+
+    public void newGame() {
+        guessGameModel.newGame();
     }
 
     // TODO
@@ -37,6 +41,7 @@ public class GameController {
         return new GameStateDTO(guessGameModel.getAttempt(), currentGuess, guessGameModel.isGameIsOn());
     }
 
+    //TODO
     private void calculateScore() {
         sumOfAttemts += guessGameModel.getAttempt();
         numberofgames++;

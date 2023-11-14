@@ -19,7 +19,6 @@ public class ConnectionHandler extends ExceptionHandler implements Runnable {
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
 
             String requestLine = in.readLine();
-            System.out.println(requestLine);
             if (requestLine == null || requestLine.contains("favicon")) {
                 return;
             }
@@ -83,13 +82,12 @@ public class ConnectionHandler extends ExceptionHandler implements Runnable {
             requestBody.append(new String(bodyChars));
         }
 
-        GuessGameModel gameModel = sessionHandler.getOrCreateGameModel(sessionId);
-        gameController = new GameController(gameModel);
+        GameController gameController = sessionHandler.getOrCreateGameController(sessionId);
         reply = gameController.takeAGuess(requestBody.toString());
         sendResponse(out, reply, sessionId);
     }
 
-    private void sendResponse(PrintWriter out, String reply, String sessionId) {
+    private void sendResponse(PrintWriter out, String reply, String sessionId) {;
         String cookieHeader = sessionHandler.createSessionCookie(sessionId);
 
         out.println("HTTP/1.1 200 OK");
@@ -99,7 +97,11 @@ public class ConnectionHandler extends ExceptionHandler implements Runnable {
         out.println(reply);
     }
 
-    private void receivedGetRequest(PrintWriter out, String request, String sessionId) {
+    private void receivedGetRequest(PrintWriter out, String request, String sessionId ) {
+        if(request.contains("new-game")) {
+            GameController gameController = sessionHandler.getOrCreateGameController(sessionId);
+            gameController.newGame();
+        }
         String cookieHeader = sessionHandler.createSessionCookie(sessionId);
         out.println("HTTP/1.1 200 OK");
         out.println("Content-Type: text/html");

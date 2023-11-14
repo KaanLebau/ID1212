@@ -3,11 +3,13 @@
 <html>
 
 <head>
+  <link rel="icon" href="data:,">
   <title>Welcome to Guessing Game!</title>
 </head>
 
 <body>
   <h1>Welcome to Guessing Game!</h1>
+  <p>  <button id="newGame">New Game</button></p>
   <form id="dataForm">
     <input type="text" id="textInput" placeholder="Enter the number">
     <input type="submit" value="Is it?">
@@ -15,7 +17,6 @@
   <div id="additionalData">
     <!-- Additional Data Placeholder -->
   </div>
-  <button id="newGame" hidden>New Game</button>
   <script>
     document.getElementById('dataForm').addEventListener('submit', function (event) {
       event.preventDefault();
@@ -42,11 +43,11 @@
         });
 
       document.getElementById('newGame').addEventListener('click', function (event) {
-        console.log("New Game button pressed.")
-        // Send a POST request with the entered text to the server
+        // Send a New Game request
         fetch('/new-game', {
           method: 'GET',
-        }).then(response => window.location.reload());
+        }).then(response => document.getElementById('additionalData').innerHTML = "<p> A new game was started. </p>")
+        .then(document.getElementById('dataForm').reset())
       });
     });
 
