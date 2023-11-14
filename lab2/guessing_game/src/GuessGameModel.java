@@ -37,7 +37,6 @@ public class GuessGameModel {
         //if(!gameIsOn)
             //newGame();
         attempt++;
-        System.out.println("model attempt clientGuess " + attempt);//TODO Remove
         if(theNumber == guess){
             return correctResponse(guess);
         }else{
@@ -45,7 +44,6 @@ public class GuessGameModel {
         }
     }
     public int getAttempt(){
-        System.out.println("model attempt getAttempt " + attempt);//TODO Remove
         return attempt;
     }
 
@@ -63,15 +61,14 @@ public class GuessGameModel {
 
     private String wrongResponse(int guess) {
         if(guess < theNumber){
-            return "Low";
+            return guess + " is lower than the number.";
         }else {
-            return"High";
+            return guess + " is higher than the number.";
         }
     }
 
     private String correctResponse(int guess) {
-        System.out.println("this is the correct one");
         gameIsOn = false;
-        return "Success";
+        return "Success! " + guess + " was the number!";
     }
 }

@@ -6,13 +6,11 @@ import java.util.Map;
 public class ConnectionHandler extends ExceptionHandler implements Runnable {
     private final Socket clientSocket;
     GameController gameController;
-    CookieHandler cookieHandler;
-    GameSessions sessions;
+    SessionHandler sessionHandler;
 
-    ConnectionHandler(Socket clientSocket) {
+    ConnectionHandler(Socket clientSocket, SessionHandler sessionHandler) {
         this.clientSocket = clientSocket;
-        this.cookieHandler = new CookieHandler();
-        this.sessions = new GameSessions();
+        this.sessionHandler = sessionHandler;
     }
 
     @Override
@@ -21,6 +19,7 @@ public class ConnectionHandler extends ExceptionHandler implements Runnable {
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
 
             String requestLine = in.readLine();
+            System.out.println(requestLine);
             if (requestLine == null || requestLine.contains("favicon")) {
                 return;
             }
@@ -29,11 +28,13 @@ public class ConnectionHandler extends ExceptionHandler implements Runnable {
             String method = requestLine.split(" ")[0];
             Map<String, String> headers = readHeaders(in);
 
-            String cookiesHeader = headers.getOrDefault("Cookie", "");
-            Map<String, String> cookies = cookieHandler.parseCookies(cookiesHeader);
-            String sessionId = cookieHandler.getCookieValue(cookies, "sessionID");
-            if (sessionId.isEmpty()) {
-                sessionId = cookieHandler.generateSessionId();
+            // Extract the Cookie header
+            String cookiesHeader = headers.get("Cookie");
+            String sessionId = sessionHandler.getSessionId(cookiesHeader);
+
+            // If no session ID is found, generate a new one
+            if (sessionId == null || sessionId.trim().isEmpty()) {
+                sessionId = sessionHandler.generateSessionId();
             }
 
             switch (method) {
@@ -41,7 +42,6 @@ public class ConnectionHandler extends ExceptionHandler implements Runnable {
                     receivedGetRequest(out, requestLine, sessionId);
                     break;
                 case "POST":
-                    System.out.println("POST:" + requestLine);
                     receivedPostRequest(out, in, headers, sessionId);
                     break;
                 // Add additional cases for other HTTP methods if needed
@@ -75,31 +75,32 @@ public class ConnectionHandler extends ExceptionHandler implements Runnable {
             throws IOException {
         int contentLength = Integer.parseInt(headers.getOrDefault("Content-Length", "0"));
         StringBuilder requestBody = new StringBuilder();
+        String reply;
+
         if (contentLength > 0) {
             char[] bodyChars = new char[contentLength];
             in.read(bodyChars);
             requestBody.append(new String(bodyChars));
         }
 
-        GuessGameModel gameModel = sessions.getOrCreateGameModel(sessionId);
+        GuessGameModel gameModel = sessionHandler.getOrCreateGameModel(sessionId);
         gameController = new GameController(gameModel);
-        gameController.takeAGuess(requestBody.toString());
-        sendResponse(out, requestBody.toString(), sessionId);
+        reply = gameController.takeAGuess(requestBody.toString());
+        sendResponse(out, reply, sessionId);
     }
 
-    private void sendResponse(PrintWriter out, String requestData, String sessionId) {
-        String cookieHeader = cookieHandler.createSessionCookie(sessionId, 3600);
+    private void sendResponse(PrintWriter out, String reply, String sessionId) {
+        String cookieHeader = sessionHandler.createSessionCookie(sessionId);
+
         out.println("HTTP/1.1 200 OK");
         out.println("Content-Type: text/plain");
         out.println("Set-Cookie: " + cookieHeader);
         out.println();
-        out.println("Received POST data: " + requestData);
-        // Consider sending the actual game state or result instead of just echoing the
-        // POST data.
+        out.println(reply);
     }
 
     private void receivedGetRequest(PrintWriter out, String request, String sessionId) {
-        String cookieHeader = cookieHandler.createSessionCookie(sessionId, 3600);
+        String cookieHeader = sessionHandler.createSessionCookie(sessionId);
         out.println("HTTP/1.1 200 OK");
         out.println("Content-Type: text/html");
         out.println("Set-Cookie: " + cookieHeader);

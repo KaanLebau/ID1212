@@ -7,37 +7,40 @@ public class GameController {
     private double successRatio;
     private int currentGuess;
 
-    public GameController(GuessGameModel gameModel){
+    public GameController(GuessGameModel gameModel) {
         guessGameModel = gameModel;
         pageHandler = new PageHandler();
     }
-    public void takeAGuess(String guess){
-        System.out.println(guess);
+
+    public String takeAGuess(String guess) {
         if (inputCheck(guess))
             pageHandler.errMsg();
         currentGuess = Integer.parseInt(guess);
-        validate(guessGameModel.clientGuess(currentGuess));
+        return validate(guessGameModel.clientGuess(currentGuess));
     }
-    //TODO
-    private boolean inputCheck(String input){
+
+    // TODO
+    private boolean inputCheck(String input) {
         return false;
     }
 
-    public void validate(String result){
-        pageHandler.handlePageUpdate(result, guessGameModel.getAttempt());
-        if(!guessGameModel.isGameIsOn())
+    public String validate(String result) {
+        if (!guessGameModel.isGameIsOn()){
             calculateScore();
+            return pageHandler.handlePageUpdate(result, guessGameModel.getAttempt());
+        }
+        else
+            return pageHandler.handlePageUpdate(result, guessGameModel.getAttempt());
     }
 
-    public GameStateDTO currentGameState(){
+    public GameStateDTO currentGameState() {
         return new GameStateDTO(guessGameModel.getAttempt(), currentGuess, guessGameModel.isGameIsOn());
     }
-    private void calculateScore(){
+
+    private void calculateScore() {
         sumOfAttemts += guessGameModel.getAttempt();
         numberofgames++;
         successRatio = sumOfAttemts / numberofgames;
     }
-
-
 
 }

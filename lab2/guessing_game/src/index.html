@@ -15,11 +15,11 @@
   <div id="additionalData">
     <!-- Additional Data Placeholder -->
   </div>
+  <button id="newGame" hidden>New Game</button>
   <script>
     document.getElementById('dataForm').addEventListener('submit', function (event) {
       event.preventDefault();
       var inputValue = document.getElementById('textInput').value;
-      {console.log(inputValue)}
 
       // Send a POST request with the entered text to the server
       fetch('/', {
@@ -30,16 +30,27 @@
         }
       }).then(response => response.text())
         .then(text => {
-          // Handle the response text (e.g., updating the page or showing a message)
-          console.log(text);
-          // Update the "Additional Data Placeholder" with the response
-          // This assumes you have an element with the ID 'additionalData' where you want to show the response
+          // Update the "additionalData" div
           document.getElementById('additionalData').innerHTML = text;
+          if(text.startsWith("Success")){
+            console.log("Success");
+            document.getElementById("newGame").style.visibility = "visible";
+          }
         }).catch(error => {
           // Handle any errors that occurred during fetch
           console.error('Error:', error);
         });
+
+      document.getElementById('newGame').addEventListener('click', function (event) {
+        console.log("New Game button pressed.")
+        // Send a POST request with the entered text to the server
+        fetch('/new-game', {
+          method: 'GET',
+        }).then(response => window.location.reload());
+      });
     });
+
+
   </script>
 </body>
 

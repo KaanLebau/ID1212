@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class GameServer extends ExceptionHandler{
+    private final SessionHandler sessionHandler = new SessionHandler();
     private final int PORT = 8088;
     ServerSocket serverSocket;
     ExecutorService pool;
@@ -17,11 +18,11 @@ public class GameServer extends ExceptionHandler{
         public void initialize() {
             try {
                 serverSocket = new ServerSocket(PORT);
-                System.out.println("Server is running on port " + PORT);
+                System.out.println("GuessingGame is running on port " + PORT);
 
                 while (true) {
                     Socket clientSocket = serverSocket.accept();
-                    pool.execute(new ConnectionHandler(clientSocket));
+                    pool.execute(new ConnectionHandler(clientSocket, sessionHandler));
                 }
             } catch (IOException e) {
                 initializeHandler(e, "Game server");
@@ -29,7 +30,6 @@ public class GameServer extends ExceptionHandler{
         }
 
         public static void main(String[] args) {
-            System.out.println("the name of the game GUESS");
             GameServer gs = new GameServer();
 
             gs.initialize();
