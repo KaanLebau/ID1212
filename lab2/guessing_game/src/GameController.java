@@ -2,7 +2,6 @@ public class GameController {
 
     private GuessGameModel guessGameModel;
     private PageHandler pageHandler;
-    private CookieHandler cookieHandler;
     private int numberofgames;
     private int sumOfAttemts;
     private double successRatio;
