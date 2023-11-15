@@ -23,25 +23,20 @@ public class ConnectionHandler extends ExceptionHandler implements Runnable {
                 return;
             }
 
-            // Extract the method from the request line
-            String method = requestLine.split(" ")[0];
             Map<String, String> headers = readHeaders(in);
-
-            // Extract the Cookie header
             String cookiesHeader = headers.get("Cookie");
             String sessionId = sessionHandler.getSessionId(cookiesHeader);
+            String sessionCookie = sessionHandler.createSessionCookie(sessionId);
 
-            // If no session ID is found, generate a new one
-            if (sessionId == null || sessionId.trim().isEmpty()) {
-                sessionId = sessionHandler.generateSessionId();
-            }
+            // Extract the method from the request line
+            String method = requestLine.split(" ")[0];
 
             switch (method) {
                 case "GET":
-                    receivedGetRequest(out, requestLine, sessionId);
+                    receivedGetRequest(out, requestLine, sessionId, sessionCookie);
                     break;
                 case "POST":
-                    receivedPostRequest(out, in, headers, sessionId);
+                    receivedPostRequest(out, in, headers, sessionId, sessionCookie);
                     break;
                 // Add additional cases for other HTTP methods if needed
                 default:
@@ -70,7 +65,7 @@ public class ConnectionHandler extends ExceptionHandler implements Runnable {
         return headers;
     }
 
-    private void receivedPostRequest(PrintWriter out, BufferedReader in, Map<String, String> headers, String sessionId)
+    private void receivedPostRequest(PrintWriter out, BufferedReader in, Map<String, String> headers, String sessionId, String sessionCookie)
             throws IOException {
         int contentLength = Integer.parseInt(headers.getOrDefault("Content-Length", "0"));
         StringBuilder requestBody = new StringBuilder();
@@ -83,29 +78,27 @@ public class ConnectionHandler extends ExceptionHandler implements Runnable {
         }
 
         GameController gameController = sessionHandler.getOrCreateGameController(sessionId);
+        System.out.println("Player" + sessionId + " guessed " + requestBody.toString());
         reply = gameController.takeAGuess(requestBody.toString());
-        sendResponse(out, reply, sessionId);
+        sendResponse(out, reply, sessionId, sessionCookie);
     }
 
-    private void sendResponse(PrintWriter out, String reply, String sessionId) {;
-        String cookieHeader = sessionHandler.createSessionCookie(sessionId);
-
+    private void sendResponse(PrintWriter out, String reply, String sessionId, String sessionCookie) {;
         out.println("HTTP/1.1 200 OK");
         out.println("Content-Type: text/plain");
-        out.println("Set-Cookie: " + cookieHeader);
+        out.println("Set-Cookie: " + sessionCookie);
         out.println();
         out.println(reply);
     }
 
-    private void receivedGetRequest(PrintWriter out, String request, String sessionId ) {
+    private void receivedGetRequest(PrintWriter out, String request, String sessionId, String sessionCookie) {
         if(request.contains("new-game")) {
             GameController gameController = sessionHandler.getOrCreateGameController(sessionId);
             gameController.newGame();
         }
-        String cookieHeader = sessionHandler.createSessionCookie(sessionId);
         out.println("HTTP/1.1 200 OK");
         out.println("Content-Type: text/html");
-        out.println("Set-Cookie: " + cookieHeader);
+        out.println("Set-Cookie: " + sessionCookie);
         out.println();
         out.println(readFile("index.html"));
     }

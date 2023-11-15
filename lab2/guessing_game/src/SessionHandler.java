@@ -6,23 +6,26 @@ public class SessionHandler {
 
     public GameController getOrCreateGameController(String sessionId) {
         // If a game model for this session ID already exists, return it
+        GameController gameController = sessions.computeIfAbsent(sessionId, id -> new GameController());
         // Otherwise, create a new game model, save it, and return it
-        return sessions.computeIfAbsent(sessionId, id -> new GameController());
+        return gameController;
     }
 
-            // Method to parse cookies from the request header
-    // Method to parse the sessionID cookie directly from the request header
     public String getSessionId(String cookieHeader) {
         final String sessionCookieName = "sessionID";
         if (cookieHeader != null && !cookieHeader.isEmpty()) {
             String[] cookies = cookieHeader.split(";\\s*");
             for (String cookie : cookies) {
                 if (cookie.startsWith(sessionCookieName + "=")) {
-                    return cookie.substring((sessionCookieName + "=").length());
+                    String sessionIdValue = cookie.substring((sessionCookieName + "=").length());
+                    if (!"null".equals(sessionIdValue)) { // Check if the value is not the string "null"
+                        return sessionIdValue;
+                    }
                 }
             }
         }
-        return null; // Return null if no sessionID cookie is found
+        //Create a new sessionId if it was null
+        return generateSessionId(); 
     }
 
     public String generateSessionId() {
