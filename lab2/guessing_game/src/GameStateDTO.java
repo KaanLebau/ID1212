@@ -2,11 +2,20 @@ public class GameStateDTO {
     int numberOfAttempt;
     int currentGuess;
     boolean gameIsOn;
+    String result;
+    private GuessGameModel guessGameModel;
 
-    public GameStateDTO(int numberOfAttempt, int currentGuess, boolean gameIsOn){
-        this.numberOfAttempt = numberOfAttempt;
+
+
+    public GameStateDTO(){
+        this.result = guessGameModel.getResult();
+    }
+    public GameStateDTO(GuessGameModel guessGameModel , int currentGuess){
+        this.numberOfAttempt = guessGameModel.getAttempt();
         this.currentGuess = currentGuess;
-        this.gameIsOn = gameIsOn;
+        this.gameIsOn = guessGameModel.isGameIsOn();
+        this.result = guessGameModel.getResult();
+
     }
 
     public GameStateDTO theState(){
@@ -15,6 +24,7 @@ public class GameStateDTO {
 
     public String toString(){
         String state= "";
+        state += "Current game state " + gameIsOn +"\n";
         state += "Current guess is: " + currentGuess +"\n";
         state += "Current attempt is: " + numberOfAttempt +"\n";
         if(gameIsOn){
@@ -22,6 +32,7 @@ public class GameStateDTO {
         }else {
             state += "Game is ended.";
         }
+
         return state;
     }
 

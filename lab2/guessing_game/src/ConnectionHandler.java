@@ -75,7 +75,8 @@ public class ConnectionHandler extends ExceptionHandler implements Runnable {
         }
 
         gameController = sessionHandler.getOrCreateGameController(sessionId);
-        reply = gameController.takeAGuess(requestBody.toString());
+        gameController.takeAGuess(requestBody.toString());
+        reply = gameController.getResult();
         sendResponse(out, reply, sessionId, sessionCookie);
     }
 

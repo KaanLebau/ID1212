@@ -13,8 +13,10 @@
  */
 public class GuessGameModel {
     private int theNumber;
+
     private int attempt;
     private boolean gameIsOn;
+    private String result;
 
     public GuessGameModel(){
         this.theNumber = (int) ((Math.random() * (100 - 0)) + 0);
@@ -33,21 +35,18 @@ public class GuessGameModel {
      *
      * @param guess clients guess
      */
-    public String clientGuess(int guess){
+    public void clientGuess(int guess){
         if(!gameIsOn)
             newGame();
         attempt++;
-        if(theNumber == guess){
-            return correctResponse(guess);
-        }else{
-            return wrongResponse(guess);
-        }
+        response(guess);
     }
     public int getAttempt(){
         return attempt;
     }
 
     public boolean isGameIsOn() {return gameIsOn;}
+    public String getResult(){return result;}
 
     public void newGame(){
         int lastGameNumber = this.theNumber;
@@ -59,16 +58,27 @@ public class GuessGameModel {
         }
     }
 
-    private String wrongResponse(int guess) {
-        if(guess < theNumber){
-            return guess + " is lower than the number.";
+    private void response(int currentGuess){
+        if(currentGuess == theNumber){
+            gameIsOn = false;
+            this.result = "Success! " + currentGuess + " was the number!";
+        } else if (currentGuess < theNumber) {
+            this.result = currentGuess + " is lower than the number.";
         }else {
-            return guess + " is higher than the number.";
+            this.result = currentGuess + " is higher than the number.";
         }
+
     }
 
-    private String correctResponse(int guess) {
-        gameIsOn = false;
-        return "Success! " + guess + " was the number!";
+    public String toString(){
+        String model = "*********************\n";
+        model+= "Secret num: "+theNumber+ "\n";
+
+        model+= "Num of attempt:" + attempt+ "\n";
+        model+= "game state: " + gameIsOn+ "\n";
+        model+= "game result : "+ result+ "\n";
+        model += "*********************\n";
+        return model;
     }
+
 }

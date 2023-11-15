@@ -3,23 +3,20 @@ public class PageHandler extends ExceptionHandler {
      * This method informs the client about wrong type input
      */
     public String errMsg() {
-        return "<p>Wrong type input</p>";
+        return "<p>Incorrect input. You have to enter a number between 0 and 100.</p>";
     }
 
     /**
      * This method returns html code to display results
      *
-     * @param result           [High, Success, Low]
-     * @param numberOfAttempts number of attemts
+     * @param GameStateDTO gameStateDTO
      */
+    public String updateResult(GameStateDTO gameStateDTO) {
+        if(gameStateDTO.gameIsOn)
+            return "<p>" + gameStateDTO.result + "</p>"
+                    + "<p>Number of Attempts: " + gameStateDTO.currentGuess + "</p>";
 
-    public String handleTry(String result, int numberOfAttempts) {
-        return "<p>" + result + "</p>"
-                    + "<p>Number of Attempts: " + numberOfAttempts + "</p>";
-    }
-
-    public String handleSuccess(String result, int numberOfAttempts) {
-        return "<p>" + result + "</p>"
-                + "<p>It took you " + numberOfAttempts + " guesses to guess the number.</p>";
+        return "<p>" + gameStateDTO.result + "</p>"
+                + "<p>It took you " + gameStateDTO.currentGuess + " guesses to guess the number.</p>";
     }
 }

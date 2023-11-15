@@ -1,10 +1,12 @@
 public class GameController {
 
+    private boolean inputErr;
     private GuessGameModel guessGameModel;
     private PageHandler pageHandler;
     private int numberofgames;
     private int sumOfAttemts;
     private double successRatio; //TODO
+    private GameStateDTO currentState;
     private int currentGuess;
 
     public GameController() {
@@ -12,33 +14,41 @@ public class GameController {
         pageHandler = new PageHandler();
     }
 
-    public String takeAGuess(String guess) {
-        if (inputCheck(guess))
-            pageHandler.errMsg();
-        currentGuess = Integer.parseInt(guess);
-        return validate(guessGameModel.clientGuess(currentGuess));
+    public void takeAGuess(String guess) {
+        if (inputCheck(guess)){
+            inputErr = inputCheck(guess);
+        }else {
+            inputErr = inputCheck(guess);
+            currentGuess = Integer.parseInt(guess);
+            guessGameModel.clientGuess(currentGuess);
+            currentState = currentGameState();
+        }
+        System.out.println(currentGuess);
     }
-
     public void newGame() {
         guessGameModel.newGame();
     }
 
-    // TODO
     private boolean inputCheck(String input) {
-        return false;
+        try{
+            if(Integer.parseInt(input) > 100 && Integer.parseInt(input) <= 0)
+                return true;
+
+            return false;
+        } catch (NumberFormatException e){
+            return true;
+        }
     }
 
-    public String validate(String result) {
-        if (!guessGameModel.isGameIsOn()){
-            calculateScore();
-            return pageHandler.handleSuccess(result, guessGameModel.getAttempt());
-        }
-        else
-            return pageHandler.handleTry(result, guessGameModel.getAttempt());
-    }
+
 
     public GameStateDTO currentGameState() {
-        return new GameStateDTO(guessGameModel.getAttempt(), currentGuess, guessGameModel.isGameIsOn());
+        return new GameStateDTO(guessGameModel, currentGuess);
+    }
+    public String getResult(){
+        if (inputErr)
+                return pageHandler.errMsg();
+        return pageHandler.updateResult(currentGameState());
     }
 
     //TODO
