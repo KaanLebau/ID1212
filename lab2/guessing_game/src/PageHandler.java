@@ -9,7 +9,7 @@ public class PageHandler extends ExceptionHandler {
     /**
      * This method returns html code to display results
      *
-     * @param GameStateDTO gameStateDTO
+     * @param gameStateDTO
      */
     public String updateResult(GameStateDTO gameStateDTO, GameHistoryDTO [] gameHistoryDTO) {
         if(gameStateDTO.gameIsOn)
@@ -23,34 +23,46 @@ public class PageHandler extends ExceptionHandler {
     }
 
     public String updateTable(GameHistoryDTO [] allUserHistory){
-        String table = "<div className=\"table\">"
-            + "<table class=\"tg\">"
-            + "<thead>"
-            + "<tr>"
-                + "<th>Data</th>"
-                + "<th>User</th>"
-                + "<th>All</th>"
-              + "</tr>"
-            + "<thead>"
-            + "<tbody>"
-              + " <tr>"
-                + "<td>Total Attempts</td>"
-                + "<td>" + allUserHistory[1].getSumOfAttempts() +"</td>"
-                + "<td>" + allUserHistory[0].getSumOfAttempts() +"</td>"
-              + " </tr>"
-              + " <tr>"
-                + "<td>Total Games</td>"
-                + "<td>" + allUserHistory[1].getNumberOfGames() +"</td>"
-                + "<td>" + allUserHistory[0].getNumberOfGames() +"</td>"
-              + " </tr>"
-              + " <tr>"
-                + "<td>Average Guesses</td>"
-                + "<td>" + allUserHistory[1].getAverageGuesses() +"</td>"
-                + "<td>" + allUserHistory[0].getAverageGuesses() +"</td>"
-              + "</tr>"
-            + "</tbody>"
-            + "</table>"
-            + "</div>";
+        String table = "<style type=\"text/css\">"
+                +".tg  {border-collapse:collapse;border-spacing:0; margin:5px 0px 0px 50px;}"
+                +".tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;"
+                +"  overflow:hidden;padding:10px 5px;word-break:normal;}"
+                +".tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;"
+                +"  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}"
+                +".tg .tg-baqh{text-align:center;vertical-align:top}"
+                +".tg .tg-0lax{text-align:left;vertical-align:top}"
+                +"</style>"
+                +"<table class=\"tg\" style=\"undefined;table-layout: fixed; width: 291px\">"
+                +"<colgroup>"
+                +"<col style=\"width: 149px\">"
+                +"<col style=\"width: 71px\">"
+                +"<col style=\"width: 71px\">"
+                +"</colgroup>"
+                +"<thead>"
+                +"  <tr>"
+                +"    <th class=\"tg-baqh\"></th>"
+                +"    <th class=\"tg-baqh\">user </th>"
+                +"    <th class=\"tg-baqh\">ALL</th>"
+                +"  </tr>"
+                +"</thead>"
+                +"<tbody>"
+                +"  <tr>"
+                +"    <td class=\"tg-0lax\">Total Attempts </td>"
+                +"    <td class=\"tg-baqh\">"+ allUserHistory[1].getSumOfAttempts() +"</td>"
+                +"    <td class=\"tg-baqh\">"+ allUserHistory[0].getSumOfAttempts() +"</td>"
+                +"  </tr>"
+                +"  <tr>"
+                +"    <td class=\"tg-0lax\">Total Games</td>"
+                +"    <td class=\"tg-baqh\">"+ allUserHistory[1].getNumberOfGames() +"</td>"
+                +"    <td class=\"tg-baqh\">"+ allUserHistory[0].getNumberOfGames() +"</td>"
+                +"  </tr>"
+                +"  <tr>"
+                +"    <td class=\"tg-0lax\">Average Guesses</td>"
+                +"    <td class=\"tg-baqh\">"+allUserHistory[1].getAverageGuesses()+"</td>"
+                +"    <td class=\"tg-baqh\">"+ allUserHistory[0].getAverageGuesses() +"</td>"
+                +"  </tr>"
+                +"</tbody>"
+                +"</table>";
 
         return table;
     }
