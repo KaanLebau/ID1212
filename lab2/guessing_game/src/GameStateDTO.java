@@ -7,7 +7,6 @@ public class GameStateDTO {
         this.numberOfAttempt = numberOfAttempt;
         this.currentGuess = currentGuess;
         this.gameIsOn = gameIsOn;
-
     }
 
     public GameStateDTO theState(){

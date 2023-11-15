@@ -10,7 +10,6 @@ public class GameServer extends ExceptionHandler{
     ServerSocket serverSocket;
     ExecutorService pool;
 
-
         public GameServer() {
             this.pool = Executors.newFixedThreadPool(10);
         }

@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class ConnectionHandler extends ExceptionHandler implements Runnable {
     private final Socket clientSocket;
-    GameController gameController;
+    private GameController gameController;
     SessionHandler sessionHandler;
 
     ConnectionHandler(Socket clientSocket, SessionHandler sessionHandler) {
@@ -28,7 +28,6 @@ public class ConnectionHandler extends ExceptionHandler implements Runnable {
             String sessionId = sessionHandler.getSessionId(cookiesHeader);
             String sessionCookie = sessionHandler.createSessionCookie(sessionId);
 
-            // Extract the method from the request line
             String method = requestLine.split(" ")[0];
 
             switch (method) {
@@ -38,9 +37,7 @@ public class ConnectionHandler extends ExceptionHandler implements Runnable {
                 case "POST":
                     receivedPostRequest(out, in, headers, sessionId, sessionCookie);
                     break;
-                // Add additional cases for other HTTP methods if needed
                 default:
-                    // Handle unsupported methods or provide a default case
                     out.println("HTTP/1.1 501 Not Implemented");
                     out.println();
                     out.flush();
@@ -77,8 +74,7 @@ public class ConnectionHandler extends ExceptionHandler implements Runnable {
             requestBody.append(new String(bodyChars));
         }
 
-        GameController gameController = sessionHandler.getOrCreateGameController(sessionId);
-        System.out.println("Player" + sessionId + " guessed " + requestBody.toString());
+        gameController = sessionHandler.getOrCreateGameController(sessionId);
         reply = gameController.takeAGuess(requestBody.toString());
         sendResponse(out, reply, sessionId, sessionCookie);
     }
@@ -93,7 +89,7 @@ public class ConnectionHandler extends ExceptionHandler implements Runnable {
 
     private void receivedGetRequest(PrintWriter out, String request, String sessionId, String sessionCookie) {
         if(request.contains("new-game")) {
-            GameController gameController = sessionHandler.getOrCreateGameController(sessionId);
+            gameController = sessionHandler.getOrCreateGameController(sessionId);
             gameController.newGame();
         }
         out.println("HTTP/1.1 200 OK");

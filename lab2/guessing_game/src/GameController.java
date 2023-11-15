@@ -31,10 +31,10 @@ public class GameController {
     public String validate(String result) {
         if (!guessGameModel.isGameIsOn()){
             calculateScore();
-            return pageHandler.handlePageUpdate(result, guessGameModel.getAttempt());
+            return pageHandler.handleSuccess(result, guessGameModel.getAttempt());
         }
         else
-            return pageHandler.handlePageUpdate(result, guessGameModel.getAttempt());
+            return pageHandler.handleTry(result, guessGameModel.getAttempt());
     }
 
     public GameStateDTO currentGameState() {
@@ -47,5 +47,4 @@ public class GameController {
         numberofgames++;
         successRatio = sumOfAttemts / numberofgames;
     }
-
 }

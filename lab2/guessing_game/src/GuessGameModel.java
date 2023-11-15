@@ -34,8 +34,8 @@ public class GuessGameModel {
      * @param guess clients guess
      */
     public String clientGuess(int guess){
-        //if(!gameIsOn)
-            //newGame();
+        if(!gameIsOn)
+            newGame();
         attempt++;
         if(theNumber == guess){
             return correctResponse(guess);
