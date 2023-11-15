@@ -1,5 +1,7 @@
 /**
- *
+ * This class is used to send data between different java classes
+ * @author Kaan Özsan
+ * @author Dan Ljungström
  */
 public class GameHistoryDTO {
 

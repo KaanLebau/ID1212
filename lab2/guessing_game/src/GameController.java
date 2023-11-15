@@ -1,3 +1,8 @@
+/**
+ * This class updates the <code>index.html</code> file with new data from the <code>GameController</code>
+ *  @author Kaan Özsan
+ *  @author Dan Ljungström
+ */
 public class GameController {
 
     private boolean inputErr;

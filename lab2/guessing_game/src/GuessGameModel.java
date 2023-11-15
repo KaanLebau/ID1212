@@ -48,6 +48,9 @@ public class GuessGameModel {
     public boolean isGameIsOn() {return gameIsOn;}
     public String getResult(){return result;}
 
+    /**
+     * Creates new game
+     */
     public void newGame(){
         int lastGameNumber = this.theNumber;
         gameIsOn = true;

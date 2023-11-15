@@ -1,11 +1,14 @@
+/**
+ * This class is used to send data between different java classes
+ * @author Kaan Özsan
+ * @author Dan Ljungström
+ */
 public class GameStateDTO {
     int numberOfAttempt;
     int currentGuess;
     boolean gameIsOn;
     String result;
     private GuessGameModel guessGameModel;
-
-
 
     public GameStateDTO(){
         this.result = guessGameModel.getResult();

@@ -1,3 +1,8 @@
+/**
+ * This class updates the <code>index.html</code> file with new data from the <code>GameController</code>
+ *  @author Kaan Özsan
+ *  @author Dan Ljungström
+ */
 public class PageHandler extends ExceptionHandler {
     /**
      * This method informs the client about wrong type input
@@ -7,7 +12,7 @@ public class PageHandler extends ExceptionHandler {
     }
 
     /**
-     * This method returns html code to display results
+     * This method returns html code to display results in <code>index.html</code>
      *
      * @param gameStateDTO
      */
@@ -22,6 +27,11 @@ public class PageHandler extends ExceptionHandler {
                 + updateTable(gameHistoryDTO);
     }
 
+    /**
+     * This method returns called by <code>GameController</code> to update table
+     * @param allUserHistory
+     * @return table body with data from <code> GameController <\code>
+     */
     public String updateTable(GameHistoryDTO [] allUserHistory){
         String table = "<style type=\"text/css\">"
                 +".tg  {border-collapse:collapse;border-spacing:0; margin:5px 0px 0px 50px;}"

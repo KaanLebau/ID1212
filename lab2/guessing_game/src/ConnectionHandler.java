@@ -3,6 +3,18 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *
+ *   This class handles the following <code>HTTP</code> requests
+ * <ul>
+ *
+ *      <li>GET<\li>
+ *      <li>POST<\li>
+ *  </ul>
+ *  @author Kaan Özsan
+ *  @author Dan Ljungström
+ *
+ */
 public class ConnectionHandler extends ExceptionHandler implements Runnable {
     private final Socket clientSocket;
     private GameController gameController;
