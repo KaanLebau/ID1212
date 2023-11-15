@@ -22,6 +22,7 @@ public class GameStateDTO {
         return this;
     }
 
+
     public String toString(){
         String state= "";
         state += "Current game state " + gameIsOn +"\n";

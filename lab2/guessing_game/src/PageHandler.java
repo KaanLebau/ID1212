@@ -19,4 +19,10 @@ public class PageHandler extends ExceptionHandler {
         return "<p>" + gameStateDTO.result + "</p>"
                 + "<p>It took you " + gameStateDTO.currentGuess + " guesses to guess the number.</p>";
     }
+
+    public String updateTable(GameHistoryDTO[] historyList){
+        String tabel = "";
+
+        return tabel;
+    }
 }

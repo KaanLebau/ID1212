@@ -3,11 +3,11 @@ public class GameController {
     private boolean inputErr;
     private GuessGameModel guessGameModel;
     private PageHandler pageHandler;
-    private int numberofgames;
-    private int sumOfAttemts;
-    private double successRatio; //TODO
     private GameStateDTO currentState;
     private int currentGuess;
+    private int numberOfGames = 1;
+    private int sumOfAttempts;
+    private double averageGuesses;
 
     public GameController() {
         guessGameModel = new GuessGameModel();
@@ -18,6 +18,7 @@ public class GameController {
         if (inputCheck(guess)){
             inputErr = inputCheck(guess);
         }else {
+            sumOfAttempts++;
             inputErr = inputCheck(guess);
             currentGuess = Integer.parseInt(guess);
             guessGameModel.clientGuess(currentGuess);
@@ -26,22 +27,17 @@ public class GameController {
         System.out.println(currentGuess);
     }
     public void newGame() {
+        averageGuesses = sumOfAttempts / numberOfGames;
+        numberOfGames++;
         guessGameModel.newGame();
     }
-
     private boolean inputCheck(String input) {
         try{
-            if(Integer.parseInt(input) > 100 && Integer.parseInt(input) <= 0)
-                return true;
-
-            return false;
+            return Integer.parseInt(input) > 100 && Integer.parseInt(input) <= 0;
         } catch (NumberFormatException e){
             return true;
         }
     }
-
-
-
     public GameStateDTO currentGameState() {
         return new GameStateDTO(guessGameModel, currentGuess);
     }
@@ -50,11 +46,12 @@ public class GameController {
                 return pageHandler.errMsg();
         return pageHandler.updateResult(currentGameState());
     }
-
-    //TODO
-    private void calculateScore() {
-        sumOfAttemts += guessGameModel.getAttempt();
-        numberofgames++;
-        successRatio = sumOfAttemts / numberofgames;
+    public void getAllUserHistory(GameHistoryDTO allUserHistory){
+        GameHistoryDTO[] historyList = new GameHistoryDTO[2];
+        historyList[0] = allUserHistory;
+        historyList[1] = new GameHistoryDTO(numberOfGames, sumOfAttempts, averageGuesses);
+         pageHandler.updateTable(historyList);
     }
+
+
 }
