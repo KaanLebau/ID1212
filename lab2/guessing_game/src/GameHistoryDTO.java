@@ -7,6 +7,7 @@ public class GameHistoryDTO {
     private int numberOfGames = 1;
     private int sumOfAttempts;
     private double averageGuesses;
+
     public GameHistoryDTO(int numberOfGames, int sumOfAttempts, double averageGuesses){
         this.averageGuesses = averageGuesses;
         this.numberOfGames = numberOfGames;

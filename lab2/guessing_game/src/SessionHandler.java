@@ -2,17 +2,29 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SessionHandler {
-    private final ConcurrentHashMap<String, GameSession> sessions = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, GameController> sessions = new ConcurrentHashMap<>();
 
     public GameController getOrCreateGameController(String sessionId) {
-        GameSession gameSession = sessions.computeIfAbsent(sessionId, id -> new GameSession(new GameController()));
-        return gameSession.getGameController();
+        GameController gameController = sessions.computeIfAbsent(sessionId, id -> new GameController());
+        return gameController;
     }
 
-    public void updateSession(String sessionId, int guesses){
-        GameSession gameSession = sessions.get(sessionId);
-        gameSession.incrementNumberOfGames();
-        gameSession.updateGuesses(guesses);
+    public void sendHistory(String sessionId) {
+        int totalControllers = 0;
+        int totalGames = 0;
+        int totalGuesses = 0;
+        double averageGuesses = 0;
+
+        for(GameController gameController : sessions.values()) {
+            GameHistoryDTO gameHistory = gameController.getHistory();
+            averageGuesses += gameHistory.getAverageGuesses();
+            totalGames += gameHistory.getNumberOfGames();
+            totalGuesses += gameHistory.getSumOfAttempts();
+            totalControllers++;
+        }
+
+        GameController gameController = getOrCreateGameController(sessionId);
+        gameController.updateServerHistory(new GameHistoryDTO(totalGames, totalGuesses, averageGuesses / totalControllers));
     }
 
     public String getSessionId(String cookieHeader) {
