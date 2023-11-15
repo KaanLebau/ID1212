@@ -50,6 +50,7 @@ public class GuessGameModel {
 
     public void newGame(){
         int lastGameNumber = this.theNumber;
+        gameIsOn = true;
         attempt = 0;
         while(true){
             theNumber = (int) ((Math.random() * (100 - 0)) + 0);
