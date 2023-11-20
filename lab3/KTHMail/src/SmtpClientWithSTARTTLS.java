@@ -80,29 +80,23 @@ public class SmtpClientWithSTARTTLS {
     }
 
     public void logIn(String kthUserName, String kthPassword){
-        try {
             out.println(SmtpMethod.LOGIN);
+            printResponse("Username Prompt");
             out.println(Base64.getEncoder().encodeToString(kthUserName.getBytes()));
+            printResponse("Password Prompt");
             out.println(Base64.getEncoder().encodeToString(kthPassword.getBytes()));
-            printResponse("login");
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }finally {
-            System.out.println("Login() is done!");
-        }
+            printResponse("Authentication Status");
     }
 
-    public void sendMail(String from, String to, String message){
-        try {
+    public void sendMail(String from, String to, String subject, String message){
             setFrom(from);
+            printResponse("From Prompt");
             setTo(to);
-            setMessage(message);
-            printResponse("sendMail");
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+            printResponse("To Prompt");
+            setMessage(subject, message, from, to);
+            printResponse("Message Prompt");
+            out.println(SmtpMethod.QUIT);
+            printResponse("Quit Prompt");
     }
     private void setFrom(String from){
         out.println(SmtpMethod.FROM + ": <"+ from + ">");
@@ -110,22 +104,23 @@ public class SmtpClientWithSTARTTLS {
     private void setTo(String  to){
         out.println(SmtpMethod.RCPT + ": <" + to + ">");
     }
-    private void setMessage(String message){
+    private void setMessage(String subject, String message, String from, String to){
         out.println(SmtpMethod.DATA);
-        out.println(message);
-        out.println(SmtpMethod.QUIT);
+        printResponse("DATA Prompt");
+        out.println("Subject: " + subject + "\n\n" + message + "");
+        out.println(".");
     }
-    private void printResponse(String from) throws IOException {
+    private void printResponse(String from) {
         System.out.println("Response from " + from + ": ");
         try {
-            while((response = in.readLine()) != null && !response.isEmpty() && !response.contains("Ready to start")){
+            while((response = in.readLine()) != null && !(response.isEmpty()) && !(response.contains("Ready to start")) && !(response.contains("Ok"))){
                 System.out.println(response);
 
-                if(response.contains("Error") || response.contains("CHUNKING")){
+                if(response.contains("Error") || response.contains("CHUNKING") || response.contains("334") || response.contains("235") || response.contains("2.0.0 Bye") || response.contains("End data with")){
                     break;
                 }
             }
-            if(response.contains("Ready to start")){
+            if(response.contains("Ok")){
                 System.out.println(response);
             }
         } catch (IOException e) {
@@ -137,12 +132,13 @@ public class SmtpClientWithSTARTTLS {
     }
 
     public static void main(String[] args) {
-        String from = "From user1";
-        String to = "To user2";
-        String msg = "Hej hej!";
+        String subject = "Testsubject";
+        String msg = "Testmessage!";
 
         SmtpClientWithSTARTTLS sendMail = new SmtpClientWithSTARTTLS();
+        String mail = sendMail.username + "@kth.se";
+
         sendMail.logIn(sendMail.username, sendMail.password);
-        //sendMail.sendMail(from, to ,msg);
+        sendMail.sendMail(mail, mail, subject, msg);
     }
 }
