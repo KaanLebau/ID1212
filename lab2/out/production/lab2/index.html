@@ -4,7 +4,6 @@
 
 <head>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="style.css">
   <title>GuessingGame!</title>
 </head>
 
@@ -37,7 +36,7 @@
         .then(text => {
           // Update the "additionalData" div
           document.getElementById('additionalData').innerHTML = text;
-          if(text.startsWith("<p>Success")){
+          if(text.includes("Success")){
             document.getElementById('newGame').innerHTML = "New Game"
           }
           else
