@@ -12,12 +12,9 @@ public class SmtpClientWithSTARTTLS {
     private BufferedReader in;
     private PrintWriter out;
     private Socket sslSocket;
-    String username;
-    String password;
+    private String username;
+    private String password;
     private String response;
-    private String from;
-    private String to;
-    private String message;
 
     public SmtpClientWithSTARTTLS() {
             createSocket();
