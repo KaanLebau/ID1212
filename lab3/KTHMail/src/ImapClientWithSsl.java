@@ -69,54 +69,46 @@ public class ImapClientWithSsl {
     }
 
     public void logIn(String kthUserName, String kthPassword){
-        try {
             out.println("A1 " + ImapMethod.LOGIN + " " + kthUserName + " " + kthPassword);
-            response = in.readLine();
-            if(response != null){
-                System.out.println("Server response: \n" + response);
-            } else {
-                System.out.println("Server response is NULL");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }finally {
-            System.out.println("Login() is done!");
-        }
+            printResponse("login");
     }
 
     public void getInbox(){
-
-        while (true) {
-            try {
                 out.println("S1 SELECT INBOX");
-                out.println(ImapMethod.FETCH + " 1:* (BODY[HEADER.FIELDS (SUBJECT)])");
-                if (!(response = in.readLine()).equals(")"))
-                    break;
-                System.out.println(response);
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
-        }
+                printResponse("inbox");
 
-        System.out.println("getInbox() function is done!");
+                out.println("G1 " + ImapMethod.FETCH + " 1:* BODY.PEEK[HEADER.FIELDS (SUBJECT)]");
+                printResponse("fetch");
 
+                out.println("G2 " + ImapMethod.FETCH + " 2 body[text]");
+                printResponse("fetch message");
     }
     public void logOut(){
-        try {
-            out.println(ImapMethod.LOGOUT);
-            response = in.readLine();
-            System.out.println(response);
+            out.println("L1 " +ImapMethod.LOGOUT);
+            printResponse("logout");
+
             closeConnection();
+    }
+
+    public void printResponse(String from){
+        System.out.println("Response from " + from + ": ");
+        try {
+            while((response = in.readLine()) != null && !response.contains("completed")){
+                if(!response.contains("BODY[HEADER.FIELDS (SUBJECT)]") && !response.equals(")") && !response.equals(""))
+                    System.out.println(response);
+
+                if(response.contains("Error")){
+                    break;
+                }
+            }
+            if(response.contains("completed")){
+                System.out.println(response);
+            }
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
-        }finally {
-            System.out.println("logOut() is done!");
         }
     }
-
 
 
     private void closeConnection(){
@@ -152,23 +144,15 @@ public class ImapClientWithSsl {
         }catch (IOException e){
             throw new RuntimeException(e);
         }
-
     }
 
 
 
     public static void main(String[] args) {
-        
-
         ImapClientWithSsl server = new ImapClientWithSsl();
         server.logIn(server.username, server.password);
         server.getInbox();
         server.logOut();
-
-
-
-
-
     }
 
 }

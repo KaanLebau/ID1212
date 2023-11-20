@@ -1,4 +1,5 @@
 import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.SSLSocket;
 import java.io.*;
 import java.net.Socket;
 import java.util.Base64;
@@ -11,23 +12,17 @@ public class SmtpClientWithSTARTTLS {
     private BufferedReader in;
     private PrintWriter out;
     private Socket sslSocket;
-    private String username;
-    private String password;
+    String username;
+    String password;
     private String response;
     private String from;
     private String to;
     private String message;
 
     public SmtpClientWithSTARTTLS() {
-        try {
             createSocket();
             initializeIO();
             loadConfig();
-            System.out.println(in.readLine());
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
     }
     private void loadConfig() {
 
@@ -49,11 +44,29 @@ public class SmtpClientWithSTARTTLS {
     }
     public void createSocket(){
         try {
-            sslSocket = SSLSocketFactory.getDefault().createSocket(HOST, PORT);
+            sslSocket = new Socket(HOST,PORT);
+            initializeIO();
+            startTLS();
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    public void startTLS() throws IOException{
+        out.println("EHLO " + HOST);
+        printResponse("EHLO before STARTTLS");
+
+        out.println("STARTTLS");
+        printResponse("startTLS");
+
+        SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+        sslSocket = (SSLSocket) factory.createSocket(sslSocket, HOST, PORT, true);
+
+        initializeIO();
+
+        out.println("EHLO " + HOST);
+        printResponse("EHLO after STARTTLS");
     }
 
     public void initializeIO(){
@@ -71,7 +84,7 @@ public class SmtpClientWithSTARTTLS {
             out.println(SmtpMethod.LOGIN);
             out.println(Base64.getEncoder().encodeToString(kthUserName.getBytes()));
             out.println(Base64.getEncoder().encodeToString(kthPassword.getBytes()));
-            printResponse();
+            printResponse("login");
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -85,7 +98,7 @@ public class SmtpClientWithSTARTTLS {
             setFrom(from);
             setTo(to);
             setMessage(message);
-            printResponse();
+            printResponse("sendMail");
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -102,28 +115,34 @@ public class SmtpClientWithSTARTTLS {
         out.println(message);
         out.println(SmtpMethod.QUIT);
     }
-    private void printResponse() throws IOException {
-        response = in.readLine();
-        if(response != null){
-            System.out.println("Server response: \n" + response);
-        } else {
-            System.out.println("Server response is NULL");
+    private void printResponse(String from) throws IOException {
+        System.out.println("Response from " + from + ": ");
+        try {
+            while((response = in.readLine()) != null && !response.isEmpty() && !response.contains("Ready to start")){
+                System.out.println(response);
+
+                if(response.contains("Error") || response.contains("CHUNKING")){
+                    break;
+                }
+            }
+            if(response.contains("Ready to start")){
+                System.out.println(response);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+
         response = null;
     }
 
     public static void main(String[] args) {
-        String username = "username";
-        String password = "password";
         String from = "From user1";
         String to = "To user2";
         String msg = "Hej hej!";
 
-
         SmtpClientWithSTARTTLS sendMail = new SmtpClientWithSTARTTLS();
-        sendMail.logIn(username, password);
-        sendMail.sendMail(from, to ,msg);
-
+        sendMail.logIn(sendMail.username, sendMail.password);
+        //sendMail.sendMail(from, to ,msg);
     }
-
 }
