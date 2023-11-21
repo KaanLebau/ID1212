@@ -13,6 +13,7 @@ public class ImapClientWithSsl {
     private static final String CONFIG_FILE = "resources/config.properties";
     private static final String HOST = "webmail.kth.se";
     private static final int PORT = 993;
+    private String space =" ";
 
     private String username;
     private String password;
@@ -69,18 +70,18 @@ public class ImapClientWithSsl {
     }
 
     public void logIn(String kthUserName, String kthPassword){
-            out.println("A1 " + ImapMethod.LOGIN + " " + kthUserName + " " + kthPassword);
+            out.println("A1 " + ImapMethod.LOGIN + space + kthUserName + space + kthPassword);
             printResponse("login");
     }
 
     public void getInbox(){
-                out.println("S1 SELECT INBOX");
+                out.println("S1 " + ImapMethod.SELECT+ space+ ImapMethod.INBOX);
                 printResponse("inbox");
 
                 out.println("G1 " + ImapMethod.FETCH + " 1:* BODY.PEEK[HEADER.FIELDS (SUBJECT)]");
                 printResponse("fetch");
 
-                out.println("G2 " + ImapMethod.FETCH + " 2 body[text]");
+                out.println("G2 " + ImapMethod.FETCH + " 2 " + ImapMethod.MAIL);
                 printResponse("fetch message");
     }
     public void logOut(){
