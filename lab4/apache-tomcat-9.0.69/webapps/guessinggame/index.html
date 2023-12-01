@@ -1,63 +1,11 @@
-<!-- index.html -->
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <link rel="icon" href="data:,">
-  <title>GuessingGame!</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0; URL='game'">
+    <title>Redirecting to Game...</title>
 </head>
-
 <body>
-  <h1>Welcome to Guessing Game!</h1>
-  <form id="dataForm">
-    <input type="text" id="textInput" placeholder="Enter the number">
-    <input type="submit" value="Is it?">
-  </form>
-  <div id="additionalData" style="display: flex">
-    <!-- Additional Data Placeholder -->
-  </div>
-  <p><button id="newGame">Restart Game</button></p>
-  <script>
-    document.getElementById('newGame').hidden = true;
-    
-    document.getElementById('dataForm').addEventListener('submit', function (event) {
-      document.getElementById('newGame').hidden = false;
-      event.preventDefault();
-      var inputValue = document.getElementById('textInput').value;
-
-      // Send a POST request with the entered text to the server
-      fetch('/', {
-        method: 'POST',
-        body: inputValue,
-        headers: {
-          'Content-Type': 'text/plain'
-        }
-      }).then(response => response.text())
-        .then(text => {
-          // Update the "additionalData" div
-          document.getElementById('additionalData').innerHTML = text;
-          if(text.includes("Success")){
-            document.getElementById('newGame').innerHTML = "New Game"
-          }
-          else
-            document.getElementById('newGame').innerHTML = "Restart Game"
-        }).catch(error => {
-          // Handle any errors that occurred during fetch
-          console.error('Error:', error);
-        });
-    });
-
-    document.getElementById('newGame').addEventListener('click', function (event) {
-      // Send a New Game request
-      fetch('/new-game', {
-        method: 'GET',
-      }).then(response => document.getElementById('additionalData').innerHTML = "<p> A new game was started. </p>")
-        .then(document.getElementById('dataForm').reset())
-    });
-
-
-
-  </script>
+    <p>If you are not redirected, <a href="'game'">click here to play the game</a>.</p>
 </body>
-
 </html>
