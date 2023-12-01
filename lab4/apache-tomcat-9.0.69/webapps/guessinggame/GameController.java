@@ -9,23 +9,17 @@ public class GameController {
     private GuessGameModel guessGameModel;
     private PageHandler pageHandler;
     private GameStateDTO currentState;
-    private GameHistoryDTO [] allUserHistory;
     private int currentGuess;
-    private int numberOfGames = 1;
-    private int sumOfAttempts;
-    private double averageGuesses;
 
     public GameController() {
         guessGameModel = new GuessGameModel();
         pageHandler = new PageHandler();
-        allUserHistory = new GameHistoryDTO[2];
     }
 
     public void takeAGuess(String guess) {
         if (inputCheck(guess)){
             inputErr = inputCheck(guess);
         }else {
-            sumOfAttempts++;
             inputErr = inputCheck(guess);
             currentGuess = Integer.parseInt(guess);
             guessGameModel.clientGuess(currentGuess);
@@ -33,8 +27,6 @@ public class GameController {
         }
     }
     public void newGame() {
-        averageGuesses = sumOfAttempts / numberOfGames;
-        numberOfGames++;
         guessGameModel.newGame();
     }
     private boolean inputCheck(String input) {
@@ -50,18 +42,6 @@ public class GameController {
     public String getResult(){
         if (inputErr)
                 return pageHandler.errMsg();
-        return pageHandler.updateResult(currentGameState(), allUserHistory);
-    }
-    public void getAllUserHistory(){
-        pageHandler.updateTable(allUserHistory);
-    }
-
-    public GameHistoryDTO getHistory(){
-        allUserHistory[1] = new GameHistoryDTO(numberOfGames, sumOfAttempts, averageGuesses);
-        return allUserHistory[1];
-    }
-
-    public void updateServerHistory(GameHistoryDTO gameHistoryDTO){
-        allUserHistory[0] = gameHistoryDTO;
+        return pageHandler.updateResult(currentGameState());
     }
 }
