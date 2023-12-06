@@ -4,8 +4,6 @@
 --DROP TABLE quizzes;
 --DROP TABLE users;
 
-
-
 CREATE TABLE users (
 	id INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
 	username VARCHAR(32) UNIQUE NOT NULL,
@@ -20,6 +18,7 @@ CREATE TABLE questions (
 	options VARCHAR(64) NOT NULL,
 	answer VARCHAR(64) NOT NULL
 );
+
 INSERT INTO questions (text,options,answer) VALUES ('Which planets are larger than earth?', 'Mercury/Mars/Saturn', '0/0/1');
 INSERT INTO questions (text,options,answer) VALUES ('Which planets are farther away from the sun than earth?', 'Mercury/Mars/Saturn', '0/1/1');
 INSERT INTO questions (text,options,answer) VALUES ('Which planets have rings?', 'Mercury/Mars/Saturn', '0/0/1');
@@ -28,8 +27,8 @@ CREATE TABLE quizzes (
 	id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
 	subject VARCHAR(64) NOT NULL
 );
-INSERT INTO quizzes (subject) VALUES ('Astronomy');
 
+INSERT INTO quizzes (subject) VALUES ('Astronomy');
 
 CREATE TABLE selector(
 	quiz_id INT NOT NULL REFERENCES quizzes(id),
