@@ -1,0 +1,121 @@
+<html
+        xmlns:th="http://www.thymeleaf.org"
+>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astronomy Quiz</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #DBFCFF; /* Optional background color */
+        }
+
+        .quiz-container {
+            background-color: #ECEBF3; /* Translucent white background */
+            border: 2px solid #0C120C; /* Visible border */
+            border-radius: 10px; /* Border radius for a corner-less design */
+            padding: 20px;
+            text-align: center;
+            max-width: 600px; /* Optional: Set a maximum width for better readability on larger screens */
+        }
+
+        .quiz-topic {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #6D7275; /* Optional text color */
+            margin-bottom: 20px; /* Optional margin for spacing */
+        }
+
+        .question-container {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .answer-option {
+            margin-bottom: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #C20114;
+            color: #fff;
+            border: 1px solid #0C120C; /* Visible border */
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            margin-top: 10px; /* Add margin to the button */
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div class="quiz-topic">
+        <p>Astronomy Quiz</p>
+    </div>
+
+    <div class="question-container">
+        <div class="question-text">
+            <p>Question 1: What is the largest planet in our solar system?</p>
+        </div>
+        <div class="answer-option">
+            <input type="checkbox"> A. Jupiter
+        </div>
+        <div class="answer-option">
+            <input type="checkbox"> B. Saturn
+        </div>
+        <div class="answer-option">
+            <input type="checkbox"> C. Neptune
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-text">
+            <p>Question 2: Which planet is known as the "Red Planet"?</p>
+        </div>
+        <div class="answer-option">
+            <input type="checkbox"> A. Mars
+        </div>
+        <div class="answer-option">
+            <input type="checkbox"> B. Venus
+        </div>
+        <div class="answer-option">
+            <input type="checkbox"> C. Mercury
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-text">
+            <p>Question 3: What is the name of the galaxy that contains our solar system?</p>
+        </div>
+        <div class="answer-option">
+            <input type="checkbox"> A. Milky Way
+        </div>
+        <div class="answer-option">
+            <input type="checkbox"> B. Andromeda
+        </div>
+        <div class="answer-option">
+            <input type="checkbox"> C. Triangulum
+        </div>
+    </div>
+
+    <button type="button">Submit Quiz</button>
+</div>
+
+</body>
+</html>

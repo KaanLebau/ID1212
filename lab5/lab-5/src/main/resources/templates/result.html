@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Result</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #DBFCFF; /* Optional background color */
+        }
+
+        .result-container {
+            background-color: #ECEBF3; /* Translucent white background */
+            border: 2px solid #0C120C; /* Visible border */
+            border-radius: 10px; /* Border radius for a corner-less design */
+            padding: 20px;
+            text-align: center;
+            min-width: 300px;
+            max-width: 700px; /* Optional: Set a maximum width for better readability on larger screens */
+        }
+
+        .result-topic {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #6D7275; /* Optional text color */
+            margin-bottom: 20px; /* Optional margin for spacing */
+        }
+
+        .user-email {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .quiz-result {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .buttons{
+            display:flex;
+            gap: 20px;
+        }
+
+        button {
+            width: 48%;
+            padding: 10px;
+            background-color: #C20114;
+            color: #fff;
+            border: 1px solid #0C120C; /* Visible border */
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            margin-top: 10px; /* Add margin to the button */
+            box-sizing: border-box;
+        }
+
+        button.new-quiz {
+            margin-right: 2%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="result-container">
+    <div class="result-topic">
+        <p>Quiz Result</p>
+    </div>
+
+    <div class="user-email">
+        <p>User : user@example.com</p> <!-- Replace with actual user email -->
+    </div>
+
+    <div class="quiz-result">
+        <p>Result: 2 out of 3 correct</p> <!-- Replace with actual quiz result -->
+    </div>
+<div class="buttons">
+    <button type="button" class="new-quiz">New Quiz</button>
+    <button type="button">Send Result</button>
+</div>
+
+</div>
+
+</body>
+</html>
