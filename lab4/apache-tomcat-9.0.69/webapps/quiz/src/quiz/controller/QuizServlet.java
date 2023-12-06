@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import quiz.dto.QuestionDTO;
+import quiz.dto.UserDTO;
 import quiz.model.QuizGameModel;
 
 import javax.servlet.annotation.WebServlet;
@@ -33,23 +34,38 @@ public class QuizServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute("user");
+
+        if (user == null) {
+            response.sendRedirect("login");
+            return;
+        }
+        String quizIdParam = request.getParameter("id");
+        int quizId = quizIdParam != null ? Integer.parseInt(quizIdParam) : 1;
+
         QuizGameModel gameModel = (QuizGameModel) session.getAttribute("game");
 
-        if (gameModel == null) {
+        if (gameModel == null || gameModel.getQuizId() != quizId) {
             gameModel = new QuizGameModel();
+            gameModel.setQuizId(quizId);
+
+            String query = "SELECT q.* FROM TEST.QUESTIONS q " +
+                    "JOIN TEST.SELECTOR s ON q.ID = s.QUESTION_ID " +
+                    "WHERE s.QUIZ_ID = ?";
 
             try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-                    Statement stmt = conn.createStatement();
-                    ResultSet rs = stmt.executeQuery("SELECT * FROM TEST.QUESTIONS")) {
+                    PreparedStatement stmt = conn.prepareStatement(query)) {
 
-                while (rs.next()) {
-                    int id = rs.getInt("id");
-                    String text = rs.getString("text");
-                    String options = rs.getString("options");
-                    String answer = rs.getString("answer");
-                    String[] optionsArray = options.split("/");
-                    QuestionDTO question = new QuestionDTO(id, text, optionsArray, answer);
-                    gameModel.addQuestion(question); // Assuming there's an addQuestion method in QuizGameModel
+                stmt.setInt(1, quizId);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        QuestionDTO question = new QuestionDTO(
+                                rs.getInt("id"),
+                                rs.getString("text"),
+                                rs.getString("options").split("/"),
+                                rs.getString("answer"));
+                        gameModel.addQuestion(question);
+                    }
                 }
             } catch (SQLException e) {
                 throw new ServletException("SQL error", e);
@@ -65,6 +81,12 @@ public class QuizServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute("user");
+
+        if (user == null) {
+            response.sendRedirect("login");
+            return;
+        }
         QuizGameModel gameModel = (QuizGameModel) session.getAttribute("game");
         if (gameModel == null) {
             gameModel = new QuizGameModel();
@@ -80,8 +102,26 @@ public class QuizServlet extends HttpServlet {
         if (gameModel.hasMoreQuestions()) {
             response.sendRedirect("game");
         } else {
+            saveResults(gameModel, session);
             request.getRequestDispatcher("game.jsp").forward(request, response);
         }
+    }
 
+    private void saveResults(QuizGameModel gameModel, HttpSession session) {
+        UserDTO user = (UserDTO) session.getAttribute("user");
+        if (user != null) {
+            try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                    PreparedStatement pstmt = conn.prepareStatement(
+                            "INSERT INTO TEST.RESULTS (USER_ID, QUIZ_ID, SCORE) VALUES (?, ?, ?)")) {
+
+                pstmt.setInt(1, user.getId());
+                pstmt.setInt(2, gameModel.getQuizId());
+                pstmt.setInt(3, gameModel.getCurrentScore());
+
+                pstmt.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

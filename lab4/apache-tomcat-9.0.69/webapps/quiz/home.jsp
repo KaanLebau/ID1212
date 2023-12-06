@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/styles.css">
     <title>Homepage</title>
 </head>
 <body>
@@ -16,7 +17,7 @@
         <% 
             List<ResultDTO> results = (List<ResultDTO>) request.getAttribute("results");
             for (ResultDTO result : results) {
-                out.println("<li>" + result.getId() + " - Score: " + result.getScore() + "</li>");
+                out.println("<li>" + result.getQuizId() + " - Score: " + result.getScore() + "</li>");
             }
         %>
     </ul>
@@ -30,5 +31,10 @@
             }
         %>
     </ul>
+
+    <form action="home" method="post">
+        <input type="hidden" name="action" value="logout">
+        <input type="submit" value="Logout">
+    </form>    
 </body>
 </html>

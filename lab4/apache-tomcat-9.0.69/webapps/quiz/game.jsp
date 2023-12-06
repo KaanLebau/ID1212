@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/styles.css">
     <title>Quiz</title>
 </head>
 <body>
@@ -24,14 +25,14 @@
                     <% } %>
                     <input type="submit" value="Submit">
                 </form>
-    <%      } 
+    <%      }
         } else if (gameModel != null && !gameModel.hasMoreQuestions()) { 
             int finalScore = gameModel.getCurrentScore();
             int totalQuestions = gameModel.getQuestions().size();
     %>
             <h3>Quiz Complete!</h3>
             <p>Your score: <%= finalScore %> out of <%= totalQuestions %>.</p>
-            <a href="game">Play again</a>
+            <a href="home">Return home</a>
             <% session.removeAttribute("game"); // Clean up session %>
     <%  } else { %>
             <p>Sorry, there was a problem loading the quiz.</p>

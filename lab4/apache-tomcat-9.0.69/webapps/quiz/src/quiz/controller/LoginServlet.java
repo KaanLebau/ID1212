@@ -12,7 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import java.io.IOException;
 import java.sql.*;
 
-@WebServlet("/login")
+@WebServlet("/")
 public class LoginServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
@@ -27,7 +27,6 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Forward the request to the login JSP page to show the login form
         request.getRequestDispatcher("/login.jsp").forward(request, response);
     }
 
@@ -36,31 +35,30 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-
-        UserDTO user = authenticateOrCreate(request, response, email, password); // Implement this method to check credentials
-
+    
+        UserDTO user = authenticateOrCreate(request, email, password);
+    
         if (user != null) {
             HttpSession session = request.getSession();
-            session.setAttribute("user", user); // Store the user object in the session
-
+            session.setAttribute("user", user);
             response.sendRedirect("home");
         } else {
-            request.setAttribute("errorMessage", "Invalid email or password");
+            // If authentication fails, set the error message and forward back to the login page.
+            request.setAttribute("loginError", "Invalid password. Please try again.");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
         }
     }
 
-    private UserDTO authenticateOrCreate(HttpServletRequest request, HttpServletResponse response, String email, String password) {
+    private UserDTO authenticateOrCreate(HttpServletRequest request, String email, String password) {
         String dbUrl = "jdbc:derby://localhost:1527/quizDB";
         String dbUser = "test";
         String dbPassword = "test";
-
+        
         UserDTO user = null;
         String selectSql = "SELECT * FROM TEST.USERS WHERE USERNAME = ?";
         String insertSql = "INSERT INTO TEST.USERS (USERNAME, PASSWORD) VALUES (?, ?)";
-
+    
         try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
-            // First, try to find the user
             try (PreparedStatement stmt = conn.prepareStatement(selectSql)) {
                 stmt.setString(1, email);
                 try (ResultSet rs = stmt.executeQuery()) {
@@ -69,39 +67,36 @@ public class LoginServlet extends HttpServlet {
                         if (storedPassword != null && storedPassword.equals(password)) {
                             user = new UserDTO(rs.getInt("ID"), rs.getString("USERNAME"));
                         } else {
-                            request.setAttribute("loginError", "Wrong password, try again.");
-                            try{
-                                request.getRequestDispatcher("/login.jsp").forward(request, response);
-                            } catch (Exception e){
-                                e.printStackTrace();
-                            }
+                            // Set error message attribute here, the actual forwarding happens in doPost
+                            request.setAttribute("errorMessage", "Incorrect password, please try again.");
                             return null;
                         }
                     }
                 }
             }
-
-            // If user was not found, create a new user
+    
+            // User does not exist, create a new user
             if (user == null) {
                 try (PreparedStatement stmt = conn.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
                     stmt.setString(1, email);
-                    stmt.setString(2, password); // In a real application, you should hash and salt the password
-
+                    stmt.setString(2, password);
+                    
                     int affectedRows = stmt.executeUpdate();
                     if (affectedRows > 0) {
                         try (ResultSet rs = stmt.getGeneratedKeys()) {
                             if (rs.next()) {
                                 int userId = rs.getInt(1);
-                                user = new UserDTO(userId, email); // Create a new User object with the new ID
+                                user = new UserDTO(userId, email);
                             }
                         }
                     }
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // In production, use proper logging
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Database error occurred. Please try again.");
         }
-
+        
         return user;
     }
 
