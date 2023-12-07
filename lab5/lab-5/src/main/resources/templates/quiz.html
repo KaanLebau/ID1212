@@ -63,59 +63,27 @@
     </style>
 </head>
 <body>
+<form role="form" method="post" th:action="@{/}" th:object="${result}">
+    <div class="quiz-container">
 
-<div class="quiz-container">
-    <div class="quiz-topic">
-        <p>Astronomy Quiz</p>
-    </div>
-
-    <div class="question-container">
+        <div th:each="quiz: ${theQuiz}" class="question-container">
         <div class="question-text">
-            <p>Question 1: What is the largest planet in our solar system?</p>
+            <p th:text="${quiz.text}" class="user-data"></p>
         </div>
-        <div class="answer-option">
-            <input type="checkbox"> A. Jupiter
-        </div>
-        <div class="answer-option">
-            <input type="checkbox"> B. Saturn
-        </div>
-        <div class="answer-option">
-            <input type="checkbox"> C. Neptune
+        <div th:each="option : ${quiz.optionList}" class="answer-option">
+            <label>
+                <input
+                        type="checkbox"
+                        th:id="${#strings.replace(option, ' ', '_')}"
+                        th:value="${option}"
+
+                >
+                <span th:text="${option}"></span>
+            </label>
         </div>
     </div>
-
-    <div class="question-container">
-        <div class="question-text">
-            <p>Question 2: Which planet is known as the "Red Planet"?</p>
-        </div>
-        <div class="answer-option">
-            <input type="checkbox"> A. Mars
-        </div>
-        <div class="answer-option">
-            <input type="checkbox"> B. Venus
-        </div>
-        <div class="answer-option">
-            <input type="checkbox"> C. Mercury
-        </div>
+        <button type="button">Submit Quiz</button>
     </div>
-
-    <div class="question-container">
-        <div class="question-text">
-            <p>Question 3: What is the name of the galaxy that contains our solar system?</p>
-        </div>
-        <div class="answer-option">
-            <input type="checkbox"> A. Milky Way
-        </div>
-        <div class="answer-option">
-            <input type="checkbox"> B. Andromeda
-        </div>
-        <div class="answer-option">
-            <input type="checkbox"> C. Triangulum
-        </div>
-    </div>
-
-    <button type="button">Submit Quiz</button>
-</div>
-
+</form>
 </body>
 </html>

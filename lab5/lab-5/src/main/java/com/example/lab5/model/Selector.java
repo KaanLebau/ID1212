@@ -1,27 +1,22 @@
 package com.example.lab5.model;
 
-
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-@Table(name = "selector")
+@Table(name="selector")
 public class Selector {
     @Id
-    @Column(name = "quiz_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    @Column(name = "question_id")
-    Integer question_id;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.REMOVE)
-    private Set<Question> question = new HashSet<>();
+    @Column(name = "quiz_id")
+    Integer quiz_id;
+
+    @Column(name = "question_id")
+    Integer Question_id;
+
 }

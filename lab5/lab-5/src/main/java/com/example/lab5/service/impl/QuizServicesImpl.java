@@ -1,32 +1,58 @@
 package com.example.lab5.service.impl;
 
-import com.example.lab5.dto.QuizDTO;
-import com.example.lab5.model.Quiz;
+import com.example.lab5.dto.QuestionsDTO;
+import com.example.lab5.dto.QuizzesDTO;
+import com.example.lab5.model.Questions;
+import com.example.lab5.model.Quizzes;
+import com.example.lab5.repository.QuestionRepository;
 import com.example.lab5.repository.QuizRepository;
-import com.example.lab5.service.QuizServices;
+import com.example.lab5.service.QuestionsService;
+import com.example.lab5.service.QuizService;
+import com.example.lab5.service.SelectorService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
-public class QuizServicesImpl implements QuizServices {
+public class QuizServicesImpl implements QuizService {
     QuizRepository quizRepository;
+    QuestionsService questionsService;
+    SelectorService selectorService;
 
-    public QuizServicesImpl(QuizRepository quizRepository) {
+
+    public QuizServicesImpl(QuizRepository quizRepository,
+                            QuestionsService questionsService,
+                            SelectorService selectorService) {
         this.quizRepository = quizRepository;
+        this.questionsService = questionsService;
+        this.selectorService = selectorService;
     }
 
     @Override
-    public List<QuizDTO> findAllQuizes() {
-        List<Quiz> quizes =  quizRepository.findAll();
-        return quizes.stream().map(this::mapToQuizDTO).collect(Collectors.toList());
+    public List<QuizzesDTO> findAllQuizzes() {
+        List<Quizzes> quizzes =  quizRepository.findAll();
+        return quizzes.stream().map(this::mapToQuizDTO).collect(Collectors.toList());
     }
 
-    private QuizDTO mapToQuizDTO(Quiz quiz) {
-        return new QuizDTO(quiz.getId(), quiz.getSubject());
+    @Override
+    public QuizzesDTO findById(Integer id) {
+        Optional<Quizzes> quiz = quizRepository.findById(id);
+        return null;
+    }
+
+    @Override
+    public List<QuestionsDTO> getQuizQuestions(Integer id) {
+        List<Integer> questionsId = selectorService.getQuestionsIds(id);
+        return questionsService.getQuestionsByIds(questionsId);
+    }
+
+
+    private QuizzesDTO mapToQuizDTO(Quizzes quiz) {
+        return new QuizzesDTO(quiz.getId(), quiz.getSubject());
     }
     @Override
-    public Quiz saveQuiz(Quiz quiz) {
+    public Quizzes saveQuiz(Quizzes quiz) {
         return quizRepository.save(quiz);
     }
 }

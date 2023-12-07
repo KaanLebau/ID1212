@@ -11,19 +11,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Question {
+@Table(name = "results")
+public class Results {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+            @Column(name = "id")
     Integer id;
-    @Column(name = "text")
-    String text;
-    @Column(name = "options")
-    String options;
-    @Column(name = "answer")
-    String answer;
+    @Column(name = "score")
+    Integer score;
 
     @ManyToOne
-    @JoinColumn(name="quiz_id", nullable = false)
-    private Quiz quiz;
+    @JoinColumn(name = "user_id", nullable = false)
+    Users users;
+
+    @ManyToOne
+    @JoinColumn(name = "quiz_id", nullable = false)
+    Quizzes quizzes;
+
+
 }

@@ -1,0 +1,82 @@
+<html
+        xmlns:th="http://thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #DBFCFF; /* Background color */
+        }
+
+        .user-container {
+            background-color: #ECEBF3; /* Translucent white background */
+            border: 2px solid #0C120C; /* Visible border */
+            border-radius: 10px; /* Border radius for a corner-less design */
+            padding: 20px;
+            margin: 10px; /* Adjust margin as needed */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            min-width:150;
+            margin: 5px;
+        }
+
+        .user-container h2 {
+            color: #6D7275; /* Header text color */
+        }
+        .user-data {
+            text-align: right;
+            margin:5px;
+            font-weight: bold;
+        }
+         button {
+            width: 100%;
+            padding: 10px;
+            background-color: #C20114;
+            color: #fff;
+            border:  1px solid #0C120C; /* Visible border */
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            margin-top: 10px; /* Add margin to the button */
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+
+<div >
+    <div  class="user-container">
+        <span>User no:</span>
+        <p th:text="${theUser.id}" class="user-data"></p>
+        <span>User name:</span>
+        <p th:text="${theUser.username}" class="user-data"></p>
+
+        <div th:each="result: ${theResults}">
+            <div >
+                <span>Quiz no:</span>
+                <p th:text="${result.quiz_id}" class="user-data"></p>
+                <span>Score:</span>
+                <p th:text="${result.score}" class="user-data"></p>
+                <!-- Additional user details go here -->
+            </div>
+
+        </div>
+
+            <button type="submit" onclick="th:action=@{/quiz-list}">Take a quiz</button>
+        </form>
+    </div>
+</div>
+
+
+
+</body>
+
+</html>

@@ -2,25 +2,25 @@ package com.example.lab5.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.engine.internal.Cascade;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
-@Table(name = "quizzes")
-public class Quiz {
+@Table(name="users")
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     Integer id;
-    @Column(name="subject")
-    String subject;
+    @Column(name="username")
+    String username;
+    @Column(name="password")
+    String password;
 
 
 }

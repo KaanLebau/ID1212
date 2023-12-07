@@ -2,23 +2,25 @@ package com.example.lab5.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor
 @Entity
-@Table(name="users")
-public class User{
+@Table(name = "quizzes")
+public class Quizzes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     Integer id;
-    @Column(name="username")
-    String username;
-    @Column(name="password")
-    String password;
+    @Column(name="subject")
+    String subject;
+
+
+
 }
