@@ -36,23 +36,32 @@
             margin:5px;
             font-weight: bold;
         }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #C20114;
+            color: #fff;
+            border:  1px solid #0C120C; /* Visible border */
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            margin-top: 10px; /* Add margin to the button */
+            box-sizing: border-box;
+        }
     </style>
 </head>
 
 <body>
 
-<div th:each="quiz: ${quizes}">
-    <div  class="user-container">
-        <span>Quiz no:</span>
-        <p th:text="${quiz.id}" class="user-data"></p>
-        <span>Quiz Subject:</span>
-        <p th:text="${quiz.subject}" class="user-data"></p>
-        <!-- Additional user details go here -->
-    </div>
-
+<div th:each="quiz: ${quizes}" class="user-container">
+    <span>Quiz no:</span>
+    <p th:text="${quiz.id}" class="user-data"></p>
+    <span>Quiz Subject:</span>
+    <p th:text="${quiz.subject}" class="user-data"></p>
+    <a th:href="@{'/quiz/' + ${quiz.id}}">
+        <button>Take</button>
+    </a>
 </div>
-
-
 
 </body>
 

@@ -29,4 +29,9 @@ public class ResultServiceImpl implements ResultService {
         List<Results> theResult = resultsRepository.getByUsers(users);
         return theResult.stream().map(this::mapToResultsDTO).collect(Collectors.toList());
     }
+
+    @Override
+    public Results saveResult(Results result) {
+        return resultsRepository.save(result);
+    }
 }

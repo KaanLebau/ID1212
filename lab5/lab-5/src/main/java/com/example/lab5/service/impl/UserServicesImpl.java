@@ -11,10 +11,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.example.lab5.util.user.mapToUsersDTO;
+
 @Service
 public class UserServicesImpl implements UserService {
     private UserRepository userRepository;
-
+    private Users loggedIn;
 
 
     public UserServicesImpl(UserRepository userRepository) {
@@ -27,19 +30,18 @@ public class UserServicesImpl implements UserService {
 
         return users.stream().map(user::mapToUsersDTO).collect(Collectors.toList());
     }
+    public UsersDTO getLoggedIn(){
+        return mapToUsersDTO(this.loggedIn);
+    }
 
 
-    public UsersDTO findByUsername(String username) {
-        Users theUser =userRepository.findByUsername(username);
-
-
-        return new UsersDTO(theUser.getId(), theUser.getUsername());
+    public Users findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Override
     public UsersDTO findById(Integer id) {
         Users theUser = userRepository.findById(id).get();
-
         return new UsersDTO(theUser.getId(), theUser.getUsername());
     }
 

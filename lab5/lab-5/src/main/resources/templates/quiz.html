@@ -63,18 +63,21 @@
     </style>
 </head>
 <body>
-<form role="form" method="post" th:action="@{/}" th:object="${result}">
+
+
+<form role="form" method="post" >
     <div class="quiz-container">
 
-        <div th:each="quiz: ${theQuiz}" class="question-container">
+
+        <div th:each="quiz, quizIndex: ${theQuiz}" class="question-container">
         <div class="question-text">
             <p th:text="${quiz.text}" class="user-data"></p>
         </div>
-        <div th:each="option : ${quiz.optionList}" class="answer-option">
+        <div th:each="option, optionIndex: ${quiz.optionList}" class="answer-option">
             <label>
                 <input
                         type="checkbox"
-                        th:id="${#strings.replace(option, ' ', '_')}"
+                        th:id="'question_' + ${quizIndex.index} + '_answer_' + ${optionIndex.index}"
                         th:value="${option}"
 
                 >
@@ -82,8 +85,9 @@
             </label>
         </div>
     </div>
-        <button type="button">Submit Quiz</button>
+        <button type="submit">Submit Quiz</button>
     </div>
 </form>
+
 </body>
 </html>
