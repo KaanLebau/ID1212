@@ -27,6 +27,10 @@ public class Results {
     @ManyToOne
     @JoinColumn(name = "quiz_id", nullable = false)
     Quizzes quizzes;
-
-
+    public Results(Integer score, Users user, Quizzes quiz){
+        this.score = score;
+        this.users = user;
+        this.quizzes = quiz;
+    }
 }
+

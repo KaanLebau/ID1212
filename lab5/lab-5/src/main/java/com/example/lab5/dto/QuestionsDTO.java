@@ -1,5 +1,9 @@
 package com.example.lab5.dto;
-
+//TODO remove below
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+//TODO remove abow
 public class QuestionsDTO{
     public String text;
     String options;

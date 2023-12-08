@@ -55,4 +55,9 @@ public class QuizServicesImpl implements QuizService {
     public Quizzes saveQuiz(Quizzes quiz) {
         return quizRepository.save(quiz);
     }
+
+    @Override
+    public QuizzesDTO getByQuizId(Integer id) {
+        return mapToQuizDTO(quizRepository.getById(id));
+    }
 }

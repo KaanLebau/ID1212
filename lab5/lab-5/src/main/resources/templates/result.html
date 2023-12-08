@@ -72,18 +72,16 @@
         <p>Quiz Result</p>
     </div>
 
-    <div class="user-email">
-        <p>User : user@example.com</p> <!-- Replace with actual user email -->
-    </div>
 
+<form role="form" method="post">
     <div class="quiz-result">
-        <p>Result: 2 out of 3 correct</p> <!-- Replace with actual quiz result -->
+        <p th:if="${quizResult != null}" th:text="'Your score is: ' + ${quizResult.score}"></p>
+        <p th:unless="${quizResult != null}">No quiz result available.</p>
     </div>
-<div class="buttons">
-    <button type="button" class="new-quiz">New Quiz</button>
-    <button type="button">Send Result</button>
-</div>
-
+    <div class="buttons">
+        <button type="submit" class="new-quiz">Dashboard</button>
+    </div>
+</form>
 </div>
 
 </body>

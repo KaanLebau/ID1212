@@ -20,7 +20,7 @@ public class ResultServiceImpl implements ResultService {
     }
 
     private ResultsDTO mapToResultsDTO(Results results){
-        return new ResultsDTO(results.getUsers().getId(), results.getQuizzes().getId(), results.getScore());}
+        return new ResultsDTO(results.getUsers().getId(),results.getUsers().getUsername() ,results.getQuizzes().getId(), results.getScore());}
 
 
 

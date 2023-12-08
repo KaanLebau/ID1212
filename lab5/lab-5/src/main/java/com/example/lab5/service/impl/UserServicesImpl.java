@@ -6,13 +6,14 @@ import com.example.lab5.dto.UsersDTO;
 import com.example.lab5.model.Users;
 import com.example.lab5.repository.UserRepository;
 import com.example.lab5.service.UserService;
-import com.example.lab5.util.user;
+import com.example.lab5.util.Mapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.example.lab5.util.user.mapToUsersDTO;
+import static com.example.lab5.util.Mapper.mapToUsers;
+import static com.example.lab5.util.Mapper.mapToUsersDTO;
 
 @Service
 public class UserServicesImpl implements UserService {
@@ -28,7 +29,7 @@ public class UserServicesImpl implements UserService {
     public List<UsersDTO> findAllUser() {
         List<Users> users = userRepository.findAll();
 
-        return users.stream().map(user::mapToUsersDTO).collect(Collectors.toList());
+        return users.stream().map(Mapper::mapToUsersDTO).collect(Collectors.toList());
     }
     public UsersDTO getLoggedIn(){
         return mapToUsersDTO(this.loggedIn);

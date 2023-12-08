@@ -14,4 +14,6 @@ public interface QuizService {
     QuizzesDTO findById(Integer id);
     List<QuestionsDTO> getQuizQuestions(Integer id);
     Quizzes saveQuiz(Quizzes quizzes);
+
+    QuizzesDTO getByQuizId(Integer id);
 }

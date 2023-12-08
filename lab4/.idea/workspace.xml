@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="dbf1dda8-e8d3-4d40-b321-f8d3db0fa48c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../lab3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../lab3/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReadMe.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab5/lab-5/src/main/java/com/example/lab5/controller/QuizController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../lab5/lab-5/src/main/java/com/example/lab5/controller/QuizController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab5/lab-5/src/main/java/com/example/lab5/service/QuizService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../lab5/lab-5/src/main/java/com/example/lab5/service/QuizService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab5/lab-5/src/main/java/com/example/lab5/service/impl/QuizServicesImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../lab5/lab-5/src/main/java/com/example/lab5/service/impl/QuizServicesImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab5/lab-5/src/main/resources/templates/quiz.html" beforeDir="false" afterPath="$PROJECT_DIR$/../lab5/lab-5/src/main/resources/templates/quiz.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab5/lab-5/src/main/resources/templates/result.html" beforeDir="false" afterPath="$PROJECT_DIR$/../lab5/lab-5/src/main/resources/templates/result.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,23 +21,23 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 1
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2YwBXtp1nia9nwqgdSivdetI2BX" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/kaan/Documents/ID1212/lab4"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/kaan/Documents/ID1212/lab4&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
