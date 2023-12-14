@@ -21,20 +21,17 @@ public class Users {
     Integer id;
     @Column(name="username")
     String username;
-    @Column(name="password")
-    String password;
 
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
         var that = (Users) obj;
-        return Objects.equals(this.password, that.getPassword()) &&
-                Objects.equals(this.username, that.username);
+        return Objects.equals(this.username, that.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, password);
+        return Objects.hash(username);
     }
 }

@@ -10,7 +10,6 @@ public class UsersDTO {
     public UsersDTO(Integer id, String username) {
         this.id = id;
         this.username = username;
-
     }
 
     public Integer id() {

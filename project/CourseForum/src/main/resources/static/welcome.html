@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<head>
+    <title>KTH-Forum</title>
+    <link rel="stylesheet" type="text/css" href="/css/welcome.css">
+</head>
+<body>
+    <div class="main">
+        <div class="welcome">
+            <p>KTH-Forum</p>
+        </div>
+        <div class="forum-container">
+            <div class="welcome-message">
+                <p>Login using your KTH-account</p>
+            </div>
+        
+            <form role="form" method="post" action="/">
+                <div class="row">
+                    <label for="username">Email: </label>
+                    <input
+                            type="text"
+                            placeholder="Username@kth.se"
+                            id="username"
+                            name="email"
+                            required>
+                </div>
+                <div class="row">
+                    <label for="password">Password: </label>
+                    <input
+                            type="password"
+                            placeholder="Password"
+                            id="password"
+                            name="password"
+                            required>
+                </div>
+                <div class="row">
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

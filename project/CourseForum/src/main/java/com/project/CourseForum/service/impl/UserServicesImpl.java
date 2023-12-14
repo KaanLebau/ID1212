@@ -19,7 +19,6 @@ public class UserServicesImpl implements UserService {
     private UserRepository userRepository;
     private Users loggedIn;
 
-
     public UserServicesImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -30,10 +29,10 @@ public class UserServicesImpl implements UserService {
 
         return users.stream().map(Mapper::mapToUsersDTO).collect(Collectors.toList());
     }
+
     public UsersDTO getLoggedIn(){
         return mapToUsersDTO(this.loggedIn);
     }
-
 
     public Users findByUsername(String username) {
         return userRepository.findByUsername(username);
@@ -45,11 +44,8 @@ public class UserServicesImpl implements UserService {
         return new UsersDTO(theUser.getId(), theUser.getUsername());
     }
 
-
     @Override
     public Users saveUser(Users user) {
         return userRepository.save(user);
     }
-
-
 }
