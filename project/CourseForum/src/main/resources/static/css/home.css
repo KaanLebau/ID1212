@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
 @import url('https://fonts.cdnfonts.com/css/azonix');
 
-body, input, button, label { /* Specify the elements you want the Roboto font applied to */
+body, input, button, label {
     font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
 }
@@ -11,31 +11,25 @@ body {
     padding: 0;
     height: 100vh;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f7f7f7;
+    flex-direction: column;
 }
 
 .logo-nav-container {
     display: flex;
     align-items: center;
+    background-color: #34495E;
 }
 
 .logo {
     font-family: 'Azonix', sans-serif;
     font-size: 40px;
     font-weight: 500;
-    color: #333;
-    text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-    top: 5px;
-    transition: all 0.3s ease-in-out;
+    color: #FFFFFF;
     padding: 10px 20px;
-    padding-left: 10px;
-    display: inline-block;
 }
 
 .header {
-    background: #fff;
+    background: #34495E;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     position: fixed;
     width: 100%;
@@ -53,17 +47,19 @@ body {
     text-decoration: none;
     margin: 10px 15px;
     padding: 5px;
-    color: #333;
+    color: #BDC3C7;
     display: inline-block;
     border-bottom: 3px solid transparent;
 }
 
 .navbar-link:hover {
-    border-bottom: 3px solid #000000;
+    border-bottom: 3px solid #F39C12;
+    color: #FFFFFF;
 }
 
 .course-header {
-    background-color: #f8f8f8;
+    background-color: #2C3E50;
+    color: #FFFFFF;
     padding: 10px;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -75,7 +71,7 @@ body {
     left: 0;
     width: 250px;
     height: 100vh;
-    background-color: #f0f0f0;
+    background-color: #2c3e50e5;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
     z-index: 500;
     padding-top: 60px;
@@ -85,16 +81,55 @@ body {
     position: sticky;
     text-align: left;
     margin: 0px;
-    margin-bottom: 5px;
 }
 
 .topic-item {
     display: block;
     padding: 10px;
-    color: #333;
+    color: #BDC3C7;
     text-decoration: none;
 }
 
 .topic-item:hover {
-    background-color: #dcdcdc;
+    background-color: #34495E;
+}
+
+.main-content {
+    position: relative;
+    top: 60px;
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding-top: 0;
+}
+
+#topic-header {
+    background-color: #2C3E50;
+    color: #FFFFFF;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#topic-content {
+    padding: 20px;
+    background-color: #2c3e50e5;
+    color: #FFFFFF;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.comment {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #2c3e506f;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.comment-author {
+    font-weight: bold;
+    width: 50px;
+}
+
+.comment-text {
+    flex-grow: 1;
+    text-align: left;
 }

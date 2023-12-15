@@ -1,18 +1,18 @@
-function updateCourseHeader(courseName) {
+function updateCourseHeader(course) {
     const courseHeader = document.getElementById('course-header');
     courseHeader.innerHTML = '';
     const courseTitle = document.createElement('h2');
-    courseTitle.textContent = courseName;
+    courseTitle.textContent = course.name;
     courseHeader.appendChild(courseTitle);
 }
 
-function updateSidebar(topics) {
+function updateSidebar(topics, course) {
     const topicsContainer = document.createElement('div');
     topicsContainer.className = 'topics-container';
     topics.forEach(topic => {
         const topicItem = document.createElement('a');
-        topicItem.href = `#${topic.toLowerCase().replace(/\s+/g, '-')}`;
-        topicItem.textContent = topic;
+        topicItem.href = `#c${course.id}t${topic.id}`;
+        topicItem.textContent = topic.subject;
         topicItem.className = 'topic-item';
         topicsContainer.appendChild(topicItem);
     });
@@ -20,6 +20,9 @@ function updateSidebar(topics) {
     sidebar.appendChild(topicsContainer);
 }
 
-//Testdata, hämtas från databasen
-updateCourseHeader('Course 1');
-updateSidebar(['Topic 1', 'Topic 2', 'Topic 3', 'Topic 4']);
+//TODO: Ladda från databasen
+const course = {name: 'Course 1', id: 1}
+const topics = [{subject:'Topic 1', id: 1}, {subject: 'Topic 2', id: 2}, {subject: 'Topic 3', id: 3}, {subject: 'Topic 4', id: 4}]
+
+updateCourseHeader(course);
+updateSidebar(topics, course);
