@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class KthForumApplication {
+public class ForumRestApi {
 
 	public static void main(String[] args) {
-		SpringApplication.run(KthForumApplication.class, args);
+		SpringApplication.run(ForumRestApi.class, args);
 	}
 
 }
