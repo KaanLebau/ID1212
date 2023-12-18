@@ -1,0 +1,39 @@
+.main-content {
+    position: relative;
+    top: 50px;
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding-top: 0;
+}
+
+#topic-header {
+    background-color: #2C3E50;
+    color: #FFFFFF;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#topic-content {
+    padding: 20px;
+    background-color: #405b75;
+    color: #FFFFFF;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.comment {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: rgb(101, 132, 161);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.comment-author {
+    font-weight: bold;
+    width: 50px;
+}
+
+.comment-text {
+    flex-grow: 1;
+    text-align: left;
+}

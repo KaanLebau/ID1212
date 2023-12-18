@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+@import url('https://fonts.cdnfonts.com/css/azonix');
+
+body, input, button, label {
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0px;
+}
+
+.home {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: #34495E;
+}

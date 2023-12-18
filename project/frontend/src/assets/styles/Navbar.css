@@ -1,0 +1,42 @@
+.logo-nav-container {
+    display: flex;
+    align-items: center;
+    background-color: #34495E;
+}
+
+.nav-logo {
+    font-family: 'Azonix', sans-serif;
+    font-size: 40px;
+    font-weight: 500;
+    color: #FFFFFF;
+    padding: 12px;
+}
+
+.header {
+    background: #34495E;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.navbar-link {
+    text-decoration: none;
+    margin: 10px 15px;
+    padding: 5px;
+    color: #bdc3c7;
+    display: inline-block;
+    border-bottom: 3px solid transparent;
+}
+
+.navbar-link:hover {
+    border-bottom: 3px solid #F39C12;
+    color: #FFFFFF;
+}
