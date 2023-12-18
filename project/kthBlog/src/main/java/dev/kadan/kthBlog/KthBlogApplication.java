@@ -1,13 +1,13 @@
-package com.project.CourseForum;
+package dev.kadan.kthBlog;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CourseForumApplication {
+public class KthBlogApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CourseForumApplication.class, args);
+		SpringApplication.run(KthBlogApplication.class, args);
 	}
 
 }

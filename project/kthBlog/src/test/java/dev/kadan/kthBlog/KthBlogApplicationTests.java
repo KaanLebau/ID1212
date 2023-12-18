@@ -1,10 +1,10 @@
-package com.project.CourseForum;
+package dev.kadan.kthBlog;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CourseForumApplicationTests {
+class KthBlogApplicationTests {
 
 	@Test
 	void contextLoads() {
