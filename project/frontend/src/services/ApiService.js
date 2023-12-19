@@ -21,6 +21,6 @@ const mockData = {
   }
 
   export const getTopic = (topicId) => {
-    return Promise.resolve(mockData.topics[topicId]);
+    return Promise.resolve(mockData.topics[topicId-1]);
   }
   

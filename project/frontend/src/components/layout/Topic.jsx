@@ -18,6 +18,17 @@ function Topic({topic}) {
                     </div>
                 ))}
             </section>
+            <form method="post" action="/" id="comment-form">
+                <textarea
+                    type="text"
+                    id="comment-form-box"
+                    name="comment"
+                    rows="4"
+                    cols="50"
+                />
+                <p></p>
+                <button type="submit" id="comment-form-button">Submit</button>
+            </form>
         </main>
     );
 }
@@ -32,4 +43,5 @@ Topic.propTypes = {
       })).isRequired
     }).isRequired
   };
+
 export default Topic;

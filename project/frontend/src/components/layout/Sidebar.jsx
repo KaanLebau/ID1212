@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import '../../assets/styles/Sidebar.css';
 
 function Sidebar({course, topics, onTopicSelect}) {
-    console.log(course)
     if (!course) {
         return <div>Loading course...</div>;
       }
