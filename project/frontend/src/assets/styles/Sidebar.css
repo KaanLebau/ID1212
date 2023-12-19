@@ -32,6 +32,7 @@
     padding: 10px;
     color: #BDC3C7;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .topic-item:hover {

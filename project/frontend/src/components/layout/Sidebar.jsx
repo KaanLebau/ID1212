@@ -1,6 +1,12 @@
+import PropTypes from 'prop-types';
 import '../../assets/styles/Sidebar.css';
 
-function Sidebar({ topics, course }) {
+function Sidebar({course, topics, onTopicSelect}) {
+    console.log(course)
+    if (!course) {
+        return <div>Loading course...</div>;
+      }
+
     return (
         <aside className="sidebar">
             <div id="course-header">
@@ -8,7 +14,7 @@ function Sidebar({ topics, course }) {
             </div>
             <div className="topics-container">
                 {topics.map(topic => (
-                    <a key={topic.id} href={`#c${course.id}t${topic.id}`} className="topic-item">
+                    <a key={topic.id} onClick={() => onTopicSelect(topic)} className="topic-item">
                         {topic.subject}
                     </a>
                 ))}
@@ -17,4 +23,25 @@ function Sidebar({ topics, course }) {
     );
 }
 
+Sidebar.propTypes = {
+    course: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+    }).isRequired,
+    topics: PropTypes.arrayOf(
+      PropTypes.shape({
+        subject: PropTypes.string.isRequired,
+        id: PropTypes.number.isRequired,
+        content: PropTypes.string.isRequired,
+        comments: PropTypes.arrayOf(
+          PropTypes.shape({
+            author: PropTypes.string.isRequired,
+            text: PropTypes.string.isRequired,
+          })
+        ).isRequired,
+      })
+    ).isRequired,
+    onTopicSelect: PropTypes.func,
+  };
+  
 export default Sidebar;
