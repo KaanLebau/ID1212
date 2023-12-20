@@ -1,7 +1,25 @@
-// Login.js
 import '../../assets/styles/Login.css';
+import { useNavigate } from 'react-router-dom';
+import { getUser } from '../../services/ApiService';
 
 function Login() {
+    let navigate = useNavigate();
+  
+    const handleLogin = async (credentials) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const email = formData.get('email');
+      const password = formData.get('password');
+
+      const user = await getUser(email, password);
+  
+      if (user && !user.displayName) {
+        navigate('/displayname');
+      } else {
+        navigate('/home');
+      }
+    };
+
   return (
     <div className="login">
       <div className="main">
@@ -13,15 +31,16 @@ function Login() {
             <p>Login using your KTH-account</p>
           </div>
 
-          <form method="post" action="/">
+          <form onSubmit={handleLogin}>
             <div className="row">
               <label htmlFor="username">Email: </label>
               <input
-                type="text"
+                type="email"
                 placeholder="Username@kth.se"
                 id="username"
                 name="email"
-                required />
+                required
+              />
             </div>
             <div className="row">
               <label htmlFor="password">Password: </label>
@@ -30,7 +49,8 @@ function Login() {
                 placeholder="Password"
                 id="password"
                 name="password"
-                required />
+                required
+              />
             </div>
             <div className="row">
               <button type="submit">Login</button>

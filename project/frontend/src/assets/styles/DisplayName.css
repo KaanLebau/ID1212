@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+@import url('https://fonts.cdnfonts.com/css/azonix');
+
+.display-name {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #34495e;
+}
+
+.display-name-logo {
+    font-family: 'Azonix', sans-serif;
+    font-size: 70px;
+    font-weight: 500;
+    color: #FFFFFF;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    margin-bottom: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.display-name-container {
+    background-color: #ffffff;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 40px;
+    width: 90%;
+    max-width: 400px;
+}
+
+.display-name-message {
+    font-size: 18px;
+    color: #666;
+}
+
+.display-name-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.display-name-label {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}
+
+.display-name-input {
+    margin: 15px;
+    padding: 15px;
+    background-color: #f0f0f0;
+    color: #333;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    border-color: #007bff64;
+}
+
+.display-name-input:hover {
+    outline: none;
+    border-color: #007BFF;
+    background-color: #fff;
+}
+
+.display-name-input:focus {
+    outline: none;
+    border-color: #007BFF;
+    background-color: #fff;
+}
+
+.display-name-button {
+    padding: 15px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.display-name-button:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .display-name-container {
+        width: 95%;
+        padding: 20px;
+    }
+}

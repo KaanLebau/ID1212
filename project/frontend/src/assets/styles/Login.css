@@ -64,11 +64,12 @@ input {
     border-radius: 5px;
     transition: all 0.3s;
     box-sizing: border-box; 
+    border-color: #007bff64;
 }
 
 input:hover {
     outline: none;
-    border-color: #007bff64;
+    border-color: #007BFF;
     background-color: #fff;
 }
 

@@ -16,3 +16,14 @@ body {
     height: 100vh;
     background: #34495E;
 }
+
+.introduction {
+    position: relative;
+    top: 100px;
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding-top: 0;
+    font-size: 20px;
+    font-weight: 500;
+    color: #FFFFFF
+}
