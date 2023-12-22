@@ -7,6 +7,7 @@ import java.util.List;
 public record TopicDTO(
         Integer id,
         String topicName,
+        Integer courseId,
         List<ForumPostDTO> postList
 ) {
 }

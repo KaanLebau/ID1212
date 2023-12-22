@@ -1,6 +1,7 @@
 package dev.kadan.kthForum.services.impl;
 
 import dev.kadan.kthForum.models.Courses;
+import dev.kadan.kthForum.models.dto.CourseDTO;
 import dev.kadan.kthForum.repositories.CoursesRepository;
 import dev.kadan.kthForum.services.CoursesServices;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,22 @@ public class CourseServicesImpl implements CoursesServices {
     }
 
     @Override
-    public Courses findById(Integer id) {
+    public Courses findByDbId(Integer id) {
         return coursesRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public Courses createCourse(Courses course) {
+        return coursesRepository.save(course);
+    }
+
+    @Override
+    public void removeByDbId(Integer id) {
+        coursesRepository.deleteById(id);
+    }
+
+    @Override
+    public void removeByCourseId(String courseId) {
+        coursesRepository.deleteByCourseId(courseId);
     }
 }

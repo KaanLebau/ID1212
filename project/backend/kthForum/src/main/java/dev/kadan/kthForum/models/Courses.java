@@ -23,7 +23,7 @@ public class Courses {
     private Integer id;
     @Column(name = "courseId", length = 6)
     private String courseId;
-    @Column(name = "courseName",length = 40)
+    @Column(name = "courseName",length = 50)
     private String courseName;
     @Column(name = "courseDesc", length = 1000)
     private String courseDesc;
