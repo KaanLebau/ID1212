@@ -1,10 +1,12 @@
 package dev.kadan.kthForum.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,12 +19,6 @@ public class ForumPost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-
-    @Column(name = "authorId")
-    private Integer authoId;
-
-    @Column(name="authorName", length = 30)
-    private String authorName;
 
     @Column(name = "title", length = 100)
     private String title;
@@ -42,14 +38,18 @@ public class ForumPost {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity userEntity;
+    private UserEntity user;
 
-    public ForumPost(Integer authoId, String authorName, String title, String content) {
-        this.authoId = authoId;
-        this.authorName = authorName;
+    @OneToMany(mappedBy = "posts", cascade = CascadeType.REMOVE)
+    private List<Comment> commentList = new ArrayList<>();
+
+    public ForumPost( String title, Topic topic, String content,UserEntity user, LocalDate created,LocalDate updated, List<Comment> commentList) {
         this.title = title;
+        this.topic = topic;
         this.content = content;
-        this.created = LocalDate.now();
-        this.updated = null;
+        this.user = user;
+        this.created = created;
+        this.updated = updated;
+        this.commentList = commentList;
     }
 }

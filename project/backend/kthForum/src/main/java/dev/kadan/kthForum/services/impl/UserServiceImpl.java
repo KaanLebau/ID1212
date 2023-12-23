@@ -27,6 +27,11 @@ public class UserServiceImpl implements UserServices {
     }
 
     @Override
+    public UserEntity getByDbId(Integer userId) {
+        return userRepository.findById(userId).get();
+    }
+
+    @Override
     public UserEntity saveUser(UserEntity user) {
         UserEntity userToAdd = user;
         Role role = roleRepository.findByRoleName(String.valueOf(Roles.STUDENT));

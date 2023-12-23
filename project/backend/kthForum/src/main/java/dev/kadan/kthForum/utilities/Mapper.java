@@ -1,6 +1,6 @@
 package dev.kadan.kthForum.utilities;
 
-import dev.kadan.kthForum.models.Courses;
+import dev.kadan.kthForum.models.Course;
 import dev.kadan.kthForum.models.ForumPost;
 import dev.kadan.kthForum.models.Topic;
 import dev.kadan.kthForum.models.dto.ForumPostDTO;
@@ -16,7 +16,7 @@ public class Mapper {
     public static UserEntity kthUserToUserMapping(KthUser kthUser){
         return new UserEntity(null, kthUser.username(), null);
     }
-    public static CourseDTO courseToCourseDTO(Courses course){
+    public static CourseDTO courseToCourseDTO(Course course){
         return new CourseDTO(
                 course.getId(),
                 course.getCourseId(),
@@ -24,8 +24,8 @@ public class Mapper {
                 course.getCourseDesc(),
                 course.getTopicList().stream().map(Mapper::topicToTopicDTO).collect(Collectors.toList()));}
 
-    public static Courses courseDTOToCourses(CourseDTO courseDTO){
-        return new Courses(
+    public static Course courseDTOToCourses(CourseDTO courseDTO){
+        return new Course(
                 courseDTO.id(),
                 courseDTO.courseId(),
                 courseDTO.courseName(),
@@ -50,20 +50,25 @@ public class Mapper {
     }
 public static ForumPostDTO forumPostToForumPostDTO(ForumPost forumPost){
         return new ForumPostDTO(
-                forumPost.getAuthoId(),
-                forumPost.getAuthorName(),
-                forumPost.getTitle(),
+                        forumPost.getTitle(),
                 forumPost.getContent(),
+                forumPost.getTopic().getId(),
+                forumPost.getUser().getId(),
                 forumPost.getCreated(),
-                forumPost.getUpdated()
+                forumPost.getUpdated(),
+                forumPost.getCommentList()
         );
 }
 public static ForumPost forumPostDTOToForumPost(ForumPostDTO forumPostDTO){
         return new ForumPost(
-                forumPostDTO.authorId(),
-                forumPostDTO.authorName(),
                 forumPostDTO.title(),
-                forumPostDTO.content()
+                null,
+                forumPostDTO.content(),
+                null,
+                forumPostDTO.created(),
+                forumPostDTO.updated(),
+                forumPostDTO.commentList()
+
         );
 }
 

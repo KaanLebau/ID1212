@@ -1,7 +1,6 @@
 package dev.kadan.kthForum.controller;
 
-import dev.kadan.kthForum.models.Courses;
-import dev.kadan.kthForum.models.ForumPost;
+import dev.kadan.kthForum.models.Course;
 import dev.kadan.kthForum.models.Topic;
 import dev.kadan.kthForum.models.dto.TopicDTO;
 import dev.kadan.kthForum.services.impl.CourseServicesImpl;
@@ -13,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static dev.kadan.kthForum.utilities.Mapper.topicDTOToTopic;
-import static dev.kadan.kthForum.utilities.Mapper.topicToTopicDTO;
 
 @RestController
 public class TopicController {
@@ -32,7 +30,7 @@ public class TopicController {
     @PostMapping(BASE_PATH + "new")
     public void createTopic(@RequestBody TopicDTO topicDTO){
         Topic theTopic = topicDTOToTopic(topicDTO);
-        Courses course = courseServices.findByDbId(topicDTO.courseId());
+        Course course = courseServices.findByDbId(topicDTO.courseId());
         theTopic.setCourses(course);
 
         topicServeces.createTopic(topicDTOToTopic(topicDTO));

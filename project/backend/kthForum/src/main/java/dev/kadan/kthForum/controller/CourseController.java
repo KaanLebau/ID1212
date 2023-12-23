@@ -1,6 +1,6 @@
 package dev.kadan.kthForum.controller;
 
-import dev.kadan.kthForum.models.Courses;
+import dev.kadan.kthForum.models.Course;
 import dev.kadan.kthForum.models.dto.CourseDTO;
 import dev.kadan.kthForum.models.dto.TopicDTO;
 import dev.kadan.kthForum.services.impl.CourseServicesImpl;
@@ -30,7 +30,7 @@ public class CourseController {
      */
     @PostMapping(BASE_PATH + "new")
     public CourseDTO creteCourse(@RequestBody CourseDTO courseDTO){
-        Courses theCourse;
+        Course theCourse;
         if(courseDTO.topicList().isEmpty()){
             theCourse = courseServices.createCourse(courseDTOToCourses(courseDTO));
         }else {
@@ -49,20 +49,20 @@ public class CourseController {
      */
     @GetMapping(BASE_PATH)
     public List<CourseDTO> findAllCourses(){
-        List<Courses> courseList = courseServices.findAll();
+        List<Course> courseList = courseServices.findAll();
         List<CourseDTO> response = courseList.stream().map(Mapper::courseToCourseDTO).collect(Collectors.toList());
         return response;
     }
 
     @GetMapping(BASE_PATH + "courseid/{id}")
     public CourseDTO findByCourseId(@PathVariable String id){
-        Courses course = courseServices.findByCourseId(id);
+        Course course = courseServices.findByCourseId(id);
         return  courseToCourseDTO(course);
     }
 
     @GetMapping(BASE_PATH + "coursedbid/{id}")
     public CourseDTO findbyId(@PathVariable Integer id){
-        Courses course= courseServices.findByDbId(id);
+        Course course= courseServices.findByDbId(id);
         return courseToCourseDTO(course);
     }
 
@@ -76,9 +76,9 @@ public class CourseController {
     }
     @PutMapping(BASE_PATH + "update/courseid/{courseId}")
     public CourseDTO updateByCourseId(@PathVariable String courseId, @RequestBody CourseDTO courseDTO){
-        Courses course = courseServices.findByCourseId(courseId);
+        Course course = courseServices.findByCourseId(courseId);
         courseServices.removeByDbId(course.getId());
-        Courses theCourse;
+        Course theCourse;
         if(courseDTO.topicList().isEmpty()){
             theCourse = courseServices.createCourse(courseDTOToCourses(courseDTO));
         }else {
@@ -101,7 +101,7 @@ public class CourseController {
 
     @DeleteMapping(BASE_PATH + "removecourse/{courseId}")
     public void removeByCourseId(@PathVariable String courseId){
-        Courses course = courseServices.findByCourseId(courseId);
+        Course course = courseServices.findByCourseId(courseId);
         courseServices.removeByDbId(course.getId());
     }
 

@@ -12,6 +12,8 @@ public interface TopicServeces {
     List<Topic> getAll();
     List<Topic> getByCourseId(Integer id);
 
+    Topic getByDbId(Integer topicId);
+
     List<Topic> getByTopicName(String topicName);
     void  createTopic(Topic topic);
 

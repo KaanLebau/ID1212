@@ -33,7 +33,7 @@ public class UserEntity {
         )
         private List<Role> roleList = new ArrayList<>();
 
-        @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
+        @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
         private List<ForumPost> postList = new ArrayList<>();
 
         public UserEntity(Object o, String username, Object o1) {

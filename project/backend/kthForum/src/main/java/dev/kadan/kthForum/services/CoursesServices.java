@@ -1,16 +1,15 @@
 package dev.kadan.kthForum.services;
 
-import dev.kadan.kthForum.models.Courses;
-import dev.kadan.kthForum.models.dto.CourseDTO;
+import dev.kadan.kthForum.models.Course;
 
 import java.util.List;
 
 public interface CoursesServices {
-    List<Courses> findAll();
-    Courses findByCourseId(String id);
-    Courses findByCourseName(String name);
-    Courses findByDbId(Integer id);
-    Courses createCourse(Courses course);
+    List<Course> findAll();
+    Course findByCourseId(String id);
+    Course findByCourseName(String name);
+    Course findByDbId(Integer id);
+    Course createCourse(Course course);
     void removeByDbId(Integer id);
     void removeByCourseId(String courseId);
 }

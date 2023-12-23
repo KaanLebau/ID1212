@@ -20,13 +20,13 @@ public class Topic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     Integer id;
-    @Column(name = "topic_name", length = 30)
+    @Column(name = "topic_name", length = 60)
     String topicName;
 
 
     @ManyToOne
     @JoinColumn(name = "courses_id", nullable = false)
-    private Courses courses;
+    private Course courses;
 
     @OneToMany(mappedBy = "topic", cascade = CascadeType.REMOVE)
     private List<ForumPost> postList = new ArrayList<>();

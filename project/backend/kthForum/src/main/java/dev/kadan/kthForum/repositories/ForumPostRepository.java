@@ -8,5 +8,9 @@ import java.util.List;
 public interface ForumPostRepository extends JpaRepository<ForumPost, Integer> {
     List<ForumPost> findByTopicId(Integer id);
 
-    List<ForumPost> findByAuthorName(String authorName);
+    List<ForumPost> findByUserId(Integer userId);
+
+
+
+
 }

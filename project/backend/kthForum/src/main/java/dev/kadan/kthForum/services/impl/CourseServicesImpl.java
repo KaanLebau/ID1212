@@ -1,7 +1,6 @@
 package dev.kadan.kthForum.services.impl;
 
-import dev.kadan.kthForum.models.Courses;
-import dev.kadan.kthForum.models.dto.CourseDTO;
+import dev.kadan.kthForum.models.Course;
 import dev.kadan.kthForum.repositories.CoursesRepository;
 import dev.kadan.kthForum.services.CoursesServices;
 import org.springframework.stereotype.Service;
@@ -17,29 +16,29 @@ public class CourseServicesImpl implements CoursesServices {
     }
 
     @Override
-    public List<Courses> findAll() {
+    public List<Course> findAll() {
         return coursesRepository.findAll();
 
     }
 
     @Override
-    public Courses findByCourseId(String id) {
+    public Course findByCourseId(String id) {
         return coursesRepository.findByCourseId(id);
 
     }
 
     @Override
-    public Courses findByCourseName(String name) {
+    public Course findByCourseName(String name) {
         return coursesRepository.findByCourseId(name);
     }
 
     @Override
-    public Courses findByDbId(Integer id) {
+    public Course findByDbId(Integer id) {
         return coursesRepository.findById(id).orElseThrow();
     }
 
     @Override
-    public Courses createCourse(Courses course) {
+    public Course createCourse(Course course) {
         return coursesRepository.save(course);
     }
 
