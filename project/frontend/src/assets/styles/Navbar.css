@@ -10,6 +10,7 @@
     font-weight: 500;
     color: #FFFFFF;
     padding: 12px;
+    width: 370px;
 }
 
 .header {
@@ -21,10 +22,11 @@
     z-index: 1000;
 }
 
-.navbar {
+#navbar {
     display: flex;
+    justify-content: flex-start;
     align-items: center;
-    margin-left: 20px;
+    width: 100%;
 }
 
 .navbar-link {
@@ -38,6 +40,21 @@
 }
 
 .navbar-link:hover {
+    border-bottom: 3px solid #F39C12;
+    color: #FFFFFF;
+}
+
+.logout {
+    text-decoration: none;
+    margin: 10px 15px;
+    padding: 5px;
+    color: #bdc3c7;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+  .logout:hover {
     border-bottom: 3px solid #F39C12;
     color: #FFFFFF;
 }

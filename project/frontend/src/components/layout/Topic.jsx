@@ -5,13 +5,13 @@ function Topic({topic}) {
     return (
         <main className="main-content">
             <section id="topic-header">
-                <h2>{topic.subject}</h2>
+                <h2>{topic.topicName}</h2>
             </section>
             <section id="topic-content">
-                <p>{topic.content}</p>
+                <p>{topic.topicName}</p>
             </section>
             <section id="topic-comments">
-                {topic.comments.map((comment, index) => (
+                {topic.postList.map((comment, index) => (
                     <div key={index} className="comment">
                         <span className="comment-author">{comment.author}</span>
                         <span className="comment-text">{comment.text}</span>
@@ -35,12 +35,11 @@ function Topic({topic}) {
 
 Topic.propTypes = {
     topic: PropTypes.shape({
-      subject: PropTypes.string.isRequired,
-      content: PropTypes.string.isRequired,
-      comments: PropTypes.arrayOf(PropTypes.shape({
-        author: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired
-      })).isRequired
+      topicName: PropTypes.string.isRequired,
+      //postList: PropTypes.arrayOf(PropTypes.shape({
+        //author: PropTypes.string.isRequired,
+        //text: PropTypes.string.isRequired
+      //})).isRequired
     }).isRequired
   };
 

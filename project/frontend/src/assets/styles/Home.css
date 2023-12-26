@@ -18,12 +18,15 @@ body {
 }
 
 .introduction {
-    position: relative;
-    top: 100px;
-    margin-left: 250px;
-    width: calc(100% - 250px);
-    padding-top: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
     font-size: 20px;
     font-weight: 500;
-    color: #FFFFFF
+    color: #FFFFFF;
 }

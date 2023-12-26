@@ -8,10 +8,10 @@ function Login() {
     const handleLogin = async (credentials) => {
       event.preventDefault();
       const formData = new FormData(event.target);
-      const email = formData.get('email');
+      const username = formData.get('username').split('@')[0];
       const password = formData.get('password');
 
-      const user = await getUser(email, password);
+      const user = await getUser(username, password);
   
       if (user && !user.displayName) {
         navigate('/displayname');
@@ -33,12 +33,12 @@ function Login() {
 
           <form onSubmit={handleLogin}>
             <div className="row">
-              <label htmlFor="username">Email: </label>
+              <label htmlFor="username">Username: </label>
               <input
-                type="email"
-                placeholder="Username@kth.se"
+                type="username"
+                placeholder="Username"
                 id="username"
-                name="email"
+                name="username"
                 required
               />
             </div>

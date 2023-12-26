@@ -5,18 +5,18 @@ function Sidebar({course, topics, onTopicSelect}) {
     if (!course) {
         return <div>Loading course...</div>;
       }
-
     return (
         <aside className="sidebar">
             <div id="course-header">
-                <h2>{course.name}</h2>
+                <h2>{course.courseId}</h2>
             </div>
             <div className="topics-container">
                 {topics.map(topic => (
-                    <a key={topic.id} onClick={() => onTopicSelect(topic)} className="topic-item">
-                        {topic.subject}
+                    <a key={topic.id} onClick={() => onTopicSelect(course.id, topic.id)} className="topic-item">
+                        {topic.topicName}
                     </a>
                 ))}
+                <a className="create-topic">Create new topic</a>
             </div>
         </aside>
     );
@@ -24,18 +24,17 @@ function Sidebar({course, topics, onTopicSelect}) {
 
 Sidebar.propTypes = {
     course: PropTypes.shape({
-      name: PropTypes.string.isRequired,
+      courseName: PropTypes.string.isRequired,
       id: PropTypes.number.isRequired,
     }).isRequired,
     topics: PropTypes.arrayOf(
       PropTypes.shape({
-        subject: PropTypes.string.isRequired,
+        topicName: PropTypes.string.isRequired,
         id: PropTypes.number.isRequired,
-        content: PropTypes.string.isRequired,
-        comments: PropTypes.arrayOf(
+        postList: PropTypes.arrayOf(
           PropTypes.shape({
-            author: PropTypes.string.isRequired,
-            text: PropTypes.string.isRequired,
+            //author: PropTypes.string.isRequired,
+            //text: PropTypes.string.isRequired,
           })
         ).isRequired,
       })

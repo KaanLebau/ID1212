@@ -38,3 +38,16 @@
 .topic-item:hover {
     background-color: #47627c;
 }
+
+.create-topic {
+    display: block;
+    padding: 10px;
+    color: #FFFFFF;
+    cursor: pointer;
+    background-color: #2C3E50;
+    font-style: bolder;
+}
+
+.create-topic:hover {
+    background-color: #47627c;
+}
