@@ -51,10 +51,24 @@
     color: #bdc3c7;
     border-bottom: 3px solid transparent;
     cursor: pointer;
-    margin-left: auto;
 }
 
   .logout:hover {
+    border-bottom: 3px solid #F39C12;
+    color: #FFFFFF;
+}
+
+.create-course {
+    text-decoration: none;
+    margin: 10px 15px;
+    padding: 5px;
+    color: #bdc3c7;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+  .create-course:hover {
     border-bottom: 3px solid #F39C12;
     color: #FFFFFF;
 }

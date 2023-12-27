@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import '../../assets/styles/Navbar.css';
 
-function Navbar({courses, onCourseSelect, handleLogout}) {
+function Navbar({role, courses, onCourseSelect, handleLogout}) {
     return (
         <header className="header">
         <div className="logo-nav-container">
@@ -14,6 +14,7 @@ function Navbar({courses, onCourseSelect, handleLogout}) {
                         {course.courseId + " - " + course.courseName}
                     </a>
                 ))}
+                <a key={"create-course"} onClick={() => onCourseSelect(0)} className="create-course">Create new course</a>
                 <a key={"logout"} onClick={() => handleLogout()} className="logout">Logout</a>
             </nav>
         </div>

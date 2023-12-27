@@ -1,0 +1,25 @@
+.topic-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #34495e;
+    color: #FFFFFF;
+    text-align: center;
+    margin-left: 330px;
+    width: calc(100% - 330px)
+}
+
+.topic-intro-logo {
+    font-family: 'Azonix', sans-serif;
+    font-size: 40px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.topic-intro-description,
+.topic-intro-message {
+    margin-bottom: 10px;
+    width: 800px;
+}

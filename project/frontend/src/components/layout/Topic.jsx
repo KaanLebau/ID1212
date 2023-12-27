@@ -23,6 +23,7 @@ function Topic({topic}) {
                     type="text"
                     id="comment-form-box"
                     name="comment"
+                    placeholder="Add comment.."
                     rows="4"
                     cols="50"
                 />

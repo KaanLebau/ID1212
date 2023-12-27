@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import Navbar from "../layout/Navbar";
 import Sidebar from "../layout/Sidebar";
 import Topic from "../layout/Topic";
+import CreateCourse from "../layout/CreateCourse";
+import CreateTopic from "../layout/CreateTopic";
+import TopicIntro from "../layout/TopicIntro";
 import "../../assets/styles/Home.css";
 import {
   getCourses,
@@ -11,6 +14,7 @@ import {
 } from "../../services/ApiService";
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+
 
 function Home() {
   let navigate = useNavigate();
@@ -56,13 +60,13 @@ function Home() {
     <div className="home">
       <Navbar courses={courses} onCourseSelect={handleSelectCourse} handleLogout={handleLogout}/>
 
-      {!courses[courseId-1] && (
-        console.log(courses[courseId-1]),
+      {!courseId && (
         <header className="introduction">
-          Welcome to the forum. Please select one of your courses above to get
-          started.
+          Welcome to the forum. Please select one of your courses above to get started.
         </header>
       )}
+
+      {courseId==0 && <CreateCourse />}
 
       {courses[courseId-1] && (
         <Sidebar
@@ -71,6 +75,9 @@ function Home() {
           onTopicSelect={handleSelectTopic}
         />
       )}
+
+      {topicId==0 && <CreateTopic />}
+      {!topicId && courseId && <TopicIntro course={courses[courseId-1]} /> }
       {topics[topicId-1] && <Topic topic={topics[topicId-1]} />}
     </div>
   );

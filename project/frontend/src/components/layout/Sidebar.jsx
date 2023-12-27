@@ -16,7 +16,7 @@ function Sidebar({course, topics, onTopicSelect}) {
                         {topic.topicName}
                     </a>
                 ))}
-                <a className="create-topic">Create new topic</a>
+                <a onClick={() => onTopicSelect(course.id, 0)} className="create-topic">Create new topic</a>
             </div>
         </aside>
     );
