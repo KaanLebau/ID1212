@@ -25,4 +25,8 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "posts_id", nullable = false)
     private ForumPost posts;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
 }

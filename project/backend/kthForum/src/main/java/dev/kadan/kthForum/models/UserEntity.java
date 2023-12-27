@@ -36,6 +36,9 @@ public class UserEntity {
         @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
         private List<ForumPost> postList = new ArrayList<>();
 
+        @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+        private List<Comment> commentList = new ArrayList<>();
+
         public UserEntity(Object o, String username, Object o1) {
                 this.username = username;
         }

@@ -5,6 +5,7 @@ import dev.kadan.kthForum.models.UserEntity;
 import dev.kadan.kthForum.services.impl.UserServiceImpl;
 import dev.kadan.kthForum.utilities.SmtpClientWithSTARTTLS;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +39,11 @@ public class UserController {
         System.out.println("user does not exist");
         UserEntity user = kthUserToUserMapping(kthUser);
         return userService.saveUser(user);
+    }
+
+    @GetMapping("/api/v1/users")
+    public UserEntity getAll(){
+        return null;
     }
 
 
