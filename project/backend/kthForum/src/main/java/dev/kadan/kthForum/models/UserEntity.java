@@ -1,5 +1,7 @@
 package dev.kadan.kthForum.models;
 
+import dev.kadan.kthForum.models.dto.CommentDTO;
+import dev.kadan.kthForum.models.dto.ForumPostDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +11,20 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <b><i>UserEntity</i></b> object encapsulates the following information
+ * <ul>
+ *     <li> <b>id</b> type Integer database primary key</li>
+ *     <li> <b>username</b> type String user name</li>
+ *     <li><b>displayName</b> type String display name in application</li>
+ *     <br>
+ *     <li> <b>roleList</b> type <i>{@link Role}</i> user role</li>
+ *     <li> <b>postList</b> type <code>List<{@link ForumPostDTO}></code> list of all posts of the user</li>
+ *     <li> <b>commentList</b> type <code>List<{@link CommentDTO}></code> list of all comments of the user</li>
+ * </ul>
+ * Objects contain getters, setters and constructors. There are no custom methods in this object.
+ * @author Kaan Özsam
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,16 +44,16 @@ public class UserEntity {
         @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
         @JoinTable(
                 name = "user_roles",
-                joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+                joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")},
                 inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
         )
         private List<Role> roleList = new ArrayList<>();
 
         @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-        private List<ForumPost> postList = new ArrayList<>();
+        private List<ForumPostDTO> postList = new ArrayList<>();
 
         @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-        private List<Comment> commentList = new ArrayList<>();
+        private List<CommentDTO> commentList = new ArrayList<>();
 
         public UserEntity(Object o, String username, Object o1) {
                 this.username = username;

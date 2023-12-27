@@ -4,9 +4,11 @@ import dev.kadan.kthForum.models.Comment;
 import dev.kadan.kthForum.repositories.CommentRepository;
 import dev.kadan.kthForum.repositories.UserRepository;
 import dev.kadan.kthForum.services.CommentServices;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import java.util.NoSuchElementException;
+@Service
 public class CommentServiceImpl implements CommentServices {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
@@ -27,8 +29,8 @@ public class CommentServiceImpl implements CommentServices {
     }
 
     @Override
-    public Comment getByDbId(Integer commentId) {
-        return commentRepository.findById(commentId).get();
+    public Comment getByDbId(Integer commentId) throws NoSuchElementException {
+        return commentRepository.findById(commentId).orElseThrow(NoSuchElementException::new);
     }
 
     @Override

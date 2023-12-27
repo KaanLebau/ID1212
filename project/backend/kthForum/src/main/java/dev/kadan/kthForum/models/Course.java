@@ -1,5 +1,6 @@
 package dev.kadan.kthForum.models;
 
+import dev.kadan.kthForum.models.dto.TopicDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,19 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <b><i>Course</i></b> object encapsulates the following information
+ * <ul>
+ *     <li> <b>id</b> type Integer database primary key</li>
+ *     <li> <b>courseId</b> type String business kode for Course</li>
+ *     <li><b>courseName</b> type String course name</li>
+ *     <li> <b>courseDesc</b> type String Course description</li>
+ *     <br>
+ *     <li> <b>topicList</b> type <code>List<{@link UserEntity}></code> list of topics registered in this course</li>
+ * </ul>
+ * Objects contain getters, setters and constructors. There are no custom methods in this object.
+ * @author Kaan Özsam
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,7 +43,7 @@ public class Course {
 
 
     @OneToMany(mappedBy = "courses", cascade = CascadeType.REMOVE)
-    private List<Topic> topicList = new ArrayList<>();
+    private List<TopicDTO> topicList = new ArrayList<>();
 }
 
 

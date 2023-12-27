@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import static dev.kadan.kthForum.utilities.Mapper.kthUserToUserMapping;
+import static dev.kadan.kthForum.utilities.Mapper.kthUserToUserEntity;
 
 @RestController
 public class UserController {
@@ -37,7 +37,7 @@ public class UserController {
             return user;
         }
         System.out.println("user does not exist");
-        UserEntity user = kthUserToUserMapping(kthUser);
+        UserEntity user = kthUserToUserEntity(kthUser);
         return userService.saveUser(user);
     }
 

@@ -36,8 +36,8 @@ public class ForumPostController {
     */
     @PostMapping(BASE_PATH + "new")
     public ForumPostDTO createPost(@RequestBody ForumPostDTO postDTO){
-        UserEntity theUser = userService.getByDbId(postDTO.user_id());
-        Topic theTopic = topicServeces.getByDbId(postDTO.topic_id());
+        UserEntity theUser = userService.getByDbId(postDTO.userId());
+        Topic theTopic = topicServeces.getByDbId(postDTO.topicId());
         ForumPost thePost = forumPostDTOToForumPost(postDTO);
         thePost.setUser(theUser);
         thePost.setTopic(theTopic);
@@ -67,11 +67,11 @@ public class ForumPostController {
     public ForumPostDTO updatePost(@RequestBody ForumPostDTO forumPostDTO, @PathVariable Integer postId) throws AuthException {
         ForumPost newPost = null;
         ForumPost oldPost = postServices.getByDbId(postId);
-        if(oldPost.getUser().getId() != forumPostDTO.user_id()){
+        if(oldPost.getUser().getId() != forumPostDTO.userId()){
             throw new AuthException();
         }else {
-            UserEntity theUser = userService.getByDbId(forumPostDTO.user_id());
-            Topic theTopic = topicServeces.getByDbId(forumPostDTO.topic_id());
+            UserEntity theUser = userService.getByDbId(forumPostDTO.userId());
+            Topic theTopic = topicServeces.getByDbId(forumPostDTO.topicId());
             LocalDate created = oldPost.getCreated();
             newPost = forumPostDTOToForumPost(forumPostDTO);
             newPost.setTopic(theTopic);
