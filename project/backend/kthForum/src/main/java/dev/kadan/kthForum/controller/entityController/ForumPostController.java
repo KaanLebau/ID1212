@@ -1,4 +1,4 @@
-package dev.kadan.kthForum.controller;
+package dev.kadan.kthForum.controller.entityController;
 
 import dev.kadan.kthForum.models.ForumPost;
 import dev.kadan.kthForum.models.Topic;

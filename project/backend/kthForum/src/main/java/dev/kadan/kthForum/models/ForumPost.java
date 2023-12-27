@@ -61,9 +61,9 @@ public class ForumPost {
     private UserEntity user;
 
     @OneToMany(mappedBy = "posts", cascade = CascadeType.REMOVE)
-    private List<CommentDTO> commentList = new ArrayList<>();
+    private List<Comment> commentList = new ArrayList<>();
 
-    public ForumPost( String title, Topic topic, String content,UserEntity user, LocalDate created,LocalDate updated, List<CommentDTO> commentList) {
+    public ForumPost( String title, Topic topic, String content,UserEntity user, LocalDate created,LocalDate updated, List<Comment> commentList) {
         this.title = title;
         this.topic = topic;
         this.content = content;

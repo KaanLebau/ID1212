@@ -1,4 +1,4 @@
-package dev.kadan.kthForum.controller;
+package dev.kadan.kthForum.controller.entityController;
 
 import dev.kadan.kthForum.models.Course;
 import dev.kadan.kthForum.models.dto.CourseDTO;

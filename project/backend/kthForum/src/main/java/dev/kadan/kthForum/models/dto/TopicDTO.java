@@ -3,6 +3,7 @@ package dev.kadan.kthForum.models.dto;
 
 
 import dev.kadan.kthForum.models.Topic;
+import org.springframework.context.annotation.Bean;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
  *
  * @author Kaan Özsan
  */
+
 public record TopicDTO(
         Integer id,
         String topicName,

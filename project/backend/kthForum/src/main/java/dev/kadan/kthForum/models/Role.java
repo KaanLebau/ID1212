@@ -36,6 +36,6 @@ public class Role {
     private String roleName;
 
     @ManyToMany(mappedBy = "roleList")
-    private List<UserEntityDTO> userList = new ArrayList<>();
+    private List<UserEntity> userList = new ArrayList<>();
 
 }

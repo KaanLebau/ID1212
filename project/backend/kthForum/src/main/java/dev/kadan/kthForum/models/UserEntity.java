@@ -50,10 +50,10 @@ public class UserEntity {
         private List<Role> roleList = new ArrayList<>();
 
         @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-        private List<ForumPostDTO> postList = new ArrayList<>();
+        private List<ForumPost> postList = new ArrayList<>();
 
         @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-        private List<CommentDTO> commentList = new ArrayList<>();
+        private List<Comment> commentList = new ArrayList<>();
 
         public UserEntity(Object o, String username, Object o1) {
                 this.username = username;

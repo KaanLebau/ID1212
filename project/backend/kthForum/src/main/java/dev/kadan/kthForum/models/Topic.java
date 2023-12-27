@@ -43,7 +43,7 @@ public class Topic {
     private Course courses;
 
     @OneToMany(mappedBy = "topic", cascade = CascadeType.REMOVE)
-    private List<ForumPostDTO> postList = new ArrayList<>();
+    private List<ForumPost> postList = new ArrayList<>();
 
 
 

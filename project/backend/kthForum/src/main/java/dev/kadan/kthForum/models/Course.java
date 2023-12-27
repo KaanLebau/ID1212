@@ -1,5 +1,6 @@
 package dev.kadan.kthForum.models;
 
+
 import dev.kadan.kthForum.models.dto.TopicDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -43,7 +44,7 @@ public class Course {
 
 
     @OneToMany(mappedBy = "courses", cascade = CascadeType.REMOVE)
-    private List<TopicDTO> topicList = new ArrayList<>();
+    private List<Topic> topicList = new ArrayList<>();
 }
 
 

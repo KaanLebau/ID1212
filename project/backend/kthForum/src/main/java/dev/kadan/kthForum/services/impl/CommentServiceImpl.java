@@ -1,13 +1,17 @@
 package dev.kadan.kthForum.services.impl;
 
 import dev.kadan.kthForum.models.Comment;
+import dev.kadan.kthForum.models.dto.CommentDTO;
 import dev.kadan.kthForum.repositories.CommentRepository;
 import dev.kadan.kthForum.repositories.UserRepository;
 import dev.kadan.kthForum.services.CommentServices;
+import dev.kadan.kthForum.utilities.Mapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
 @Service
 public class CommentServiceImpl implements CommentServices {
     private final CommentRepository commentRepository;
@@ -24,8 +28,8 @@ public class CommentServiceImpl implements CommentServices {
     }
 
     @Override
-    public List<Comment> getByUserId(Integer userId) {
-        return userRepository.findById(userId).get().getCommentList();
+    public List<CommentDTO> getByUserId(Integer userId) {
+        return userRepository.findById(userId).get().getCommentList().stream().map(Mapper::commentToCommentDTO).collect(Collectors.toList());
     }
 
     @Override

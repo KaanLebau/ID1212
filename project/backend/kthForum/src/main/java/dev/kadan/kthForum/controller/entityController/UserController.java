@@ -1,10 +1,13 @@
-package dev.kadan.kthForum.controller;
+package dev.kadan.kthForum.controller.entityController;
 
 import dev.kadan.kthForum.models.dto.KthUser;
 import dev.kadan.kthForum.models.UserEntity;
+import dev.kadan.kthForum.models.dto.UserEntityDTO;
 import dev.kadan.kthForum.services.impl.UserServiceImpl;
+import dev.kadan.kthForum.utilities.Mapper;
 import dev.kadan.kthForum.utilities.SmtpClientWithSTARTTLS;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import static dev.kadan.kthForum.utilities.Mapper.kthUserToUserEntity;
+import static dev.kadan.kthForum.utilities.Mapper.userEntityToUserEntityDTO;
 
-@RestController
+
+@Controller
 public class UserController {
     private SmtpClientWithSTARTTLS kthLogin;
     private UserServiceImpl userService;
@@ -23,27 +28,28 @@ public class UserController {
         this.userService= userService;
     }
 
-    @PostMapping("/api/v1/login")
-    public UserEntity login(@RequestBody KthUser kthUser){
+
+    public UserEntityDTO login(@RequestBody KthUser kthUser){
         if(kthLogin.logIn(kthUser.username(),kthUser.password())){
-            System.out.println("user not found !!!*******************************");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
         }
-
+        UserEntity user;
         if(userService.existsByUsername(kthUser.username())){
-            System.out.println("user does exist");
-            UserEntity user = userService.getByUsername(kthUser.username());
-            System.out.println(user);
-            return user;
+            user = userService.getByUsername(kthUser.username());
+        }else{
+            user = userService.saveUser(kthUserToUserEntity(kthUser));
         }
-        System.out.println("user does not exist");
-        UserEntity user = kthUserToUserEntity(kthUser);
-        return userService.saveUser(user);
+        return userEntityToUserEntityDTO(user);
     }
 
     @GetMapping("/api/v1/users")
     public UserEntity getAll(){
         return null;
+    }
+
+    public UserEntityDTO getUserById(Integer userId){
+        UserEntity theUser = userService.getByDbId(userId);
+        return userEntityToUserEntityDTO(theUser);
     }
 
 

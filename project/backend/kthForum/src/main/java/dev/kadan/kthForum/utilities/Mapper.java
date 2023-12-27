@@ -3,6 +3,7 @@ package dev.kadan.kthForum.utilities;
 import dev.kadan.kthForum.models.*;
 import dev.kadan.kthForum.models.dto.*;
 
+import java.util.stream.Collectors;
 
 
 /**
@@ -17,6 +18,7 @@ import dev.kadan.kthForum.models.dto.*;
  *      <li><code>forumPostDTOToForumPost({@link ForumPostDTO} forumPostDTO)</code></li>
  *      <li><code>commentToCommentDTO({@link Comment} comment)</code></li>
  *      <li><code>commentDTOToComment({@link CommentDTO} commentDTO)</code></li>
+ *      <li><code>userEntityToUserEntityDTO({@link UserEntity} userEntity)</code></li>
  * </ul>
  */
 public class Mapper {
@@ -30,7 +32,8 @@ public class Mapper {
                 course.getCourseId(),
                 course.getCourseName(),
                 course.getCourseDesc(),
-                course.getTopicList());}
+                course.getTopicList().stream().map(Mapper::topicToTopicDTO).collect(Collectors.toList())
+        );}
 
     public static Course courseDTOToCourses(CourseDTO courseDTO){
         return new Course(
@@ -38,7 +41,7 @@ public class Mapper {
                 courseDTO.courseId(),
                 courseDTO.courseName(),
                 courseDTO.courseDesc(),
-                courseDTO.topicList()
+                courseDTO.topicList().stream().map(Mapper::topicDTOToTopic).collect(Collectors.toList())
         );
     }
     public static TopicDTO topicToTopicDTO(Topic topic){
@@ -46,14 +49,14 @@ public class Mapper {
                 topic.getId(),
                 topic.getTopicName(),
                 topic.getCourses().getId(),
-                topic.getPostList()
+                topic.getPostList().stream().map(Mapper::forumPostToForumPostDTO).collect(Collectors.toList())
                 );}
     public static Topic topicDTOToTopic(TopicDTO topicDTO){
         return new Topic(
                 topicDTO.id(),
                 topicDTO.topicName(),
                 null,
-                topicDTO.postList()
+                topicDTO.postList().stream().map(Mapper::forumPostDTOToForumPost).collect(Collectors.toList())
         );
     }
 public static ForumPostDTO forumPostToForumPostDTO(ForumPost forumPost){
@@ -65,7 +68,7 @@ public static ForumPostDTO forumPostToForumPostDTO(ForumPost forumPost){
                 forumPost.getUser().getId(),
                 forumPost.getCreated(),
                 forumPost.getUpdated(),
-                forumPost.getCommentList()
+                forumPost.getCommentList().stream().map(Mapper::commentToCommentDTO).collect(Collectors.toList())
         );
 }
 public static ForumPost forumPostDTOToForumPost(ForumPostDTO forumPostDTO){
@@ -76,7 +79,7 @@ public static ForumPost forumPostDTOToForumPost(ForumPostDTO forumPostDTO){
                 null,
                 forumPostDTO.created(),
                 forumPostDTO.updated(),
-                forumPostDTO.commentList()
+                forumPostDTO.commentList().stream().map(Mapper::commentDTOToComment).collect(Collectors.toList())
 
         );
 }
@@ -98,6 +101,16 @@ public static Comment commentDTOToComment(CommentDTO commentDTO){
                 commentDTO.updated(),
                 null,
                 null
+        );
+}
+public static UserEntityDTO userEntityToUserEntityDTO(UserEntity userEntity){
+        return new UserEntityDTO(
+                userEntity.getId(),
+                userEntity.getUsername(),
+                userEntity.getDisplayName(),
+                userEntity.getRoleList(),
+                userEntity.getPostList().stream().map(Mapper::forumPostToForumPostDTO).collect(Collectors.toList()),
+                userEntity.getCommentList().stream().map(Mapper::commentToCommentDTO).collect(Collectors.toList())
         );
 }
 
