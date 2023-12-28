@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "../layout/Navbar";
 import Sidebar from "../layout/Sidebar";
+import Post from "../layout/Post";
 import Topic from "../layout/Topic";
 import CreateCourse from "../layout/CreateCourse";
 import CreateTopic from "../layout/CreateTopic";
@@ -10,27 +11,26 @@ import {
   getCourses,
   getTopics,
   getTopicsByCourse,
-  getCommentsByTopic,
+  getPosts,
 } from "../../services/ApiService";
-import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function Home() {
   let navigate = useNavigate();
-  let { courseId, topicId } = useParams();
+  let { courseId, topicId, postId } = useParams();
   const [courses, setCourses] = useState([]);
   const [topics, setTopics] = useState([]);
   const [currentTopics, setCurrentTopics] = useState([]);
-  const [currentComments, setCurrentComments] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     getCourses().then(setCourses);
   }, []);
 
   useEffect(() => {
-      getTopics().then(setTopics);
-  })
+    getTopics().then(setTopics);
+  }, []);
 
   useEffect(() => {
     if (courseId) {
@@ -40,45 +40,58 @@ function Home() {
 
   useEffect(() => {
     if (topicId) {
-      getCommentsByTopic(topicId).then(setCurrentComments);
+      getPosts(topicId).then(setPosts);
     }
   }, [topicId]);
 
   const handleLogout = () => {
-    navigate('/');
+    navigate("/");
   };
 
   const handleSelectCourse = (courseId) => {
     navigate(`/home/${courseId}`);
   };
-  
+
   const handleSelectTopic = (courseId, topicId) => {
     navigate(`/home/${courseId}/${topicId}`);
   };
 
+  const handlePostClick = (postId) => {
+    navigate(`/home/${courseId}/${topicId}/${postId}`);
+  };
+
   return (
     <div className="home">
-      <Navbar courses={courses} onCourseSelect={handleSelectCourse} handleLogout={handleLogout}/>
+      <Navbar
+        courses={courses}
+        onCourseSelect={handleSelectCourse}
+        handleLogout={handleLogout}
+      />
 
       {!courseId && (
         <header className="introduction">
-          Welcome to the forum. Please select one of your courses above to get started.
+          Welcome to the forum. Please select one of your courses above to get
+          started.
         </header>
       )}
 
-      {courseId==0 && <CreateCourse />}
+      {courseId == 0 && <CreateCourse />}
 
-      {courses[courseId-1] && (
+      {courses[courseId - 1] && (
         <Sidebar
           topics={currentTopics}
-          course={courses[courseId-1]}
+          course={courses[courseId - 1]}
           onTopicSelect={handleSelectTopic}
         />
       )}
 
-      {topicId==0 && <CreateTopic />}
-      {!topicId && courseId && <TopicIntro course={courses[courseId-1]} /> }
-      {topics[topicId-1] && <Topic topic={topics[topicId-1]} />}
+      {topicId == 0 && <CreateTopic />}
+      {!topicId && courseId && <TopicIntro course={courses[courseId - 1]} />}
+      {topics[topicId - 1] && !postId && (
+        <Topic posts={posts} handlePostClick={handlePostClick} />
+      )}
+
+      {posts[postId - 1] && postId && <Post post={posts[postId - 1]} />}
     </div>
   );
 }

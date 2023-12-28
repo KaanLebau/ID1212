@@ -4,8 +4,7 @@ function TopicIntro({course}) {
     if (!course) {
         return <div>Loading course...</div>;
       }
-
-      console.log(course)
+      
     return (
         <div className="topic-intro">
             <header className="topic-intro-logo">{course.courseId + " - " + course.courseName}</header>

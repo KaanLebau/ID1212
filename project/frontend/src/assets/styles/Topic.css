@@ -1,72 +1,62 @@
-.main-content {
+  .topic-container {
     position: relative;
-    top: 50px;
+    top: 65px;
     margin-left: 321px;
     width: calc(100% - 321px);
-    padding-top: 0;
-}
-
-#topic-header {
-    background-color: #2C3E50;
-    color: #FFFFFF;
-    margin-bottom: -6px;
-    padding: 10px;
-    padding-left: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-#topic-content {
-    padding: 20px;
-    padding-left: 10px;
-    background-color: #405b75;
-    color: #FFFFFF;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.comment {
     display: flex;
-    align-items: center;
-    padding: 20px;
-    background-color: rgb(101, 132, 161);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    margin-top: 2px;
-    margin-bottom: 2px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
-
-.comment-author {
-    font-weight: bold;
-    width: 70px;
-}
-
-.comment-text {
-    flex-grow: 1;
-    text-align: left;
-}
-
-#comment-form{
-    flex-grow: 1;
-    text-align: left;
+  
+  .post-container {
+    background-color: #ffffff;
     box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
-}
+    border-radius: 10px;
+    padding: 20px;
+    width: calc(33% - 20px); /* Adjust the width for 3 posts per row */
+    max-width: 300px;
+    transition: all 0.3s ease-in-out;
+    margin: 30px;
+  }
 
-#comment-form-box {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-family: 'Roboto', sans-serif;
+  .post-container:hover{
+    transform: scale(1.05);
+    cursor: pointer;
+  }
+  
+  .post-header {
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .post-author {
     font-size: 14px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); 
-    width: 100%;
-    box-sizing: border-box;
-    margin-bottom: -15px;
-    resize: none;
-}
+    color: #666;
+    font-weight: 500;
+  }
+  
+  .post-title {
+    font-size: 20px;
+    color: #333;
+    margin: 5px 0;
+  }
+  
+  .post-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #666;
+  }
 
-#comment-form-box:focus {
-    outline: none;
-}
-
-#comment-form-button{
-    margin-bottom: 5px;
-}
-
+  @media (max-width: 768px) {
+    .post {
+      width: calc(50% - 20px); /* Adjust for smaller screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .post {
+      width: calc(100% - 20px); /* Full width on very small screens */
+    }
+  }
