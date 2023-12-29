@@ -1,23 +1,29 @@
-  .topic-container {
-    position: relative;
-    top: 65px;
-    margin-left: 321px;
-    width: calc(100% - 321px);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+.topic-container {
+  display: grid;
+  gap: 30px;
+  padding: 30px;
+  margin-left: 345px;
+  width: calc(100% - 345px);
+  box-sizing: border-box;
+  grid-template-columns: repeat(4, 4fr);
+  justify-content: center;
+  align-content: center;
+  min-height: 100vh;
+  padding-top: 0px;
 }
-  
-  .post-container {
-    background-color: #ffffff;
-    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    padding: 20px;
-    width: calc(33% - 20px); /* Adjust the width for 3 posts per row */
-    max-width: 300px;
-    transition: all 0.3s ease-in-out;
-    margin: 30px;
-  }
+
+.post-container {
+  background-color: #ffffff;
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 20px;
+  width: 320px;
+  height: 200px;
+  box-sizing: border-box;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
 
   .post-container:hover{
     transform: scale(1.05);
@@ -25,7 +31,6 @@
   }
   
   .post-header {
-    border-bottom: 1px solid #e1e1e1;
     padding-bottom: 10px;
     margin-bottom: 10px;
   }
@@ -43,20 +48,56 @@
   }
   
   .post-footer {
+    border-top: 1px solid #e1e1e1;
+    padding-top: 10px;
+    margin-top: auto;
     display: flex;
     justify-content: space-between;
     font-size: 14px;
     color: #666;
+}
+
+  .create-post-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    width: 320px;
+    height: 200px;
+  }
+  
+  .create-post-content {
+    text-align: center;
+  }
+  
+  .create-post-plus-sign {
+    font-size: 100px;
+    color: #333;
+    }
+  
+  .create-post-text {
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
   }
 
-  @media (max-width: 768px) {
-    .post {
-      width: calc(50% - 20px); /* Adjust for smaller screens */
+  @media (max-width: 1700px) {
+    .topic-container {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 1420px) {
+    .topic-container {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
   
-  @media (max-width: 480px) {
-    .post {
-      width: calc(100% - 20px); /* Full width on very small screens */
+  @media (max-width: 1050px) {
+    .topic-container {
+      grid-template-columns: 1fr;
+      margin-left: 321px;
     }
   }

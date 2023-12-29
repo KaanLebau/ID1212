@@ -18,6 +18,13 @@ function Topic({posts, handlePostClick}) {
           </div>
         </div>
       ))}
+      {/* New "Create post" card */}
+      <div onClick={() => handlePostClick(0)} className="post-container create-post-card">
+        <div className="create-post-content">
+          <div className="create-post-plus-sign">+</div>
+          <div className="create-post-text">Create New Post</div>
+        </div>
+      </div>
     </div>
   );
 }

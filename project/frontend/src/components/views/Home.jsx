@@ -5,6 +5,7 @@ import Post from "../layout/Post";
 import Topic from "../layout/Topic";
 import CreateCourse from "../layout/CreateCourse";
 import CreateTopic from "../layout/CreateTopic";
+import CreatePost from "../layout/CreatePost";
 import TopicIntro from "../layout/TopicIntro";
 import "../../assets/styles/Home.css";
 import {
@@ -91,6 +92,7 @@ function Home() {
         <Topic posts={posts} handlePostClick={handlePostClick} />
       )}
 
+      {postId==0 && <CreatePost />}
       {posts[postId - 1] && postId && <Post post={posts[postId - 1]} />}
     </div>
   );
