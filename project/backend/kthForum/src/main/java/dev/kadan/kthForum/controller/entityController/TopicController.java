@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static dev.kadan.kthForum.utilities.Mapper.topicDTOToTopic;
+import static dev.kadan.kthForum.utilities.Mapper.topicToTopicDTO;
 
 @RestController
 public class TopicController {
@@ -27,13 +28,13 @@ public class TopicController {
     /*
     Create
      */
-    @PostMapping(BASE_PATH + "new")
-    public void createTopic(@RequestBody TopicDTO topicDTO){
+
+    public TopicDTO createTopic(TopicDTO topicDTO){
         Topic theTopic = topicDTOToTopic(topicDTO);
         Course course = courseServices.findByDbId(topicDTO.courseId());
         theTopic.setCourses(course);
 
-        topicServeces.createTopic(topicDTOToTopic(topicDTO));
+        return topicToTopicDTO(topicServeces.createTopic(theTopic));
     }
     /*
     Read

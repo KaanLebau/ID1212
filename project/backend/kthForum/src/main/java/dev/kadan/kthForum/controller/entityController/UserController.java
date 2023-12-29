@@ -52,5 +52,16 @@ public class UserController {
         return userEntityToUserEntityDTO(theUser);
     }
 
+    public UserEntity getByDbId(Integer userId){
+        return userService.getByDbId(userId);
+    }
+
+    public UserEntity updateById(UserEntityDTO userEntityDTO, Integer userId){
+        UserEntity user = userService.getByDbId(userId);
+        userService.removeUserById(userId);
+        user.setDisplayName(userEntityDTO.displayName());
+        return userService.saveUser(user);
+    }
+
 
 }

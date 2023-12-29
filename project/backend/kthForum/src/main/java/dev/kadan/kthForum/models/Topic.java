@@ -1,5 +1,7 @@
 package dev.kadan.kthForum.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.kadan.kthForum.models.dto.ForumPostDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -40,11 +42,18 @@ public class Topic {
 
     @ManyToOne
     @JoinColumn(name = "courses_id", nullable = false)
+    @JsonBackReference
     private Course courses;
+    @JsonBackReference
+    public Course getCourses() {
+        return courses;
+    }
 
     @OneToMany(mappedBy = "topic", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
     private List<ForumPost> postList = new ArrayList<>();
-
-
-
+    @JsonManagedReference
+    public List<ForumPost> getPostList() {
+        return postList;
+    }
 }

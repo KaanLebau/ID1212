@@ -1,12 +1,18 @@
 package dev.kadan.kthForum.controller.frontendController;
 
 import dev.kadan.kthForum.controller.entityController.*;
-import dev.kadan.kthForum.models.dto.CommentDTO;
-import dev.kadan.kthForum.models.dto.ForumPostDTO;
-import dev.kadan.kthForum.models.dto.KthUser;
-import dev.kadan.kthForum.models.dto.UserEntityDTO;
+import dev.kadan.kthForum.models.*;
+import dev.kadan.kthForum.models.dto.*;
 import jakarta.security.auth.message.AuthException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import static dev.kadan.kthForum.utilities.Mapper.*;
+
 @RestController
 public class FrontendController {
     private final CourseController courseController;
@@ -23,32 +29,258 @@ public class FrontendController {
         this.commentController = commentController;
     }
 
+    /**
+     * <b>Description: </b> User login
+     * <br>
+     * <b>RequestBody: </b> should have the following structure
+     * <pre>
+     *     {
+     *         <b>username: </b> "This key contains String value",
+     *         <b>password: </b> "This key contains String value",
+     *     }
+     * </pre>
+     *<br>
+     *
+     * @param kthUser see RequestBody
+     * @return {@link UserEntityDTO} with all related data
+     */
     @PostMapping("api/v1/login")
     public UserEntityDTO userLogin(@RequestBody KthUser kthUser){
         return userController.login(kthUser);
     }
 
+    /**
+     * <b>Description: </b> fetch a user with db id
+     * <br>
+     * <b>Authorization level: </b> login required for fetch.
+     * <br>
+     * <b>RequestBody: </b> path variable is used no request body is required
+     *
+     * @param userId user database primary key
+     * @return {@link UserEntityDTO}
+     */
     @GetMapping("api/v1/user/{userId}")
     public UserEntityDTO getUserData(@PathVariable Integer userId){
         return userController.getUserById(userId);
     }
 
-    @PostMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/new")
-    public ForumPostDTO createPost(@RequestBody ForumPostDTO forumPostDTO, @PathVariable Integer userId){
-        return null;
+    /**
+     * <b>Description: </b> Creates a new {@link Course}
+     * <br>
+     * <b>Authorization level: </b> only Admin can create a course.
+     * <br>
+     * <b>RequestBody: </b> should have the following structure
+     * <pre>
+     *      {
+     *          <b>courseId: </b> "This key contains String value",
+     *          <b>courseName: </b> "This key contains String value",
+     *          <b>courseDesc: </b> "This key contains String value",
+     *      }
+     * </pre>
+      * @param courseDTO see RequestBody
+     * @param userId used to determine the authorization level
+     * @return {@link CourseDTO}
+     */
+    @PostMapping("api/v1/user/{userId}/course/new")
+    public CourseDTO creteCourse(@RequestBody CourseDTO courseDTO, @PathVariable Integer userId){
+        if(userId != 1){
+            //TODO send a mail to admin about this request
+        }else{
+            return courseController.creteCourse(
+                    new CourseDTO(
+                            null,
+                            courseDTO.courseId(),
+                            courseDTO.courseName(),
+                            courseDTO.courseDesc(),
+                            null,
+                            null)
+            );
+        }
+        return courseController.creteCourse(courseDTO);
     }
+
+    /**
+     * <b>Description: </b> Creates a new {@link Topic}
+     * <br>
+     * <b>Authorization level: </b> only ADMIN or TEACHER can create a topic.
+     * <br>
+     * <b>RequestBody: </b> should have the following structure
+     * <pre>
+     *      {
+     *          <b>topicName: </b> "This key contains String value",
+     *          <b>courseId: </b> "This key contains String value",
+     *      }
+     * </pre>
+     * @param topicDTO see RequestBody
+     * @param userId used to determine the authorization level
+     * @param courseId course reference for assign topic
+     * @return {@link TopicDTO}
+     */
+    @PostMapping("api/v1/user/{userId}/course/{courseId}/topic/new")
+    public TopicDTO createTopic(@RequestBody TopicDTO topicDTO, @PathVariable Integer userId, @PathVariable Integer courseId){
+        TopicDTO newTopic = new TopicDTO(
+                null,
+                topicDTO.topicName(),
+                courseId,
+                null
+        );
+        return topicController.createTopic(newTopic);
+    }
+
+    /**
+     * <b>Description: </b> Creates a new {@link ForumPost}
+     * <br>
+     * <b>Authorization level: </b> all user can create a post.
+     * <br>
+     * <b>RequestBody: </b> should have the following structure
+     * <pre>
+     *      {
+     *          <b>title: </b> "This key contains String value",
+     *          <b>content: </b> "This key contains String value",
+     *      }
+     * </pre>
+     * @param forumPostDTO see RequestBody
+     * @param userId used to determine the author
+     * @param topicId topic reference for assign post
+     * @return {@link ForumPostDTO}
+     */
+    @PostMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/new")
+    public ForumPostDTO createPost(
+            @RequestBody ForumPostDTO forumPostDTO,
+            @PathVariable Integer userId,
+            @PathVariable Integer topicId){
+        ForumPostDTO post = new ForumPostDTO(
+                null,
+                forumPostDTO.title(),
+                forumPostDTO.content(),
+                topicId,
+                userId,
+                LocalDate.now(),
+                null,
+                null
+        );
+
+        return postController.createPost(post);
+    }
+
+    /**
+     * <b>Description: </b> Creates a new {@link Comment}.
+     * <br>
+     * <b>Authorization level: </b> All user can create a Comment.
+     * <br>
+     * <b>RequestBody: </b> Should have the following structure.
+     * <pre>
+     *     {
+     *         <b>comment</b>: "This key contains String value"
+     *     }
+     * </pre>
+     * @param commentDTO see RequestBody
+     * @param userId used to determine the author
+     * @param postId post reference for assign comment
+     * @return {@link CommentDTO}
+     */
     @PostMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/{postId}/comment/new")
     public CommentDTO createComment(@RequestBody CommentDTO commentDTO, @PathVariable Integer userId, @PathVariable Integer postId){
-        return commentController.createComment(commentDTO, userId, postId);
+        ForumPost thePost = postController.getByDbId(postId);
+        UserEntity theUser = userController.getByDbId(userId);
+        return commentController.createComment(new Comment(null, commentDTO.comment(), LocalDate.now(),null,thePost,theUser));
     }
-    @PostMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/{postId}/comment/update/{commentId}")
-    public CommentDTO updateCommentById(@RequestBody CommentDTO commentDTO, @PathVariable Integer commentId, @PathVariable Integer userId){
-        try {
-            return commentController.updateComment(commentDTO, commentId, userId);
-        } catch (AuthException e) {
-            throw new RuntimeException(e);
+
+    /**
+     * <b>Description: </b> Updates a {@link UserEntity}.
+     * <br>
+     * <b>Authorization level: </b> Only the user can update.
+     * <br>
+     * <b>RequestBody: </b> Should have the following structure.
+     * <pre>
+     *     {
+     *         <b>displayName</b>: "This key contains String value"
+     *     }
+     * </pre>
+     * @param userEntity see RequestBody
+     * @param userId reference to user
+     * @return {@link UserEntityDTO}
+     * @throws AuthException see Authorization level
+     */
+    @PutMapping("/api/v1/user/update/{userId}")
+    public UserEntityDTO updateUserById(@RequestBody UserEntityDTO userEntity,@PathVariable Integer userId) throws AuthException {
+        UserEntityDTO orgUser = userController.getUserById(userId);
+        if(userEntity.id() != orgUser.id()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The user ID does not match the user to be updated");
+        }else {
+            return userEntityToUserEntityDTO(userController.updateById(userEntity, userId));
         }
     }
+
+    @PutMapping("/api/v1/user/{userId}/course/update/{courseId}")
+    public CourseDTO updateCourseById(@RequestBody CourseDTO courseDTO, @PathVariable Integer UserId, Integer courseId){
+        CourseDTO orgCourse = courseController.findbyId(courseId);
+        if(orgCourse.id() != courseDTO.id())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"The course ID does not match the course to be updated");
+
+        return null;
+    }
+    @PutMapping("/api/v1/user/{userId}/course/{courseId}/topic/update/{topicId}")
+    public TopicDTO updateTopicById(){
+        return null;
+    }
+    @PutMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/update/{postId}")
+    public ForumPostDTO updatePostById(){
+        return null;
+    }
+
+    /**
+     * <b>Description: </b> Updates the {@link Comment}
+     * <br>
+     * <b>Authorization level: </b> only author of Comment can update a comment.
+     * <br>
+     * <b>RequestBody: </b> should have the following structure
+     * <pre>
+     *     {
+     *         <b>comment</b>: "This key contains String value"
+     *     }
+     * </pre>
+     * @param commentDTO
+     * @param commentId
+     * @param userId
+     * @return
+     */
+    @PutMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/{postId}/comment/update/{commentId}")
+    public CommentDTO updateCommentById(@RequestBody CommentDTO commentDTO, @PathVariable Integer commentId, @PathVariable Integer userId) throws AuthException {
+        CommentDTO commentOrg = commentController.getByDbId(commentId);
+        LocalDate created = commentOrg.created();
+        ForumPost thePost = postController.getByDbId(commentOrg.postId());
+        UserEntity theUser = userController.getByDbId(commentOrg.userId());
+        if(commentOrg.userId() != userId){
+            throw new AuthException();
+        }else{
+
+            commentController.deleteCommentById(commentId, userId);
+            return commentController.createComment(new Comment(null, commentOrg.comment(), created,LocalDate.now(),thePost,theUser));
+        }
+
+    }
+
+
+    @DeleteMapping("/api/v1/user/update/{userId}")
+    public void deleteUserById(@RequestBody UserEntity userEntity,@PathVariable Integer userId){
+
+    }
+    @DeleteMapping("/api/v1/user/{userId}/course/update/{courseId}")
+    public void deleteCourseById(){
+
+    }
+    @DeleteMapping("/api/v1/user/{userId}/course/{courseId}/topic/update/{topicId}")
+    public void deleteTopicById(){
+
+    }
+    @DeleteMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/update/{postId}")
+    public void deletePostById(){
+
+    }
+
+
+
     @DeleteMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/{postId}/comment/delete/{commentId}")
     public void deleteCommentById(@PathVariable Integer commentId, @PathVariable Integer userId){
         try {

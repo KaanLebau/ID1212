@@ -12,4 +12,5 @@ public interface CoursesServices {
     Course createCourse(Course course);
     void removeByDbId(Integer id);
     void removeByCourseId(String courseId);
+    List<Course> findListOfCourses(List<Integer> courseIdList);
 }

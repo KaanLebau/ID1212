@@ -1,5 +1,7 @@
 package dev.kadan.kthForum.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.kadan.kthForum.models.dto.CommentDTO;
 import dev.kadan.kthForum.utilities.Mapper;
 import jakarta.persistence.*;
@@ -53,17 +55,21 @@ public class ForumPost {
     private LocalDate updated;
 
     @ManyToOne
-    @JoinColumn(name = "topicId", nullable = false)
+    @JoinColumn(name = "topic_id", nullable = false)
+    @JsonBackReference
     private Topic topic;
 
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private UserEntity user;
 
     @OneToMany(mappedBy = "posts", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
     private List<Comment> commentList = new ArrayList<>();
 
-    public ForumPost( String title, Topic topic, String content,UserEntity user, LocalDate created,LocalDate updated, List<Comment> commentList) {
+
+    public ForumPost(String title, Topic topic, String content, UserEntity user, LocalDate created, LocalDate updated, List<Comment> commentList) {
         this.title = title;
         this.topic = topic;
         this.content = content;

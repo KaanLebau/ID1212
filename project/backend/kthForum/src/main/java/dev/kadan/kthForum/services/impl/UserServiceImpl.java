@@ -33,10 +33,6 @@ public class UserServiceImpl implements UserServices {
 
     @Override
     public UserEntity saveUser(UserEntity user) {
-        UserEntity userToAdd = user;
-        Role role = roleRepository.findByRoleName(String.valueOf(Roles.STUDENT));
-        System.out.println(role.getRoleName());
-        userToAdd.setRoleList(Collections.singletonList(role));
         userRepository.save(user);
         return user;
     }
@@ -44,5 +40,11 @@ public class UserServiceImpl implements UserServices {
     @Override
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public void removeUserById(Integer id) {
+        userRepository.deleteById(id);
+
     }
 }

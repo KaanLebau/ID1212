@@ -15,8 +15,10 @@ public interface TopicServeces {
     Topic getByDbId(Integer topicId);
 
     List<Topic> getByTopicName(String topicName);
-    void  createTopic(Topic topic);
+    Topic createTopic(Topic topic);
 
     void removeById(Integer id);
+
+    List<Topic> findListOfTopics(List<Integer> topipIdList);
 
 }

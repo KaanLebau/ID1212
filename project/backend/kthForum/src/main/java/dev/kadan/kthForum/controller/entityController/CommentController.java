@@ -37,28 +37,11 @@ public class CommentController {
 
     /**
      *
-     * Creates a comment on a post
-     * receives JSON object, structure see below
-     *
-     *               <p>{</p>
-     *                   <p><b>"comment"</b>:<i>"This key contains String value"</i>,</p>
-     *               <p>}</p>
-     *
-     *  Sets created to LocalDate.now()<br>
-     *  Sets user<br>
-     *  Sets post<br>
-     * returns a {@link CommentDTO}object
-     *
-     * @param commentDTO Object contains comment
-     * @param userId    used for user identification, type Integer
-     * @param postId    used for post identification, type Integer
-     * @return CommentDTO
+     * @param comment
+     * @return
      */
-    public CommentDTO createComment(CommentDTO commentDTO,Integer userId, Integer postId){
-        UserEntity theUser = userService.getByDbId(userId);
-        ForumPost thePost = postServices.getByDbId(postId);
-        Comment newComment =commentService.createComment(new Comment(null, commentDTO.comment(),LocalDate.now(),null,thePost,theUser));
-        return commentToCommentDTO(newComment);
+    public CommentDTO createComment(Comment comment){
+        return commentToCommentDTO(commentService.createComment(comment));
     }
 
     /*
@@ -67,6 +50,15 @@ public class CommentController {
     public List<CommentDTO> getAllComments(){
         List<Comment> commentList = commentService.findAll();
         return commentList.stream().map(Mapper::commentToCommentDTO).collect(Collectors.toList());
+    }
+
+    /**
+     *  getbyDbId() returns Comment identified by primary key
+     * @param commentId db Primary key
+     * @return {@link CommentDTO}
+     */
+    public CommentDTO getByDbId(Integer commentId){
+        return commentToCommentDTO(commentService.getByDbId(commentId));
     }
 
     /**
@@ -85,18 +77,7 @@ public class CommentController {
      * @return
      */
     public CommentDTO updateComment(CommentDTO commentDTO, Integer commentId, Integer userId) throws AuthException {
-        comment = commentService.getByDbId(commentId);
-        LocalDate created = comment.getCreated();
-        ForumPost thePost = comment.getPosts();
-        UserEntity theUser = comment.getUser();
-        if(comment.getUser().getId() != userId){
-            throw new AuthException();
-        }else{
-            comment = new Comment(null, comment.getComment(), created,LocalDate.now(),thePost,theUser);
-            commentService.removeCommentById(commentId);
-            commentService.createComment(comment);
-            comment = null;
-        }
+
         return null;
     }
 

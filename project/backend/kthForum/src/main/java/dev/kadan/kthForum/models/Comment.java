@@ -1,6 +1,7 @@
 package dev.kadan.kthForum.models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,9 +45,20 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "posts_id", nullable = false)
+    @JsonBackReference
     private ForumPost posts;
+    @JsonBackReference
+    public ForumPost getPosts() {
+        return posts;
+    }
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
+    @JsonBackReference
     private UserEntity user;
+
+    @JsonBackReference
+    public UserEntity getUser() {
+        return user;
+    }
 }

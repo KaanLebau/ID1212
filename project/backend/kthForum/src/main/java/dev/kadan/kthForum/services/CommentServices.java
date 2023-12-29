@@ -8,10 +8,10 @@ import java.util.List;
 public interface CommentServices {
     List<Comment> findAll();
 
-    List<CommentDTO> getByUserId(Integer userId);
+    List<Comment> getByUserId(Integer userId);
     Comment getByDbId(Integer commentId);
 
     Comment createComment(Comment comment);
-
+    List<Comment> findListOfComments(List<Integer> commentIdList);
     void removeCommentById(Integer commentId);
 }

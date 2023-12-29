@@ -3,6 +3,11 @@ package dev.kadan.kthForum.utilities;
 import dev.kadan.kthForum.models.*;
 import dev.kadan.kthForum.models.dto.*;
 
+import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -19,6 +24,7 @@ import java.util.stream.Collectors;
  *      <li><code>commentToCommentDTO({@link Comment} comment)</code></li>
  *      <li><code>commentDTOToComment({@link CommentDTO} commentDTO)</code></li>
  *      <li><code>userEntityToUserEntityDTO({@link UserEntity} userEntity)</code></li>
+ *      <li><code>courseRoleToCourseRoleDTO ({@link CourseUserRoles} courseUserRoles)</code></li>
  * </ul>
  */
 public class Mapper {
@@ -32,7 +38,8 @@ public class Mapper {
                 course.getCourseId(),
                 course.getCourseName(),
                 course.getCourseDesc(),
-                course.getTopicList().stream().map(Mapper::topicToTopicDTO).collect(Collectors.toList())
+                getIds(Collections.singletonList(course.getTopicList())),
+                course.getCourseRole().stream().map(Mapper::courseRoleToCourseRoleDTO).collect(Collectors.toList())
         );}
 
     public static Course courseDTOToCourses(CourseDTO courseDTO){
@@ -41,7 +48,8 @@ public class Mapper {
                 courseDTO.courseId(),
                 courseDTO.courseName(),
                 courseDTO.courseDesc(),
-                courseDTO.topicList().stream().map(Mapper::topicDTOToTopic).collect(Collectors.toList())
+                null,
+                null
         );
     }
     public static TopicDTO topicToTopicDTO(Topic topic){
@@ -49,14 +57,14 @@ public class Mapper {
                 topic.getId(),
                 topic.getTopicName(),
                 topic.getCourses().getId(),
-                topic.getPostList().stream().map(Mapper::forumPostToForumPostDTO).collect(Collectors.toList())
+                getIds(Collections.singletonList(topic.getPostList()))
                 );}
     public static Topic topicDTOToTopic(TopicDTO topicDTO){
         return new Topic(
                 topicDTO.id(),
                 topicDTO.topicName(),
                 null,
-                topicDTO.postList().stream().map(Mapper::forumPostDTOToForumPost).collect(Collectors.toList())
+                null
         );
     }
 public static ForumPostDTO forumPostToForumPostDTO(ForumPost forumPost){
@@ -68,7 +76,7 @@ public static ForumPostDTO forumPostToForumPostDTO(ForumPost forumPost){
                 forumPost.getUser().getId(),
                 forumPost.getCreated(),
                 forumPost.getUpdated(),
-                forumPost.getCommentList().stream().map(Mapper::commentToCommentDTO).collect(Collectors.toList())
+                getIds(Collections.singletonList(forumPost.getCommentList()))
         );
 }
 public static ForumPost forumPostDTOToForumPost(ForumPostDTO forumPostDTO){
@@ -79,7 +87,7 @@ public static ForumPost forumPostDTOToForumPost(ForumPostDTO forumPostDTO){
                 null,
                 forumPostDTO.created(),
                 forumPostDTO.updated(),
-                forumPostDTO.commentList().stream().map(Mapper::commentDTOToComment).collect(Collectors.toList())
+                null
 
         );
 }
@@ -103,16 +111,49 @@ public static Comment commentDTOToComment(CommentDTO commentDTO){
                 null
         );
 }
+
 public static UserEntityDTO userEntityToUserEntityDTO(UserEntity userEntity){
         return new UserEntityDTO(
                 userEntity.getId(),
                 userEntity.getUsername(),
                 userEntity.getDisplayName(),
-                userEntity.getRoleList(),
-                userEntity.getPostList().stream().map(Mapper::forumPostToForumPostDTO).collect(Collectors.toList()),
-                userEntity.getCommentList().stream().map(Mapper::commentToCommentDTO).collect(Collectors.toList())
+                userEntity.getEmail(),
+                getIds(Collections.singletonList(userEntity.getPostList())),
+                getIds(Collections.singletonList(userEntity.getCommentList())),
+                null
+
         );
 }
+
+public static CourseUserRolesDTO courseRoleToCourseRoleDTO (CourseUserRoles courseUserRoles){
+        return new CourseUserRolesDTO(
+                courseUserRoles.getId(),
+                courseUserRoles.getUser().getId(),
+                courseUserRoles.getRole().getId(),
+                courseUserRoles.getCourse().getId()
+        );
+}
+
+private static List<Integer> getIds(List<Object> objects){
+    List<Integer> idList = new ArrayList<>();
+    for(Object object : objects){
+        Integer id = extractId(object);
+        idList.add(id);
+    }
+    return idList;
+}
+
+    private static Integer extractId(Object obj) {
+        try {
+            Field idField = obj.getClass().getDeclaredField("id");
+            ((Field) idField).setAccessible(true);
+            return (Integer) idField.get(obj);
+        } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }
 

@@ -1,6 +1,7 @@
 package dev.kadan.kthForum.models.dto;
 
 import dev.kadan.kthForum.models.Course;
+import dev.kadan.kthForum.models.CourseUserRoles;
 
 import java.util.List;
 
@@ -11,14 +12,17 @@ import java.util.List;
  * @param courseId business kode for Course , type String
  * @param courseName Course name, type String
  * @param courseDesc Course description, type String
- * @param topicList list of topics in this course, type List<{@link TopicDTO}>
+ * @param topicIdList list of topic ids in this course, type List<Integer>
+ * @param courseRoles list of users and their role in a course, type List<{@link CourseUserRoles}>
  */
 public record CourseDTO(
         Integer id,
         String courseId,
         String courseName,
         String courseDesc,
-        List<TopicDTO> topicList
+        List<Integer> topicIdList,
+        List<CourseUserRolesDTO> courseRoles
+
 
 ) {
 }

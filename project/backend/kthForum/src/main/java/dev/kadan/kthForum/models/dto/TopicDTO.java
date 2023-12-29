@@ -2,6 +2,7 @@ package dev.kadan.kthForum.models.dto;
 
 
 
+import dev.kadan.kthForum.models.ForumPost;
 import dev.kadan.kthForum.models.Topic;
 import org.springframework.context.annotation.Bean;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @param id database identification, type Integer
  * @param topicName current topic name,  type String
  * @param courseId used for post identification, type Integer
- * @param postList list of post in this topic, type List<{@link ForumPostDTO}>
+ * @param postIdList list of post id in this topic, type List<Integer>
  *
  * @author Kaan Özsan
  */
@@ -22,6 +23,6 @@ public record TopicDTO(
         Integer id,
         String topicName,
         Integer courseId,
-        List<ForumPostDTO> postList
+        List<Integer> postIdList
 ) {
 }

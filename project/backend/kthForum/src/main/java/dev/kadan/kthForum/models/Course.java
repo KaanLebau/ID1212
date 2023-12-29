@@ -1,6 +1,8 @@
 package dev.kadan.kthForum.models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.kadan.kthForum.models.dto.TopicDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,7 +21,8 @@ import java.util.List;
  *     <li><b>courseName</b> type String course name</li>
  *     <li> <b>courseDesc</b> type String Course description</li>
  *     <br>
- *     <li> <b>topicList</b> type <code>List<{@link UserEntity}></code> list of topics registered in this course</li>
+ *     <li> <b>topicList</b> type <code>List<{@link Topic}></code> list of topics registered in this course</li>
+ *     <li> <b>courseRole</b> type <code>List<{@link CourseUserRoles}></code> list of users and their role in a course</li>
  * </ul>
  * Objects contain getters, setters and constructors. There are no custom methods in this object.
  * @author Kaan Özsam
@@ -44,7 +47,12 @@ public class Course {
 
 
     @OneToMany(mappedBy = "courses", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
     private List<Topic> topicList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private List<CourseUserRoles> courseRole = new ArrayList<>();
 }
 
 

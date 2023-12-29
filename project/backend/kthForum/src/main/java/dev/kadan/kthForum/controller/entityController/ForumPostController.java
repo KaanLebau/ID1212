@@ -60,6 +60,15 @@ public class ForumPostController {
         return theTopic.getPostList().stream().map(Mapper::forumPostToForumPostDTO).collect(Collectors.toList());
     }
 
+    /**
+     * getbyDbId() returns Post identified by primary key
+     * @param postId db primary key
+     * @return {@link ForumPost}
+     */
+    public ForumPost getByDbId(Integer postId){
+        return postServices.getByDbId(postId);
+    }
+
     /*
         UPDATE
      */

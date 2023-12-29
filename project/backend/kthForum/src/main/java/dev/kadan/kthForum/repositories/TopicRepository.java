@@ -10,5 +10,4 @@ public interface TopicRepository extends JpaRepository<Topic, Integer> {
 
     List<Topic> findByTopicName(String topicName);
 
-
 }

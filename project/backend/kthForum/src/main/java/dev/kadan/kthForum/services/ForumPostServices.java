@@ -16,4 +16,6 @@ public interface ForumPostServices {
     ForumPost createPost(ForumPost forumPost);
 
     void removePostById(Integer postId);
+
+    List<ForumPost> findListOfPosts(List<Integer> postIdList);
 }

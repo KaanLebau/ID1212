@@ -7,10 +7,6 @@ import java.util.List;
 
 public interface ForumPostRepository extends JpaRepository<ForumPost, Integer> {
     List<ForumPost> findByTopicId(Integer id);
-
     List<ForumPost> findByUserId(Integer userId);
-
-
-
 
 }

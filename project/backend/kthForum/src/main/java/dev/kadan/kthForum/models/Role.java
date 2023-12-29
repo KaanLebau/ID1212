@@ -1,5 +1,7 @@
 package dev.kadan.kthForum.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.kadan.kthForum.models.dto.UserEntityDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,7 +18,7 @@ import java.util.List;
  *     <li> <b>id</b> type Integer database primary key</li>
  *     <li> <b>roleName</b> type String role name </li>
  *     <br>
- *     <li> <b>userList</b> type <code>List<{@link UserEntityDTO}></code> list of user with the role</li>
+ *     <li> <b>courseRole</b> type <code>List<{@link CourseUserRoles}></code> list of users and their role in a course</li>
  *
  *     Objects contain getters, setters and constructors. There are no custom methods in this object.
  * </ul>
@@ -35,7 +37,8 @@ public class Role {
     @Column(name = "role_name", length = 8)
     private String roleName;
 
-    @ManyToMany(mappedBy = "roleList")
-    private List<UserEntity> userList = new ArrayList<>();
+    @OneToMany(mappedBy = "role", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private List<CourseUserRoles> courseRole = new ArrayList<>();
 
 }

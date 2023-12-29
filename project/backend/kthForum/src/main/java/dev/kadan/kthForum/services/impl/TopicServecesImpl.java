@@ -38,8 +38,8 @@ public class TopicServecesImpl implements TopicServeces {
     }
 
     @Override
-    public void createTopic(Topic topic) {
-        topicRepository.save(topic);
+    public Topic createTopic(Topic topic) {
+        return topicRepository.save(topic);
     }
 
     @Override

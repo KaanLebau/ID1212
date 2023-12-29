@@ -17,7 +17,7 @@ import java.util.List;
  * @param userId used for User identification, type Integer
  * @param created creation time stamp, type LocalTime
  * @param updated update time stamp, type LocalTime
- * @param commentList list of Comments in this topic, type List<{@link CommentDTO}>
+ * @param commentIdList list of Comment ids in this topic, type List<Integer>
  */
 public record ForumPostDTO(
         Integer id,
@@ -27,7 +27,7 @@ public record ForumPostDTO(
        Integer userId,
        LocalDate created,
         LocalDate updated,
-        List<CommentDTO> commentList
+        List<Integer> commentIdList
 
 ) {
 }
