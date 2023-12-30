@@ -38,7 +38,7 @@ public class Mapper {
                 course.getCourseId(),
                 course.getCourseName(),
                 course.getCourseDesc(),
-                getIds(Collections.singletonList(course.getTopicList())),
+                getTopicIdList(course.getTopicList()),
                 course.getCourseRole().stream().map(Mapper::courseRoleToCourseRoleDTO).collect(Collectors.toList())
         );}
 
@@ -57,7 +57,7 @@ public class Mapper {
                 topic.getId(),
                 topic.getTopicName(),
                 topic.getCourses().getId(),
-                getIds(Collections.singletonList(topic.getPostList()))
+                getPostIdList(topic.getPostList())
                 );}
     public static Topic topicDTOToTopic(TopicDTO topicDTO){
         return new Topic(
@@ -76,7 +76,7 @@ public static ForumPostDTO forumPostToForumPostDTO(ForumPost forumPost){
                 forumPost.getUser().getId(),
                 forumPost.getCreated(),
                 forumPost.getUpdated(),
-                getIds(Collections.singletonList(forumPost.getCommentList()))
+                getCommentIdList(forumPost.getCommentList())
         );
 }
 public static ForumPost forumPostDTOToForumPost(ForumPostDTO forumPostDTO){
@@ -118,9 +118,9 @@ public static UserEntityDTO userEntityToUserEntityDTO(UserEntity userEntity){
                 userEntity.getUsername(),
                 userEntity.getDisplayName(),
                 userEntity.getEmail(),
-                getIds(Collections.singletonList(userEntity.getPostList())),
-                getIds(Collections.singletonList(userEntity.getCommentList())),
-                null
+                getPostIdList(userEntity.getPostList()),
+                getCommentIdList(userEntity.getCommentList()),
+                userEntity.getCourseRole().stream().map(Mapper::courseRoleToCourseRoleDTO).collect(Collectors.toList())
 
         );
 }
@@ -133,26 +133,45 @@ public static CourseUserRolesDTO courseRoleToCourseRoleDTO (CourseUserRoles cour
                 courseUserRoles.getCourse().getId()
         );
 }
-
-private static List<Integer> getIds(List<Object> objects){
-    List<Integer> idList = new ArrayList<>();
-    for(Object object : objects){
-        Integer id = extractId(object);
-        idList.add(id);
-    }
-    return idList;
+public static RoleDTO roleToRoleDTO(Role role){
+        return new RoleDTO(
+                role.getId(),
+                role.getRoleName(),
+                null
+        );
 }
 
-    private static Integer extractId(Object obj) {
-        try {
-            Field idField = obj.getClass().getDeclaredField("id");
-            ((Field) idField).setAccessible(true);
-            return (Integer) idField.get(obj);
-        } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
-            e.printStackTrace();
-        }
-        return null;
+private static List<Integer> getPostIdList(List<ForumPost> posts){
+    List<Integer> ids =new ArrayList<>();
+    for (ForumPost post : posts){
+        ids.add(post.getId());
     }
+    return ids;
+}
+
+    private static List<Integer> getTopicIdList(List<Topic> topics){
+        List<Integer> ids =new ArrayList<>();
+        for (Topic topic : topics){
+            ids.add(topic.getId());
+        }
+        return ids;
+    }
+    private static List<Integer> getCommentIdList(List<Comment> comments){
+        List<Integer> ids =new ArrayList<>();
+        for (Comment comment : comments){
+            ids.add(comment.getId());
+        }
+        return ids;
+    }
+
+    private static List<Integer> getCourseIdList(List<Course> courses){
+        List<Integer> ids =new ArrayList<>();
+        for (Course course : courses){
+            ids.add(course.getId());
+        }
+        return ids;
+    }
+
 
 
 }

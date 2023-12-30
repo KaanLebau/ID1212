@@ -39,32 +39,28 @@ public class CourseController {
     }
 
 
-    public CourseDTO findByCourseId(String id){
-        Course course = courseServices.findByCourseId(id);
-        return  courseToCourseDTO(course);
+    public Course findByCourseId(String id){
+        return courseServices.findByCourseId(id);
     }
 
 
-    public CourseDTO findbyId(Integer id){
-        Course course= courseServices.findByDbId(id);
-        return courseToCourseDTO(course);
+    public Course findbyDbId(Integer id){
+        return courseServices.findByDbId(id);
     }
 
 
 
-    public CourseDTO updateByCourseDbId(CourseDTO courseDTO){
-        Course orgCourse = courseServices.findByDbId(courseDTO.id());
+    public CourseDTO updateByCourseDTO(Integer courseId, CourseDTO courseDTO){
+        Course orgCourse = courseServices.findByDbId(courseId);
         orgCourse.setId(null);
         orgCourse.setCourseDesc(courseDTO.courseDesc());
         orgCourse.setCourseId(courseDTO.courseId());
         orgCourse.setCourseName(courseDTO.courseName());
-
-        //orgCourse.setCourseRole(courseDTO.courseRoles().stream().map(Map));
         courseServices.removeByDbId(courseDTO.id());
         return creteCourse(courseDTO);
     }
 
-    public CourseDTO updateByCourseId(@PathVariable String courseId, @RequestBody CourseDTO courseDTO){
+    public CourseDTO updateByCourseId(String courseId, CourseDTO courseDTO){
         Course course = courseServices.findByCourseId(courseId);
         courseServices.removeByDbId(course.getId());
         Course theCourse;
@@ -82,7 +78,7 @@ public class CourseController {
         Delete
      */
 
-    public void removeByDbId(@PathVariable Integer dbId){
+    public void deleteByCourseDbId(Integer dbId){
         courseServices.removeByDbId(dbId);
     }
 

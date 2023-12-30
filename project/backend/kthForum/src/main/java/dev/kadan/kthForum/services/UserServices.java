@@ -8,7 +8,7 @@ public interface UserServices {
 
     UserEntity getByUsername(String username);
 
-    UserEntity getByDbId(Integer userId);
+    UserEntity findByDbId(Integer userId);
 
     UserEntity saveUser(UserEntity user);
 

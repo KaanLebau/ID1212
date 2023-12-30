@@ -4,6 +4,8 @@ import dev.kadan.kthForum.models.Course;
 import dev.kadan.kthForum.repositories.CoursesRepository;
 import dev.kadan.kthForum.services.CoursesServices;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -50,5 +52,14 @@ public class CourseServicesImpl implements CoursesServices {
     @Override
     public void removeByCourseId(String courseId) {
         coursesRepository.deleteByCourseId(courseId);
+    }
+
+    @Override
+    public List<Course> findListOfCourses(List<Integer> courseIdList) {
+        List<Course> courseList = new ArrayList<>();
+        for(Integer id  : courseIdList){
+            courseList.add(coursesRepository.findById(id).get());
+        }
+        return courseList;
     }
 }

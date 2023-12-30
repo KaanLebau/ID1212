@@ -6,8 +6,11 @@ import dev.kadan.kthForum.repositories.CommentRepository;
 import dev.kadan.kthForum.repositories.UserRepository;
 import dev.kadan.kthForum.services.CommentServices;
 import dev.kadan.kthForum.utilities.Mapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -28,8 +31,10 @@ public class CommentServiceImpl implements CommentServices {
     }
 
     @Override
-    public List<CommentDTO> getByUserId(Integer userId) {
-        return userRepository.findById(userId).get().getCommentList().stream().map(Mapper::commentToCommentDTO).collect(Collectors.toList());
+    public List<Comment> getByUserId(Integer userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND))
+                .getCommentList();
     }
 
     @Override
@@ -40,6 +45,15 @@ public class CommentServiceImpl implements CommentServices {
     @Override
     public Comment createComment(Comment comment) {
         return commentRepository.save(comment);
+    }
+
+    @Override
+    public List<Comment> findListOfComments(List<Integer> commentIdList) {
+        List<Comment> commentList = new ArrayList<>();
+        for(Integer id : commentIdList){
+            commentList.add(commentRepository.findById(id).get());
+        }
+        return commentList;
     }
 
     @Override

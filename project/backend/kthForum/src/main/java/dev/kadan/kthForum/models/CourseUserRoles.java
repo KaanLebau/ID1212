@@ -18,14 +18,17 @@ public class CourseUserRoles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private UserEntity user;
+
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     @JsonBackReference
     private Role role;
+
     @ManyToOne
     @JoinColumn(name = "courses_id", nullable = false)
     @JsonBackReference

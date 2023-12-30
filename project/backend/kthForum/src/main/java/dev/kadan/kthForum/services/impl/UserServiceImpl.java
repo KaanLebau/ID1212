@@ -8,7 +8,9 @@ import dev.kadan.kthForum.repositories.UserRepository;
 import dev.kadan.kthForum.services.UserServices;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserServices {
@@ -27,7 +29,7 @@ public class UserServiceImpl implements UserServices {
     }
 
     @Override
-    public UserEntity getByDbId(Integer userId) {
+    public UserEntity findByDbId(Integer userId) {
         return userRepository.findById(userId).get();
     }
 
@@ -46,5 +48,14 @@ public class UserServiceImpl implements UserServices {
     public void removeUserById(Integer id) {
         userRepository.deleteById(id);
 
+    }
+
+    @Override
+    public List<UserEntity> findListOfUser(List<Integer> userIdList) {
+        List<UserEntity> userList = new ArrayList<>();
+        for(Integer id : userIdList){
+            userList.add(userRepository.findById(id).get());
+        }
+        return userList;
     }
 }

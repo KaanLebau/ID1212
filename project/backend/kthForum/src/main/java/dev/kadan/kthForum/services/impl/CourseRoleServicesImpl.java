@@ -1,6 +1,9 @@
 package dev.kadan.kthForum.services.impl;
 
+import dev.kadan.kthForum.models.Course;
 import dev.kadan.kthForum.models.CourseUserRoles;
+import dev.kadan.kthForum.models.Role;
+import dev.kadan.kthForum.models.UserEntity;
 import dev.kadan.kthForum.repositories.CourseRoleRepository;
 import dev.kadan.kthForum.services.CourseRoleServices;
 import org.springframework.http.HttpStatus;
@@ -24,18 +27,18 @@ public class CourseRoleServicesImpl implements CourseRoleServices {
     }
 
     @Override
-    public List<CourseUserRoles> findByCourse(Integer courseId) {
-        return null;
+    public List<CourseUserRoles> findByCourse(Course course) {
+        return roleRepository.findByCourse(course);
     }
 
     @Override
-    public List<CourseUserRoles> findByUser(Integer userId) {
-        return roleRepository.findByUserId(userId);
+    public List<CourseUserRoles> findByUser(UserEntity user) {
+        return roleRepository.findByUser(user);
     }
 
     @Override
-    public List<CourseUserRoles> findByRole(Integer roleId) {
-        return roleRepository.findByRoleId(roleId);
+    public List<CourseUserRoles> findByRole(Role role) {
+        return roleRepository.findByRole(role);
     }
 
     @Override
@@ -44,7 +47,12 @@ public class CourseRoleServicesImpl implements CourseRoleServices {
     }
 
     @Override
-    public void removeCourseRole(CourseUserRoles courseUserRoles) {
+    public CourseUserRoles findByCourseAndUser(Course course, UserEntity user) {
+        return roleRepository.findByCourseAndUser(course, user);
+    }
 
+    @Override
+    public void removeCourseRole(Integer courseUserRolesId) {
+        roleRepository.deleteById(courseUserRolesId);
     }
 }

@@ -7,6 +7,7 @@ import dev.kadan.kthForum.repositories.UserRepository;
 import dev.kadan.kthForum.services.ForumPostServices;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,6 +41,15 @@ public class ForumPostServicesImpl implements ForumPostServices {
     @Override
     public void removePostById(Integer postId) {
         forumPostRepository.deleteById(postId);
+    }
+
+    @Override
+    public List<ForumPost> findListOfPosts(List<Integer> postIdList) {
+        List<ForumPost> postList = new ArrayList<>();
+        for( Integer id : postIdList){
+            postList.add(forumPostRepository.findById(id).get());
+        }
+        return postList;
     }
 
 }

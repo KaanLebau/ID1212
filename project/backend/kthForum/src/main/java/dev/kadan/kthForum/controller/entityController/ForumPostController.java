@@ -36,7 +36,7 @@ public class ForumPostController {
     */
     @PostMapping(BASE_PATH + "new")
     public ForumPostDTO createPost(@RequestBody ForumPostDTO postDTO){
-        UserEntity theUser = userService.getByDbId(postDTO.userId());
+        UserEntity theUser = userService.findByDbId(postDTO.userId());
         Topic theTopic = topicServeces.getByDbId(postDTO.topicId());
         ForumPost thePost = forumPostDTOToForumPost(postDTO);
         thePost.setUser(theUser);
@@ -50,7 +50,7 @@ public class ForumPostController {
      */
     @GetMapping(BASE_PATH + "post/getbyuser/{userId}")
     public List<ForumPostDTO> getPostByUserId(@PathVariable Integer userId){
-        UserEntity theUser = userService.getByDbId(userId);
+        UserEntity theUser = userService.findByDbId(userId);
         return theUser.getPostList().stream().map(Mapper::forumPostToForumPostDTO).collect(Collectors.toList());
     }
 
@@ -79,7 +79,7 @@ public class ForumPostController {
         if(oldPost.getUser().getId() != forumPostDTO.userId()){
             throw new AuthException();
         }else {
-            UserEntity theUser = userService.getByDbId(forumPostDTO.userId());
+            UserEntity theUser = userService.findByDbId(forumPostDTO.userId());
             Topic theTopic = topicServeces.getByDbId(forumPostDTO.topicId());
             LocalDate created = oldPost.getCreated();
             newPost = forumPostDTOToForumPost(forumPostDTO);
@@ -92,11 +92,8 @@ public class ForumPostController {
         }
     }
 
-    /*
-        DELETE
-     */
-    @DeleteMapping(BASE_PATH + "removepost/{postId}")
-    public void removePostByPostId(@PathVariable Integer postId){
+
+    public void removePostByPostId(Integer postId){
         postServices.removePostById(postId);
     }
 

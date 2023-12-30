@@ -20,13 +20,15 @@ public class FrontendController {
     private final TopicController topicController;
     private final UserController userController;
     private final CommentController commentController;
+    private final CourseRoleController courseRoleController;
 
-    public FrontendController(CourseController courseController, ForumPostController postController, TopicController topicController, UserController userController, CommentController commentController) {
+    public FrontendController(CourseController courseController, ForumPostController postController, TopicController topicController, UserController userController, CommentController commentController, CourseRoleController courseRoleController) {
         this.courseController = courseController;
         this.postController = postController;
         this.topicController = topicController;
         this.userController = userController;
         this.commentController = commentController;
+        this.courseRoleController = courseRoleController;
     }
 
     /**
@@ -108,7 +110,7 @@ public class FrontendController {
      * <pre>
      *      {
      *          <b>topicName: </b> "This key contains String value",
-     *          <b>courseId: </b> "This key contains String value",
+     *
      *      }
      * </pre>
      * @param topicDTO see RequestBody
@@ -118,10 +120,10 @@ public class FrontendController {
      */
     @PostMapping("api/v1/user/{userId}/course/{courseId}/topic/new")
     public TopicDTO createTopic(@RequestBody TopicDTO topicDTO, @PathVariable Integer userId, @PathVariable Integer courseId){
-        TopicDTO newTopic = new TopicDTO(
+        Topic newTopic = new Topic(
                 null,
                 topicDTO.topicName(),
-                courseId,
+                courseController.findbyDbId(courseId),
                 null
         );
         return topicController.createTopic(newTopic);
@@ -145,10 +147,7 @@ public class FrontendController {
      * @return {@link ForumPostDTO}
      */
     @PostMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/new")
-    public ForumPostDTO createPost(
-            @RequestBody ForumPostDTO forumPostDTO,
-            @PathVariable Integer userId,
-            @PathVariable Integer topicId){
+    public ForumPostDTO createPost(@RequestBody ForumPostDTO forumPostDTO, @PathVariable Integer userId, @PathVariable Integer topicId){
         ForumPostDTO post = new ForumPostDTO(
                 null,
                 forumPostDTO.title(),
@@ -187,6 +186,38 @@ public class FrontendController {
     }
 
     /**
+     * <b>Description: </b> Assign a role to user in a course.
+     * <br>
+     * <b>Authorization level: </b> Only ADMIN and TEACHER can assign a course role.
+     * <br>
+     * <b>RequestBody: </b> Should have the following structure.
+     * <pre>
+     *     {
+     *         <b>role_id</b>: "This key contains Integer value"
+     *     }
+     * </pre>
+     * @param courseUserRolesDTO see RequestBody
+     * @param userId used to determine the authorization level
+     * @param courseId used to determine the authorization level
+     * @return {@link CourseUserRolesDTO}
+     */
+    @PostMapping("/api/v1/user/{userId}/course/{courseId}/role")
+    public CourseUserRolesDTO assignCourseRole(@RequestBody CourseUserRolesDTO courseUserRolesDTO, @PathVariable Integer userId, @PathVariable Integer courseId){
+                CourseUserRolesDTO request = new CourseUserRolesDTO(
+                null,
+                userId,
+                courseUserRolesDTO.roleId(),
+                courseId
+        );
+        return courseRoleController.createRole(request);
+    }
+
+    @GetMapping("/api/v1/user/{userId}/courses")
+    public List<CourseDTO> getCourseList(){
+        return courseController.findAllCourses();
+    }
+
+    /**
      * <b>Description: </b> Updates a {@link UserEntity}.
      * <br>
      * <b>Authorization level: </b> Only the user can update.
@@ -212,17 +243,58 @@ public class FrontendController {
         }
     }
 
+    /**
+     * <b>Description: </b> Updates a {@link Course}.
+     * <br>
+     * <b>Authorization level: </b> Only the ADMIN or TEACHER can update.
+     * <br>
+     * <b>RequestBody: </b> Should have the following structure.
+     * <pre>
+     *     {
+     *          <b>id</b>: "This key contains Integer value",
+     *         <b>courseId</b>*: "This key contains String value",
+     *         <b>courseName</b>*: "This key contains String value",
+     *         <b>courseDesc</b>*: "This key contains String value"
+     *     }
+     *     <i>* Only database id is necessary for other fields only the updated fields are necessary</i>
+     * </pre>
+     * @param courseDTO used for update
+     * @param UserId used to determine the authorization level
+     * @param courseId used to determine the authorization level
+     * @return
+     */
     @PutMapping("/api/v1/user/{userId}/course/update/{courseId}")
     public CourseDTO updateCourseById(@RequestBody CourseDTO courseDTO, @PathVariable Integer UserId, Integer courseId){
-        CourseDTO orgCourse = courseController.findbyId(courseId);
-        if(orgCourse.id() != courseDTO.id())
+        Course orgCourse = courseController.findbyDbId(courseId);
+        if(orgCourse.getId() != courseDTO.id())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"The course ID does not match the course to be updated");
-
-        return null;
+        return courseController.updateByCourseDTO(courseId, courseDTO);
     }
+
+    /**
+     * <b>Description: </b> Updates a {@link Topic}.
+     * <br>
+     * <b>Authorization level: </b> Only the ADMIN, TEACHER or TA can update.
+     * <br>
+     * <b>RequestBody: </b> Should have the following structure.
+     * <pre>
+     *     {
+     *         <b>topicName</b>*: "This key contains String value",
+     *     }
+     *     <i>* Only database id is necessary for other fields only the updated fields are necessary</i>
+     * </pre>
+     * @param topicDTO used to update topic
+     * @param UserId used to determine the authorization level
+     * @param topicId used to determine the topic
+     * @param courseId used to determine the authorization level
+     * @return
+     */
     @PutMapping("/api/v1/user/{userId}/course/{courseId}/topic/update/{topicId}")
-    public TopicDTO updateTopicById(){
-        return null;
+    public TopicDTO updateTopicById(@RequestBody TopicDTO topicDTO, @PathVariable Integer UserId,@PathVariable Integer topicId,@PathVariable Integer courseId){
+        TopicDTO org = topicController.findByDbId(topicId);
+        if(org.id() != topicDTO.id())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"The topic ID does not match the topic to be updated");
+        return topicController.updateByTopicDTO(topicId, topicDTO);
     }
     @PutMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/update/{postId}")
     public ForumPostDTO updatePostById(){
@@ -262,21 +334,21 @@ public class FrontendController {
     }
 
 
-    @DeleteMapping("/api/v1/user/update/{userId}")
-    public void deleteUserById(@RequestBody UserEntity userEntity,@PathVariable Integer userId){
-
+    @DeleteMapping("/api/v1/user/delete/{userId}")
+    public void deleteUserById(@PathVariable Integer userId){
+        userController.deleteByUserDbId(userId);
     }
-    @DeleteMapping("/api/v1/user/{userId}/course/update/{courseId}")
-    public void deleteCourseById(){
-
+    @DeleteMapping("/api/v1/user/{userId}/course/delete/{courseId}")
+    public void deleteCourseById(@PathVariable Integer courseId){
+        courseController.deleteByCourseDbId(courseId);
     }
-    @DeleteMapping("/api/v1/user/{userId}/course/{courseId}/topic/update/{topicId}")
-    public void deleteTopicById(){
-
+    @DeleteMapping("/api/v1/user/{userId}/course/{courseId}/topic/delete/{topicId}")
+    public void deleteTopicById(@PathVariable Integer postId){
+        topicController.deleteByTopicDbId(postId);
     }
     @DeleteMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/update/{postId}")
-    public void deletePostById(){
-
+    public void deletePostById(@PathVariable Integer postId){
+    postController.removePostByPostId(postId);
     }
 
 
@@ -289,4 +361,6 @@ public class FrontendController {
             throw new RuntimeException(e);
         }
     }
+
+
 }

@@ -12,9 +12,9 @@ import java.util.List;
  * @param username username type String
  * @param displayName display name type String
  * @param email users email type String
- * @param postList list of posts created by user type <code>List<{@link ForumPostDTO}></code>
- * @param commentList list of comments created by user type <code>List<{@link CommentDTO}></code>
- * @param courseRoles list of users and their role in a course, type List<{@link CourseUserRoles}>
+ * @param postIdList list of posts created by user type <code>List<Integer></code>
+ * @param commentIdList list of comments created by user type <code>List<Integer></code>
+ * @param courseRoles list of users and their role in a course, type List<{@link CourseUserRolesDTO}>
  */
 public record UserEntityDTO(
         Integer id,
@@ -23,6 +23,6 @@ public record UserEntityDTO(
         String email,
         List<Integer> postIdList,
         List<Integer> commentIdList,
-        List<CourseUserRoles> courseRoles
+        List<CourseUserRolesDTO> courseRoles
 ) {
 }

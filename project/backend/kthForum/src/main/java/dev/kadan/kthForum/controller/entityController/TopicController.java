@@ -4,6 +4,7 @@ import dev.kadan.kthForum.models.Course;
 import dev.kadan.kthForum.models.Topic;
 import dev.kadan.kthForum.models.dto.TopicDTO;
 import dev.kadan.kthForum.services.impl.CourseServicesImpl;
+import dev.kadan.kthForum.services.impl.ForumPostServicesImpl;
 import dev.kadan.kthForum.services.impl.TopicServecesImpl;
 import dev.kadan.kthForum.utilities.Mapper;
 import org.springframework.web.bind.annotation.*;
@@ -18,55 +19,51 @@ import static dev.kadan.kthForum.utilities.Mapper.topicToTopicDTO;
 public class TopicController {
     private final TopicServecesImpl topicServeces;
     private final CourseServicesImpl courseServices;
-    private final String BASE_PATH = "/api/v1/topics/";
+    private final ForumPostServicesImpl postServices;
 
-    public TopicController(TopicServecesImpl topicServeces, CourseServicesImpl courseServices) {
+    public TopicController(TopicServecesImpl topicServeces, CourseServicesImpl courseServices, ForumPostServicesImpl postServices) {
         this.topicServeces = topicServeces;
         this.courseServices = courseServices;
+        this.postServices = postServices;
     }
 
     /*
     Create
      */
 
-    public TopicDTO createTopic(TopicDTO topicDTO){
-        Topic theTopic = topicDTOToTopic(topicDTO);
-        Course course = courseServices.findByDbId(topicDTO.courseId());
-        theTopic.setCourses(course);
-
-        return topicToTopicDTO(topicServeces.createTopic(theTopic));
+    public TopicDTO createTopic(Topic topic){
+        return topicToTopicDTO(topicServeces.createTopic(topic));
     }
-    /*
-    Read
-     */
-    @GetMapping(BASE_PATH)
+
     public List<TopicDTO> getAllTopics(){
         List<Topic> topicList = topicServeces.getAll();
         return topicList.stream().map(Mapper::topicToTopicDTO).collect(Collectors.toList());
     }
 
-    @GetMapping(BASE_PATH + "topicbyname/{topicName}")
+
     public List<TopicDTO> getTopicByTitle(@PathVariable String topicName){
         return topicServeces.getByTopicName(topicName).stream().map(Mapper::topicToTopicDTO).collect(Collectors.toList());
     }
-    @GetMapping(BASE_PATH + "topicbycourse/{courseId}")
+
     public List<TopicDTO> getTopicByAuthor(@PathVariable Integer courseId){
         return topicServeces.getByCourseId(courseId).stream().map(Mapper::topicToTopicDTO).collect(Collectors.toList());
     }
-    /*
-    Update
-     */
-    @PutMapping(BASE_PATH + "update/topicbyid/{id}")
-    public void updateByTopicID(@PathVariable Integer topicId, @RequestBody TopicDTO topicDTO){
-        topicServeces.removeById(topicId);
-        createTopic(topicDTO);
+    public TopicDTO findByDbId(Integer topicId){
+        return topicToTopicDTO(topicServeces.getByDbId(topicId));
     }
 
-    /*
-    Delete
-     */
-    @DeleteMapping(BASE_PATH + "remove/byid/{id}")
-    public void removeTopicById(@PathVariable Integer topicId){
+    public TopicDTO updateByTopicDTO(Integer topicId, TopicDTO topicDTO){
+        Topic org = topicServeces.getByDbId(topicId);
+        org.setTopicName(topicDTO.topicName());
+        org.setCourses(courseServices.findByDbId(topicDTO.courseId()));
+        org.setPostList(postServices.findListOfPosts(topicDTO.postIdList()));
+        topicServeces.removeById(topicDTO.id());
+        return topicToTopicDTO(topicServeces.createTopic(org));
+    }
+
+
+
+    public void deleteByTopicDbId(Integer topicId){
         topicServeces.removeById(topicId);
     }
 }

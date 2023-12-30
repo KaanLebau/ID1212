@@ -6,6 +6,7 @@ import dev.kadan.kthForum.services.TopicServeces;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -45,6 +46,15 @@ public class TopicServecesImpl implements TopicServeces {
     @Override
     public void removeById(Integer id) {
         topicRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Topic> findListOfTopics(List<Integer> topipIdList) {
+        List<Topic> topicList = new ArrayList<>();
+        for(Integer id : topipIdList){
+            topicList.add(topicRepository.findById(id).get());
+        }
+        return topicList;
     }
 
 }

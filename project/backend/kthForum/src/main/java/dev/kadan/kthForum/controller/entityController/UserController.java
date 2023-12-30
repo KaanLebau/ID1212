@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 import static dev.kadan.kthForum.utilities.Mapper.kthUserToUserEntity;
 import static dev.kadan.kthForum.utilities.Mapper.userEntityToUserEntityDTO;
 
@@ -42,26 +44,31 @@ public class UserController {
         return userEntityToUserEntityDTO(user);
     }
 
-    @GetMapping("/api/v1/users")
+
     public UserEntity getAll(){
         return null;
     }
 
     public UserEntityDTO getUserById(Integer userId){
-        UserEntity theUser = userService.getByDbId(userId);
+        UserEntity theUser = userService.findByDbId(userId);
         return userEntityToUserEntityDTO(theUser);
     }
-
+    public List<UserEntity> getUserList(List<Integer> idList){
+        return userService.findListOfUser(idList);
+    }
     public UserEntity getByDbId(Integer userId){
-        return userService.getByDbId(userId);
+        return userService.findByDbId(userId);
     }
 
     public UserEntity updateById(UserEntityDTO userEntityDTO, Integer userId){
-        UserEntity user = userService.getByDbId(userId);
+        UserEntity user = userService.findByDbId(userId);
         userService.removeUserById(userId);
         user.setDisplayName(userEntityDTO.displayName());
         return userService.saveUser(user);
     }
 
 
+    public void deleteByUserDbId(Integer userId) {
+        userService.removeUserById(userId);
+    }
 }
