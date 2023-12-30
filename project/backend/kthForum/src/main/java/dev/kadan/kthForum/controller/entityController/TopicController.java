@@ -66,4 +66,8 @@ public class TopicController {
     public void deleteByTopicDbId(Integer topicId){
         topicServeces.removeById(topicId);
     }
+
+    public List<Topic> getListOfTopic(List<Integer> topicList) {
+        return topicServeces.findListOfTopics(topicList);
+    }
 }

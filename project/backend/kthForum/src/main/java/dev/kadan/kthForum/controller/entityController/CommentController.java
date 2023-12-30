@@ -98,4 +98,7 @@ public class CommentController {
         }
     }
 
+    public List<Comment> getlistOfComments(List<Integer> commentList) {
+        return commentService.findListOfComments(commentList);
+    }
 }

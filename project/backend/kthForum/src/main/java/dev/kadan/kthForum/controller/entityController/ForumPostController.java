@@ -69,6 +69,10 @@ public class ForumPostController {
         return postServices.getByDbId(postId);
     }
 
+    public List<ForumPost> getlistOfPosts(List<Integer> postList){
+        return postServices.findListOfPosts(postList);
+    }
+
     /*
         UPDATE
      */

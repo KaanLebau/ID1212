@@ -4,6 +4,7 @@ import dev.kadan.kthForum.controller.entityController.*;
 import dev.kadan.kthForum.models.*;
 import dev.kadan.kthForum.models.dto.*;
 import jakarta.security.auth.message.AuthException;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -222,6 +223,22 @@ public class FrontendController {
         return topicController.getAllTopics();
     }
 
+    @GetMapping("api/v1/user/{userId}/topic/topicList")
+    public List<Topic> getListOfTopic(@RequestBody List<Integer> topicList){
+        return topicController.getListOfTopic(topicList);
+    }
+
+    @GetMapping("api/v1/user/{userId}/post/postList")
+    public List<ForumPost> getListOfPost(@RequestBody List<Integer> postList){
+        return postController.getlistOfPosts(postList);
+    }
+
+    @GetMapping("api/v1/user/{userId}/comments/commentList")
+    public List<Comment> getListOfComment(@RequestBody List<Integer> commentList){
+        return commentController.getlistOfComments(commentList);
+    }
+
+
     /**
      * <b>Description: </b> Updates a {@link UserEntity}.
      * <br>
@@ -351,7 +368,7 @@ public class FrontendController {
     public void deleteTopicById(@PathVariable Integer postId){
         topicController.deleteByTopicDbId(postId);
     }
-    @DeleteMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/update/{postId}")
+    @DeleteMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/delete/{postId}")
     public void deletePostById(@PathVariable Integer postId){
     postController.removePostByPostId(postId);
     }
