@@ -218,22 +218,17 @@ public class FrontendController {
         return courseController.findAllCourses();
     }
 
-    @GetMapping("/api/v1/user/{userId}/topics")
-    public List<TopicDTO> getTopicList(){
-        return topicController.getAllTopics();
-    }
-
-    @GetMapping("api/v1/user/{userId}/topic/topicList")
+    @GetMapping("api/v1/user//api/v1/user/{userId}/topic/topicList")
     public List<Topic> getListOfTopic(@RequestBody List<Integer> topicList){
         return topicController.getListOfTopic(topicList);
     }
 
-    @GetMapping("api/v1/user/{userId}/post/postList")
+    @GetMapping("api/v1/user//api/v1/user/{userId}/post/postList")
     public List<ForumPost> getListOfPost(@RequestBody List<Integer> postList){
         return postController.getlistOfPosts(postList);
     }
 
-    @GetMapping("api/v1/user/{userId}/comments/commentList")
+    @GetMapping("api/v1/user//api/v1/user/{userId}/comments/commentList")
     public List<Comment> getListOfComment(@RequestBody List<Integer> commentList){
         return commentController.getlistOfComments(commentList);
     }
