@@ -223,6 +223,17 @@ public class FrontendController {
         return topicController.getListOfTopic(topicList);
     }
 
+    @GetMapping("api/v1/user//api/v1/user/{userId}/post/postList")
+    public List<ForumPost> getListOfPost(@RequestBody List<Integer> postList){
+        return postController.getlistOfPosts(postList);
+    }
+
+    @GetMapping("api/v1/user//api/v1/user/{userId}/comments/commentList")
+    public List<Comment> getListOfComment(@RequestBody List<Integer> commentList){
+        return commentController.getlistOfComments(commentList);
+    }
+
+
     /**
      * <b>Description: </b> Updates a {@link UserEntity}.
      * <br>
