@@ -94,7 +94,7 @@ public class SmtpClientWithSTARTTLS {
                     break;
                 }
             }
-            if(response.contains("Authentication successful")){
+            if(response.contains("Authentication successful") || response.contains("already authenticated")){
                 this.registred = true;
                 System.out.println(response);
             }
@@ -102,7 +102,6 @@ public class SmtpClientWithSTARTTLS {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-
         response = null;
     }
 

@@ -36,8 +36,8 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    if (user) {
-      const userCourseIds = user.courseRole.map(courseUserRole => courseUserRole.course_id);
+    if (user && courses) {
+      const userCourseIds = user.courseRoles.map(courseUserRole => courseUserRole.courseId);
       setUserCourses(courses.filter(course => userCourseIds.includes(course.id)));
     }
   }, [user, courses]);
@@ -132,8 +132,8 @@ function Home() {
 
   return (
     <div className="home">
-      <Navbar
-        roleId={user?.courseRole[0]?.role_id}
+     <Navbar
+        roleId={user.courseRoles[0]?.roleId}
         courses={userCourses}
         onCourseSelect={handleSelectCourse}
         handleLogout={handleLogout}
@@ -153,7 +153,7 @@ function Home() {
       {/*Sidebar showing all topics*/}
       {userCourses[courseId - 1] && (
         <Sidebar
-          roleId={user?.courseRole[0]?.role_id}
+          roleId={user.courseRoles[0]?.roleId}
           topics={currentTopics}
           course={userCourses[courseId - 1]}
           onTopicSelect={handleSelectTopic}
@@ -166,7 +166,7 @@ function Home() {
       {/*Course intro/course edit*/}
       {!topicId && userCourses[courseId - 1] && 
         <CourseIntro 
-          roleId={user?.courseRole[0]?.role_id}
+          roleId={user?.courseRoles[0]?.roleId}
           course={userCourses[courseId - 1]} 
           handleUpdateCourse={handleUpdateCourse}
           handleDeleteCourse={handleDeleteCourse}

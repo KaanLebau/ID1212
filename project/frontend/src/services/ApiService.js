@@ -131,7 +131,8 @@ export const updateComment = async (userId, courseId, topicId, postId, commentId
 
 export const deleteCourse = async (userId, courseId) => {
   try {
-    const response = await axios.delete(`${API_URL}/user/${userId}/course/${courseId}`);
+    const response = await axios.delete(`${API_URL}/user/${userId}/course/delete/${courseId}`
+    );
   } catch (error) {
     console.error('An error occurred during course deletion:', error.response || error);
     throw error;
@@ -140,7 +141,7 @@ export const deleteCourse = async (userId, courseId) => {
 
 export const deleteTopic = async (userId, courseId, topicId) => {
   try {
-    const response = await axios.delete(`${API_URL}/user/${userId}/course/${courseId}/topic/${topicId}`);
+    const response = await axios.delete(`${API_URL}/user/${userId}/course/${courseId}/topic/delete/${topicId}`);
   } catch (error) {
     console.error('An error occurred during topic deletion:', error.response || error);
     throw error;
@@ -149,7 +150,7 @@ export const deleteTopic = async (userId, courseId, topicId) => {
 
 export const deletePost = async (userId, courseId, topicId, postId) => {
   try {
-    const response = await axios.delete(`${API_URL}/user/${userId}/course/${courseId}/topic/${topicId}/post/${postId}`);
+    const response = await axios.delete(`${API_URL}/user/${userId}/course/${courseId}/topic/${topicId}/post/delete/${postId}`);
   } catch (error) {
     console.error('An error occurred during post deletion:', error.response || error);
     throw error;
@@ -158,7 +159,7 @@ export const deletePost = async (userId, courseId, topicId, postId) => {
 
 export const deleteComment = async (userId, courseId, topicId, postId, commentId) => {
   try {
-    const response = await axios.delete(`${API_URL}/user/${userId}/course/${courseId}/topic/${topicId}/post/${postId}/comment/${commentId}`);
+    const response = await axios.delete(`${API_URL}/user/${userId}/course/${courseId}/topic/${topicId}/post/${postId}/comment/delete/${commentId}`);
   } catch (error) {
     console.error('An error occurred during comment deletion:', error.response || error);
     throw error;
@@ -168,7 +169,7 @@ export const deleteComment = async (userId, courseId, topicId, postId, commentId
 export const setUserDisplayName = async (userId, displayName) => {
   try {
     const response = await axios.put(`${API_URL}/user/update/${userId}`, {
-      content: content
+      displayName: displayName
     });
   } catch (error) {
     console.error('An error occurred during display name setting:', error.response || error);

@@ -1,16 +1,18 @@
 import { useNavigate } from 'react-router-dom';
 import { setUserDisplayName } from '../../services/ApiService';
 import '../../assets/styles/Displayname.css';
+import { useUserContext } from "../../services/UserContext";
 
 function DisplayName() {
     let navigate = useNavigate();
+    const { user } = useUserContext();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const displayName = formData.get('displayName');
 
-    await setUserDisplayName(displayName);
+    await setUserDisplayName(user.id, displayName);
 
     navigate('/home');
   };
