@@ -5,18 +5,14 @@ import '../../assets/styles/Displayname.css';
 function DisplayName() {
     let navigate = useNavigate();
 
-  const handleSetDisplayName = async (displayName) => {
-    await setUserDisplayName(displayName);
-
-    navigate('/home');
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const displayName = formData.get('displayName');
 
-    await handleSetDisplayName(displayName);
+    await setUserDisplayName(displayName);
+
+    navigate('/home');
   };
 
   return (

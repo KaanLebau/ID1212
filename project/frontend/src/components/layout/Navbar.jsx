@@ -1,7 +1,13 @@
 import PropTypes from 'prop-types';
 import '../../assets/styles/Navbar.css';
+import { useNavigate } from 'react-router-dom';
 
-function Navbar({role, courses, onCourseSelect, handleLogout}) {
+function Navbar({roleId, courses, onCourseSelect, handleLogout}) {
+    let navigate = useNavigate();
+    const changeDisplayname = () => {
+        navigate("/displayname");
+    }
+
     return (
         <header className="header">
         <div className="logo-nav-container">
@@ -14,8 +20,11 @@ function Navbar({role, courses, onCourseSelect, handleLogout}) {
                         {course.courseId + " - " + course.courseName}
                     </a>
                 ))}
-                <a key={"create-course"} onClick={() => onCourseSelect(0)} className="create-course">Create new course</a>
+                <div className='navbar-management'>
+                {roleId === 1 && <a key={"create-course"} onClick={() => onCourseSelect(0)} className="create-course">Create New Course</a>}
+                <a key={"change-displayname"} onClick={() => changeDisplayname()} className="change-displayname">Change Displayname</a>
                 <a key={"logout"} onClick={() => handleLogout()} className="logout">Logout</a>
+                </div>
             </nav>
         </div>
         </header>

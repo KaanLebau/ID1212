@@ -4,18 +4,18 @@ import Sidebar from "../layout/Sidebar";
 import Post from "../layout/Post";
 import Topic from "../layout/Topic";
 import CreateCourse from "../layout/CreateCourse";
-import CreateTopic from "../layout/CreateTopic";
 import CreatePost from "../layout/CreatePost";
-import TopicIntro from "../layout/TopicIntro";
+import CourseIntro from "../layout/CourseIntro";
 import "../../assets/styles/Home.css";
 import {
-  getCourses,
-  getTopics,
-  getTopicsByCourse,
-  getPosts,
+  getCourses, getTopics, getPosts,
+  createCourse, createTopic, createPost, createComment,
+  updateCourse, updateTopic, updatePost, updateComment,
+  deleteCourse, deleteTopic, deletePost, deleteComment,
 } from "../../services/ApiService";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { useUserContext } from "../../services/UserContext";
 
 function Home() {
   let navigate = useNavigate();
@@ -24,18 +24,27 @@ function Home() {
   const [topics, setTopics] = useState([]);
   const [currentTopics, setCurrentTopics] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [userCourses, setUserCourses] = useState([]);
+  const {user, logoutUser} = useUserContext();
 
   useEffect(() => {
-    getCourses().then(setCourses);
+    getCourses(user.id).then(setCourses);
   }, []);
 
   useEffect(() => {
-    getTopics().then(setTopics);
+    getTopics(user.id).then(setTopics);
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      const userCourseIds = user.courseRole.map(courseUserRole => courseUserRole.course_id);
+      setUserCourses(courses.filter(course => userCourseIds.includes(course.id)));
+    }
+  }, [user, courses]);
 
   useEffect(() => {
     if (courseId) {
-      getTopicsByCourse(courseId).then(setCurrentTopics);
+      setCurrentTopics(topics.filter(topic => topic.course_id === courseId));
     }
   }, [courseId]);
 
@@ -46,6 +55,7 @@ function Home() {
   }, [topicId]);
 
   const handleLogout = () => {
+    logoutUser();
     navigate("/");
   };
 
@@ -61,14 +71,75 @@ function Home() {
     navigate(`/home/${courseId}/${topicId}/${postId}`);
   };
 
+  const handleCreateCourse = (id, name, desc) => {
+    createCourse(user.id, id, name, desc);
+    navigate(`/home/`);
+  }
+
+  const handleCreateTopic = (name) => {
+    createTopic(user.id, courseId, name);
+    navigate(`/home/${courseId}/`);
+  }
+
+  const handleCreatePost = (title, content) => {
+    createPost(user.id, courseId, topicId, title, content);
+    navigate(`/home/${courseId}/${topicId}/`);
+  }
+
+  const handleCreateComment = (content) => {
+    createComment(user.id, courseId, topicId, postId, content);
+    navigate(`/home/${courseId}/${topicId}/${postId}`);
+  }
+
+  const handleUpdateCourse = (name, desc) => {
+    updateCourse(user.id, courseId, name, desc);
+    navigate(`/home/${courseId}/`);
+  }
+
+  const handleUpdateTopic = (topicId, name) => {
+    updateTopic(user.id, courseId, topicId, name);
+  }
+
+  const handleUpdatePost = (title, content) => {
+    updatePost(user.id, courseId, topicId, postId, title, content);
+    navigate(`/home/${courseId}/${topicId}/${postId}`);
+  }
+
+  const handleUpdateComment = (content) => {
+    updateComment(user.id, courseId, topicId, postId, content);
+    navigate(`/home/${courseId}/${topicId}/${postId}`);
+  }
+
+  const handleDeleteCourse = () => {
+    deleteCourse(user.id, courseId);
+    navigate(`/home/`);
+  }
+
+  const handleDeleteTopic = () => {
+    deleteTopic(user.id, courseId, topicId);
+    navigate(`/home/${courseId}/`);
+  }
+
+  const handleDeletePost = () => {
+    deletePost(user.id, courseId, topicId, postId);
+    navigate(`/home/${courseId}/${topicId}/`);
+  }
+
+  const handleDeleteComment = () => {
+    deleteComment(user.id, courseId, topicId, postId);
+    navigate(`/home/${courseId}/${topicId}/${postId}`);
+  }
+
   return (
     <div className="home">
       <Navbar
-        courses={courses}
+        roleId={user?.courseRole[0]?.role_id}
+        courses={userCourses}
         onCourseSelect={handleSelectCourse}
         handleLogout={handleLogout}
       />
 
+      {/*Forum intro*/}
       {!courseId && (
         <header className="introduction">
           Welcome to the forum. Please select one of your courses above to get
@@ -76,24 +147,59 @@ function Home() {
         </header>
       )}
 
-      {courseId == 0 && <CreateCourse />}
+      {/*Create course form*/}
+      {courseId == 0 && <CreateCourse handleCreateCourse={handleCreateCourse}/>}
 
-      {courses[courseId - 1] && (
+      {/*Sidebar showing all topics*/}
+      {userCourses[courseId - 1] && (
         <Sidebar
+          roleId={user?.courseRole[0]?.role_id}
           topics={currentTopics}
-          course={courses[courseId - 1]}
+          course={userCourses[courseId - 1]}
           onTopicSelect={handleSelectTopic}
+          handleCreateTopic={handleCreateTopic}
+          handleUpdateTopic={handleUpdateTopic}
+          handleDeleteTopic={handleDeleteTopic}
         />
       )}
 
-      {topicId == 0 && <CreateTopic />}
-      {!topicId && courseId && <TopicIntro course={courses[courseId - 1]} />}
-      {topics[topicId - 1] && !postId && (
-        <Topic posts={posts} handlePostClick={handlePostClick} />
-      )}
+      {/*Course intro/course edit*/}
+      {!topicId && userCourses[courseId - 1] && 
+        <CourseIntro 
+          roleId={user?.courseRole[0]?.role_id}
+          course={userCourses[courseId - 1]} 
+          handleUpdateCourse={handleUpdateCourse}
+          handleDeleteCourse={handleDeleteCourse}
+        />
+      }
 
-      {postId==0 && <CreatePost />}
-      {posts[postId - 1] && postId && <Post post={posts[postId - 1]} />}
+      {/*Create topic form*/}
+      {topicId == 0 && <CreateTopic handleCreateTopic={handleCreateTopic}/>}
+
+      {/*Topic view showing all posts as cards*/}
+      {topics[topicId - 1] && !postId && 
+        <Topic 
+          topic={topics[topicId - 1]}
+          posts={posts}
+          handlePostClick={handlePostClick}
+        />
+      }
+
+      {/*Create post form*/}
+      {postId==0 && <CreatePost handleCreatePost={handleCreatePost}/>}
+        
+      {/*Post view*/}
+      {posts[postId - 1] && postId && 
+        <Post 
+          user={user}
+          post={posts[postId - 1]} 
+          handleUpdatePost={handleUpdatePost}
+          handleDeletePost={handleDeletePost}
+          handleCreateComment={handleCreateComment}
+          handleUpdateComment={handleUpdateComment}
+          handleDeleteComment={handleDeleteComment}
+        />
+      }
     </div>
   );
 }

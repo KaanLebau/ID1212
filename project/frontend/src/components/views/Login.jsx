@@ -1,22 +1,28 @@
 import '../../assets/styles/Login.css';
 import { useNavigate } from 'react-router-dom';
-import { getUser } from '../../services/ApiService';
+import { useUserContext } from '../../services/UserContext';
+import { useState } from "react";
 
 function Login() {
     let navigate = useNavigate();
+    const { loginUser } = useUserContext();
+    const [error, setError] = useState('');
   
-    const handleLogin = async (credentials) => {
+    const handleLogin = async (event) => {
       event.preventDefault();
       const formData = new FormData(event.target);
       const username = formData.get('username').split('@')[0];
       const password = formData.get('password');
 
-      const user = await getUser(username, password);
+      const user = await loginUser(username, password);
   
       if (user && !user.displayName) {
+        console.log(user);
         navigate('/displayname');
-      } else {
+      } else if (user) {
         navigate('/home');
+      } else {
+        setError('Invalid username or password');
       }
     };
 
@@ -30,7 +36,9 @@ function Login() {
           <div className="login-message">
             <p>Login using your KTH-account</p>
           </div>
-
+          <div>
+            {error && <p className="login-error">{error}</p>}
+          </div>
           <form onSubmit={handleLogin}>
             <div className="row">
               <label htmlFor="username">Username: </label>

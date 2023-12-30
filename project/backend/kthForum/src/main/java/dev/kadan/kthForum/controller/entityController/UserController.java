@@ -32,7 +32,7 @@ public class UserController {
 
 
     public UserEntityDTO login(@RequestBody KthUser kthUser){
-        if(kthLogin.logIn(kthUser.username(),kthUser.password())){
+        if(!kthLogin.logIn(kthUser.username(),kthUser.password())){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
         }
         UserEntity user;

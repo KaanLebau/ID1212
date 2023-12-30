@@ -18,13 +18,14 @@
 }
 
 .create-course-message {
-    font-size: 18px;
+    font-family: 'Azonix', sans-serif;
+    font-size: 30px;
     color: #666;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
-.create-course-textarea{
-    margin: 15px;
+.create-course-textarea {
+    margin-bottom: 15px;
     padding: 15px;
     background-color: #f0f0f0;
     color: #333;
@@ -37,7 +38,13 @@
 }
 
 .create-course-textarea:hover {
-outline: none;
-border-color: #007BFF;
-background-color: #fff;
+    background-color: #f0f0f0;
+    outline: none;
+    border-color: #007BFF;
+}
+
+.create-course-textarea:focus {
+    background-color: #f0f0f0;
+    outline: none;
+    border-color: #007BFF;
 }

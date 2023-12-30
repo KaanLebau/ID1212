@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
 @import url('https://fonts.cdnfonts.com/css/azonix');
 
-body, input, button, label {
+body, input, button, label, textarea {
     font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
 }

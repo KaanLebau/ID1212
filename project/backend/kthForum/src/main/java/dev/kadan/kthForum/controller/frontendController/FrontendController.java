@@ -217,6 +217,11 @@ public class FrontendController {
         return courseController.findAllCourses();
     }
 
+    @GetMapping("/api/v1/user/{userId}/topics")
+    public List<TopicDTO> getTopicList(){
+        return topicController.getAllTopics();
+    }
+
     /**
      * <b>Description: </b> Updates a {@link UserEntity}.
      * <br>

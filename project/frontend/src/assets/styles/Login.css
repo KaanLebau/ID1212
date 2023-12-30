@@ -39,7 +39,7 @@ body, input, button, label {
 .login-message {
     font-size: 18px;
     color: #666;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .row {
@@ -49,14 +49,14 @@ body, input, button, label {
 }
 
 label {
+    margin-top: 15px;
+    margin-bottom: 5px;
     font-size: 16px;
     color: #333;
     font-weight: 500;
-    margin-bottom: -20px;
 }
 
 input {
-    margin: 15px;
     padding: 15px;
     background-color: #f0f0f0;
     color: #333;
@@ -68,15 +68,19 @@ input {
 }
 
 input:hover {
+    background-color: #f0f0f0;
     outline: none;
     border-color: #007BFF;
-    background-color: #fff;
 }
 
 input:focus {
+    background-color: #f0f0f0;
     outline: none;
     border-color: #007BFF;
-    background-color: #fff;
+}
+
+#password{
+    margin-bottom: 15px;
 }
 
 button {
@@ -92,6 +96,11 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+.login-error {
+    color: red;
+    margin-top: 10px;
+  }
 
 @media (max-width: 768px) {
     .login-container {

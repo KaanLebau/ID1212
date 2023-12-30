@@ -1,8 +1,10 @@
 import React from "react";
 import "../../assets/styles/Topic.css";
 
-function Topic({posts, handlePostClick}) {
+function Topic({topic, posts, handlePostClick}) {
   return (
+    <>
+      <p className="topic-title">{topic.topicName}</p>
     <div className="topic-container">
       {posts.map((post, index) => (
         <div key={post.id} onClick={() => handlePostClick(post.id)} className="post-container">
@@ -18,7 +20,6 @@ function Topic({posts, handlePostClick}) {
           </div>
         </div>
       ))}
-      {/* New "Create post" card */}
       <div onClick={() => handlePostClick(0)} className="post-container create-post-card">
         <div className="create-post-content">
           <div className="create-post-plus-sign">+</div>
@@ -26,6 +27,7 @@ function Topic({posts, handlePostClick}) {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

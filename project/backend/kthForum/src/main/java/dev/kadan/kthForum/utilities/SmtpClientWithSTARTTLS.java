@@ -70,7 +70,11 @@ public class SmtpClientWithSTARTTLS {
             out.println(Base64.getEncoder().encodeToString(kthPassword.getBytes()));
             printResponse("Authentication Status");
 
-            return this.registred;
+            if(this.registred){
+                this.registred = false;
+                return true;
+            } else
+                return false;
     }
 
 
@@ -90,7 +94,7 @@ public class SmtpClientWithSTARTTLS {
                     break;
                 }
             }
-            if(response.contains("Ok")){
+            if(response.contains("Authentication successful")){
                 this.registred = true;
                 System.out.println(response);
             }

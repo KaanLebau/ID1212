@@ -4,7 +4,7 @@
     padding: 2px;
     padding-left: 12px;
     text-align: left;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin: 0px;
 }
 
@@ -15,7 +15,7 @@
     width: 320px;
     height: 100vh;
     background-color: #354c62;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     z-index: 500;
     padding-top: 60px;
 }
@@ -32,11 +32,7 @@
     padding: 10px;
     color: #BDC3C7;
     text-decoration: none;
-    cursor: pointer;
-}
-
-.topic-item:hover {
-    background-color: #47627c;
+    width: 100%;
 }
 
 .create-topic {
@@ -51,3 +47,89 @@
 .create-topic:hover {
     background-color: #47627c;
 }
+
+.topic-item-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.topic-item-container:hover {
+    background-color: #47627c;
+}
+
+.topic-icons {
+    display: flex;
+    margin-left: auto;
+}
+
+.topic-edit-icon, .topic-delete-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+    cursor: pointer;
+    opacity: 0.4;
+}
+
+.topic-edit-icon:hover, .topic-delete-icon:hover {
+    opacity: 1;
+}
+
+.topic-edit-input {
+    font-size: 1rem;
+    padding: 10px;
+    padding-right: 15px;
+    padding-left: 4px;
+    margin-left: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 29px;
+}
+
+.topic-submit-btn {
+    font-size: 11px;
+    padding: 5px;
+    margin-left: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 29px;
+    width: 50px;
+  }
+
+.topic-cancel-btn {
+    font-size: 11px;
+    padding: 5px;
+    margin-left: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 29px;
+    width: 45px;
+  }
+
+  .topic-item-container.editing:hover {
+    transform: none;
+    background-color: #354c62;
+    cursor: default;
+  }
+  
+  .topic-item-container.editing .post-container:hover {
+    transform: none;
+    background-color: #354c62;
+    cursor: default;
+  }
+
+  .topic-item-container.creating {
+    transform: none;
+    background-color: #47627c;
+    cursor: default;
+  }
+
+  .topic-item-container.creating:hover {
+    transform: none;
+    background-color: #47627c;
+    cursor: default;
+  }

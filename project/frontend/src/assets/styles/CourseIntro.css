@@ -1,0 +1,151 @@
+.course-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #34495e;
+    color: #FFFFFF;
+    text-align: center;
+    margin-left: 330px;
+    width: calc(100% - 330px)
+}
+
+.course-intro-logo {
+    font-family: 'Azonix', sans-serif;
+    font-size: 40px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.course-intro-edit{
+    font-family: 'Azonix', sans-serif;
+    font-size: 40px;
+    font-weight: 500;
+    margin-bottom: 50px;
+    margin-top: -100px;
+}
+
+.course-intro-description,
+.course-intro-message {
+    margin-bottom: 10px;
+    width: 800px;
+}
+
+.edit-course{
+    margin-top: 20px;
+}
+
+.course-intro-id-input{
+    margin-bottom: 10px;
+    font-family: 'Azonix', sans-serif;
+    font-size: 40px;
+    font-weight: 500;
+    width: 20%;
+    text-align: center;
+    background-color: #f0f0f0;
+    color: #333;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    transition: all 0.3s;
+    box-sizing: border-box;
+    border-color: #007bff64;
+    resize: none;
+}
+
+.course-intro-id-input:hover {
+    background-color: #f0f0f0;
+    outline: none;
+    border-color: #007BFF;
+}
+
+.course-intro-id-input:focus {
+    background-color: #f0f0f0;
+    outline: none;
+    border-color: #007BFF;
+}
+
+.course-intro-name-input{
+    margin-bottom: 10px;
+    font-family: 'Azonix', sans-serif;
+    font-size: 40px;
+    font-weight: 500;
+    width: 60%;
+    text-align: center;
+    text-align: center;
+    background-color: #f0f0f0;
+    color: #333;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    transition: all 0.3s;
+    box-sizing: border-box;
+    border-color: #007bff64;
+}
+
+.course-intro-name-input:hover {
+    background-color: #f0f0f0;
+    outline: none;
+    border-color: #007BFF;
+}
+
+.course-intro-name-input:focus {
+    background-color: #f0f0f0;
+    outline: none;
+    border-color: #007BFF;
+}
+
+.course-intro-desc-textarea {
+  font-size: 14px;
+  width: 800px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  text-align: center;
+  background-color: #f0f0f0;
+  color: #333;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  transition: all 0.3s;
+  box-sizing: border-box;
+  border-color: #007bff64;
+  resize: none;
+}
+
+.course-intro-desc-textarea:hover {
+    background-color: #f0f0f0;
+    outline: none;
+    border-color: #007BFF;
+}
+
+.course-intro-desc-textarea:focus {
+    background-color: #f0f0f0;
+    outline: none;
+    border-color: #007BFF;
+}
+
+.course-intro-desc-textarea {
+  height: 100px;
+}
+
+.course-intro-save-btn {
+  margin-top: 10px;
+}
+
+.course-intro-abort-btn {
+    margin-left: 20px;
+  }
+
+.course-intro-save-btn:hover {
+  background-color: #0056b3;
+}
+
+.course-intro-abort-btn:hover {
+    background-color: #0056b3;
+  }
+
+  .course-intro-delete-btn{
+    margin-top: 20px;
+    margin-left: 20px;
+  }
