@@ -62,7 +62,7 @@ public class FrontendController {
      * @param userId user database primary key
      * @return {@link UserEntityDTO}
      */
-    @GetMapping("api/v1/user/{userId}")
+    @GetMapping("api/v1/user/{userId}")//TODO is working
     public UserEntityDTO getUserData(@PathVariable Integer userId){
         return userController.getUserById(userId);
     }
@@ -84,11 +84,9 @@ public class FrontendController {
      * @param userId used to determine the authorization level
      * @return {@link CourseDTO}
      */
-    @PostMapping("api/v1/user/{userId}/course/new")
+    @PostMapping("api/v1/user/{userId}/course/new")//TODO working
     public CourseDTO creteCourse(@RequestBody CourseDTO courseDTO, @PathVariable Integer userId){
-        if(userId != 1){
-            //TODO send a mail to admin about this request
-        }else{
+
             return courseController.creteCourse(
                     new CourseDTO(
                             null,
@@ -98,8 +96,7 @@ public class FrontendController {
                             null,
                             null)
             );
-        }
-        return courseController.creteCourse(courseDTO);
+
     }
 
     /**
@@ -217,6 +214,7 @@ public class FrontendController {
     public List<CourseDTO> getCourseList(){
         return courseController.findAllCourses();
     }
+
 
     @GetMapping("api/v1/user//api/v1/user/{userId}/topic/topicList")
     public List<Topic> getListOfTopic(@RequestBody List<Integer> topicList){

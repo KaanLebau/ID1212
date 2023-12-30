@@ -39,7 +39,7 @@ public class Mapper {
                 course.getCourseName(),
                 course.getCourseDesc(),
                 getTopicIdList(course.getTopicList()),
-                course.getCourseRole().stream().map(Mapper::courseRoleToCourseRoleDTO).collect(Collectors.toList())
+                getListOfRoleDTO(course.getCourseRole())
         );}
 
     public static Course courseDTOToCourses(CourseDTO courseDTO){
@@ -142,6 +142,8 @@ public static RoleDTO roleToRoleDTO(Role role){
 }
 
 private static List<Integer> getPostIdList(List<ForumPost> posts){
+    if(posts == null)
+        return null;
     List<Integer> ids =new ArrayList<>();
     for (ForumPost post : posts){
         ids.add(post.getId());
@@ -150,6 +152,8 @@ private static List<Integer> getPostIdList(List<ForumPost> posts){
 }
 
     private static List<Integer> getTopicIdList(List<Topic> topics){
+        if(topics == null)
+            return null;
         List<Integer> ids =new ArrayList<>();
         for (Topic topic : topics){
             ids.add(topic.getId());
@@ -157,6 +161,8 @@ private static List<Integer> getPostIdList(List<ForumPost> posts){
         return ids;
     }
     private static List<Integer> getCommentIdList(List<Comment> comments){
+        if(comments == null)
+            return null;
         List<Integer> ids =new ArrayList<>();
         for (Comment comment : comments){
             ids.add(comment.getId());
@@ -165,11 +171,19 @@ private static List<Integer> getPostIdList(List<ForumPost> posts){
     }
 
     private static List<Integer> getCourseIdList(List<Course> courses){
+        if(courses == null)
+            return null;
         List<Integer> ids =new ArrayList<>();
         for (Course course : courses){
             ids.add(course.getId());
         }
         return ids;
+    }
+
+    private static List<CourseUserRolesDTO> getListOfRoleDTO(List<CourseUserRoles> roleList){
+        if(roleList == null)
+            return null;
+        return roleList.stream().map(Mapper::courseRoleToCourseRoleDTO).collect(Collectors.toList());
     }
 
 
