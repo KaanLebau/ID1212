@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import '../../assets/styles/Sidebar.css';
 import editIcon from '../../components/icons/edit.png';
 import deleteIcon from '../../components/icons/trash.png';
@@ -113,22 +112,5 @@ function Sidebar({ course, topics, roleId, onTopicSelect, handleCreateTopic, han
     </aside>
   );
 }
-
-Sidebar.propTypes = {
-  course: PropTypes.shape({
-    courseId: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
-  }).isRequired,
-  topics: PropTypes.arrayOf(
-    PropTypes.shape({
-      topicName: PropTypes.string.isRequired,
-      id: PropTypes.number.isRequired,
-    })
-  ).isRequired,
-  roleId: PropTypes.number.isRequired,
-  onTopicSelect: PropTypes.func.isRequired,
-  handleUpdateTopic: PropTypes.func.isRequired,
-  handleDeleteTopic: PropTypes.func.isRequired,
-};
   
 export default Sidebar;

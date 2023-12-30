@@ -177,88 +177,6 @@ export const setUserDisplayName = async (userId, displayName) => {
   }
 }
 
-const mockData = {
-  posts: [
-    { 
-      id: 1, 
-      title: 'Introduction to Programming', 
-      content: 'This post discusses the basics of programming languages like Python and JavaScript.', 
-      created: '2023-01-10', 
-      updated: '2023-01-15',
-      user: {
-        id: 1,
-        username: 'john_doe',
-        displayName: 'John Doe',
-        role: 'STUDENT',
-      },
-      comments: [
-        { id: 1, user: {displayName: 'Alice', role: 'STUDENT', id: 1}, created: '2023-01-10', updated: '2023-01-22', comment: 'Very helpful for beginners.' },
-        { id: 2, user: {displayName: 'Bob', role: 'TEACHER', id: 2}, created: '2023-01-10', updated: '2023-01-22', comment: 'Looking forward to more advanced topics.' }
-      ]
-    },
-    { 
-      id: 2, 
-      title: 'Front-end Development Trends', 
-      content: 'Exploring the latest trends in front-end development, including frameworks and design patterns.', 
-      created: '2023-02-20', 
-      updated: '2023-02-22',
-      user: {
-        id: 1,
-        username: 'john_doe',
-        displayName: 'John Doe',
-        role: 'STUDENT',
-      },
-      comments: [
-        { id: 1, user: {displayName: 'Charlie', role: 'STUDENT', id: 1}, created: '2023-01-10', updated: '2023-01-22', comment: 'React has been a game changer.' },
-        { id: 2, user: {displayName: 'David', role: 'STUDENT', id: 2}, created: '2023-01-10', updated: '2023-01-22', comment: 'Vue.js deserves more attention.' }
-      ]
-    },
-    { 
-      id: 3, 
-      title: 'Machine Learning Basics', 
-      content: 'A beginner-friendly introduction to machine learning concepts and applications.', 
-      created: '2023-03-05', 
-      updated: '2023-03-10',
-      user: {
-        id: 1,
-        username: 'john_doe',
-        displayName: 'John Doe',
-        role: 'STUDENT',
-      },
-      comments: [
-        { id: 1, user: {displayName: 'Eve', role: 'STUDENT', id: 2}, created: '2023-01-10', updated: '2023-01-22', comment: 'AI is fascinating!', },
-        { id: 2, user: {displayName: 'Frank', role: 'STUDENT', id: 1}, created: '2023-01-10', updated: '2023-01-22', comment: 'Can you cover neural networks next?' }
-      ]
-    },
-    { 
-      id: 4, 
-      title: 'Cybersecurity Essentials', 
-      content: 'Discussing the importance of cybersecurity in today’s digital age and best practices to follow.', 
-      created: '2023-04-15', 
-      updated: '2023-04-18',
-      user: {
-        id: 1,
-        username: 'john_doe',
-        displayName: 'John Doe',
-        role: 'STUDENT',
-      },
-      comments: [
-        { id: 1, user: {displayName: 'Grace', role: 'STUDENT', id: 1}, created: '2023-01-10', updated: '2023-01-22', comment: 'Security is crucial for every developer.' },
-        { id: 2, user: {displayName: 'Henry', role: 'STUDENT', id: 2}, created: '2023-01-10', updated: '2023-01-22', comment: 'More posts like this, please!' }
-      ]
-    }
-  ],
-  user: {
-    id: 1,
-    username: 'john_doe',
-    displayName: 'John Doe',
-    role: 'STUDENT',
-    postList: [],
-    commentList: [],
-    courseRole: [{role_id: 1, course_id: 1}, {role_id: 2, course_id: 2}],
-  },
-    };
-
   export const getCommentsByTopic = async (topicId) => {
     return Promise.resolve(mockData.topics[topicId - 1].comments);
   }
@@ -276,12 +194,24 @@ const mockData = {
     }
   };
 
-  export const getUserFake = async (username, password) => {
-    return Promise.resolve(mockData.user);
+  export const getPosts = async (userId) => {
+    try{
+      const response = await axios.get(`${API_URL}/user/${userId}/post/postList`);
+      return response.data;
+    } catch (error) {
+      console.error('An error occurred during post retrieval:', error.response || error);
+      throw error;
+    }
   }
 
-  export const getPosts = async (topicId) => {
-    return Promise.resolve(mockData.posts);
+  export const getComments = async (userId) => {
+    try{
+      const response = await axios.get(`${API_URL}/user/${userId}/comment/commentList`);
+      return response.data;
+    } catch (error) {
+      console.error('An error occurred during comment retrieval:', error.response || error);
+      throw error;
+    }
   }
 
 

@@ -8,7 +8,7 @@ import CreatePost from "../layout/CreatePost";
 import CourseIntro from "../layout/CourseIntro";
 import "../../assets/styles/Home.css";
 import {
-  getCourses, getTopics, getPosts,
+  getCourses, getTopics, getPosts, getComments,
   createCourse, createTopic, createPost, createComment,
   updateCourse, updateTopic, updatePost, updateComment,
   deleteCourse, deleteTopic, deletePost, deleteComment,
@@ -18,21 +18,25 @@ import { useParams } from "react-router-dom";
 import { useUserContext } from "../../services/UserContext";
 
 function Home() {
+
   let navigate = useNavigate();
   let { courseId, topicId, postId } = useParams();
   const [courses, setCourses] = useState([]);
   const [topics, setTopics] = useState([]);
-  const [currentTopics, setCurrentTopics] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [currentCourse, setCurrentCourse] = useState({});
+  const [currentTopics, setCurrentTopics] = useState([]);
+  const [currentPosts, setCurrentPosts] = useState([]);
+  const [currentComments, setCurrentComments] = useState([]);
   const [userCourses, setUserCourses] = useState([]);
   const {user, logoutUser} = useUserContext();
 
   useEffect(() => {
     getCourses(user.id).then(setCourses);
-  }, []);
-
-  useEffect(() => {
     getTopics(user.id).then(setTopics);
+    getPosts(user.id).then(setPosts);
+    getComments(user.id).then(setComments);
   }, []);
 
   useEffect(() => {
@@ -44,15 +48,22 @@ function Home() {
 
   useEffect(() => {
     if (courseId) {
-      setCurrentTopics(topics.filter(topic => topic.course_id === courseId));
+      setCurrentCourse(userCourses.find(course => course.id == courseId));
+      setCurrentTopics(topics.filter(topic => topic.courseId == courseId));
     }
   }, [courseId]);
 
   useEffect(() => {
     if (topicId) {
-      getPosts(topicId).then(setPosts);
+      setCurrentPosts(posts.filter(post => post.topicId == topicId));
     }
-  }, [topicId]);
+  }, [topicId, posts]);
+
+  useEffect(() => {
+    if (postId) {
+      setCurrentComments(comments.filter(comment => comment.postId == postId));
+    }
+  }, [postId, comments]);
 
   const handleLogout = () => {
     logoutUser();
@@ -151,11 +162,11 @@ function Home() {
       {courseId == 0 && <CreateCourse handleCreateCourse={handleCreateCourse}/>}
 
       {/*Sidebar showing all topics*/}
-      {userCourses[courseId - 1] && (
+      {currentCourse && (
         <Sidebar
           roleId={user.courseRoles[0]?.roleId}
           topics={currentTopics}
-          course={userCourses[courseId - 1]}
+          course={currentCourse}
           onTopicSelect={handleSelectTopic}
           handleCreateTopic={handleCreateTopic}
           handleUpdateTopic={handleUpdateTopic}
@@ -164,10 +175,10 @@ function Home() {
       )}
 
       {/*Course intro/course edit*/}
-      {!topicId && userCourses[courseId - 1] && 
+      {!topicId && userCourses.find(course => course.id == courseId) && 
         <CourseIntro 
           roleId={user?.courseRoles[0]?.roleId}
-          course={userCourses[courseId - 1]} 
+          course={userCourses.find(course => course.id == courseId)} 
           handleUpdateCourse={handleUpdateCourse}
           handleDeleteCourse={handleDeleteCourse}
         />
@@ -177,10 +188,10 @@ function Home() {
       {topicId == 0 && <CreateTopic handleCreateTopic={handleCreateTopic}/>}
 
       {/*Topic view showing all posts as cards*/}
-      {topics[topicId - 1] && !postId && 
+      {topics.find(topic => topic.id == topicId) && !postId && 
         <Topic 
-          topic={topics[topicId - 1]}
-          posts={posts}
+          topic={topics.find(topic => topic.id == topicId)}
+          posts={currentPosts}
           handlePostClick={handlePostClick}
         />
       }
@@ -189,10 +200,11 @@ function Home() {
       {postId==0 && <CreatePost handleCreatePost={handleCreatePost}/>}
         
       {/*Post view*/}
-      {posts[postId - 1] && postId && 
+      {posts.find(post => post.id == postId) && postId && 
         <Post 
           user={user}
-          post={posts[postId - 1]} 
+          post={posts.find(post => post.id == postId)}
+          comments={currentComments}
           handleUpdatePost={handleUpdatePost}
           handleDeletePost={handleDeletePost}
           handleCreateComment={handleCreateComment}
