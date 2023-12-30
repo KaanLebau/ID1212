@@ -4,6 +4,7 @@ import dev.kadan.kthForum.controller.entityController.*;
 import dev.kadan.kthForum.models.*;
 import dev.kadan.kthForum.models.dto.*;
 import jakarta.security.auth.message.AuthException;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -215,6 +216,11 @@ public class FrontendController {
     @GetMapping("/api/v1/user/{userId}/courses")
     public List<CourseDTO> getCourseList(){
         return courseController.findAllCourses();
+    }
+
+    @GetMapping("api/v1/user//api/v1/user/{userId}/topic/topicList")
+    public List<Topic> getListOfTopic(@RequestBody List<Integer> topicList){
+        return topicController.getListOfTopic(topicList);
     }
 
     /**
