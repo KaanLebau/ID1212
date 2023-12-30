@@ -41,8 +41,8 @@ function Sidebar({ course, topics, roleId, onTopicSelect, handleCreateTopic, han
     }
   };
 
-  const deleteTopic = () => {
-    handleDeleteTopic(editingTopicId);
+  const deleteTopic = (topicId) => {
+    handleDeleteTopic(topicId);
     cancelEditing();
   }
 
