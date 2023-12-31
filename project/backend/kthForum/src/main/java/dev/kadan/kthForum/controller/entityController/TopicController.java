@@ -41,24 +41,24 @@ public class TopicController {
     }
 
 
-    public List<TopicDTO> getTopicByTitle(@PathVariable String topicName){
+    public List<TopicDTO> getTopicByTitle(String topicName){
         return topicServeces.getByTopicName(topicName).stream().map(Mapper::topicToTopicDTO).collect(Collectors.toList());
     }
 
-    public List<TopicDTO> getTopicByAuthor(@PathVariable Integer courseId){
+    public List<TopicDTO> getTopicByAuthor(Integer courseId){
         return topicServeces.getByCourseId(courseId).stream().map(Mapper::topicToTopicDTO).collect(Collectors.toList());
     }
     public TopicDTO findByDbId(Integer topicId){
         return topicToTopicDTO(topicServeces.getByDbId(topicId));
     }
 
-    public TopicDTO updateByTopicDTO(Integer topicId, TopicDTO topicDTO){
+    public TopicDTO updateByTopic(Integer topicId, TopicDTO topicDTO){
         Topic org = topicServeces.getByDbId(topicId);
         org.setTopicName(topicDTO.topicName());
         org.setCourses(courseServices.findByDbId(topicDTO.courseId()));
         org.setPostList(postServices.findListOfPosts(topicDTO.postIdList()));
-        topicServeces.removeById(topicDTO.id());
-        return topicToTopicDTO(topicServeces.createTopic(org));
+
+        return topicToTopicDTO(topicServeces.updateByTopic(org));
     }
 
 
@@ -70,4 +70,6 @@ public class TopicController {
     public List<Topic> getListOfTopic(List<Integer> topicList) {
         return topicServeces.findListOfTopics(topicList);
     }
+
+
 }

@@ -62,4 +62,18 @@ public class CourseServicesImpl implements CoursesServices {
         }
         return courseList;
     }
+
+    @Override
+    public Course updateByDbId(Integer courseId, Course course) {
+        /*
+        Course orgCourse = coursesRepository.findById(courseId).get();
+        orgCourse.setId(null);
+        orgCourse.setCourseDesc(course.getCourseDesc());
+        orgCourse.setCourseId(course.getCourseId());
+        orgCourse.setCourseName(course.getCourseName());
+        */
+        Course updated = coursesRepository.save(course);
+
+        return updated;
+    }
 }

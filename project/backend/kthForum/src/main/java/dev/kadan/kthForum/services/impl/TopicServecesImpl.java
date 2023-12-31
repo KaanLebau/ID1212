@@ -57,5 +57,11 @@ public class TopicServecesImpl implements TopicServeces {
         return topicList;
     }
 
+    @Override
+    public Topic updateByTopic(Topic topic) {
+        Topic updated = topicRepository.save(topic);
+        return updated;
+    }
+
 }
 

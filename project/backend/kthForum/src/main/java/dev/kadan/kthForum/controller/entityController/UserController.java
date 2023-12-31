@@ -1,5 +1,8 @@
 package dev.kadan.kthForum.controller.entityController;
 
+import dev.kadan.kthForum.models.Course;
+import dev.kadan.kthForum.models.CourseUserRoles;
+import dev.kadan.kthForum.models.ForumPost;
 import dev.kadan.kthForum.models.dto.KthUser;
 import dev.kadan.kthForum.models.UserEntity;
 import dev.kadan.kthForum.models.dto.UserEntityDTO;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static dev.kadan.kthForum.utilities.Mapper.kthUserToUserEntity;
@@ -44,6 +48,19 @@ public class UserController {
         return userEntityToUserEntityDTO(user);
     }
 
+    public List<Course> getUsersListOfCourses(Integer userId){
+        List<Course> courseList = new ArrayList<>();
+        UserEntity theUser = userService.findByDbId(userId);
+        for(CourseUserRoles course : theUser.getCourseRole()){
+            courseList.add(course.getCourse());
+        }
+        return courseList;
+    }
+
+    public List<ForumPost> getUsersListOfPosts(Integer userId){
+        return userService.findByDbId(userId).getPostList();
+    }
+
 
     public UserEntity getAll(){
         return null;
@@ -61,10 +78,9 @@ public class UserController {
     }
 
     public UserEntity updateById(UserEntityDTO userEntityDTO, Integer userId){
-        UserEntity user = userService.findByDbId(userId);
-        userService.removeUserById(userId);
-        user.setDisplayName(userEntityDTO.displayName());
-        return userService.saveUser(user);
+        UserEntity theUser = userService.findByDbId(userId);
+        theUser.setDisplayName(userEntityDTO.displayName());
+        return userService.updateByDbId(userId, theUser);
     }
 
 

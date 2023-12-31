@@ -50,30 +50,15 @@ public class CourseController {
 
 
 
-    public CourseDTO updateByCourseDTO(Integer courseId, CourseDTO courseDTO){
+    public CourseDTO updateByCourse(Integer courseId, CourseDTO courseDTO){
         Course orgCourse = courseServices.findByDbId(courseId);
-        orgCourse.setId(null);
         orgCourse.setCourseDesc(courseDTO.courseDesc());
         orgCourse.setCourseId(courseDTO.courseId());
         orgCourse.setCourseName(courseDTO.courseName());
-        courseServices.removeByDbId(courseDTO.id());
-        return creteCourse(courseDTO);
+        return courseToCourseDTO(courseServices.updateByDbId(courseId, orgCourse));
     }
 
-    public CourseDTO updateByCourseId(String courseId, CourseDTO courseDTO){
-        Course course = courseServices.findByCourseId(courseId);
-        courseServices.removeByDbId(course.getId());
-        Course theCourse;
-        if(courseDTO.topicIdList().isEmpty()){
-            theCourse = courseServices.createCourse(courseDTOToCourses(courseDTO));
-        }else {
-            List<Integer> topics  = courseDTO.topicIdList();
-            courseDTO.topicIdList().removeAll(courseDTO.topicIdList());
-            theCourse = courseServices.createCourse(courseDTOToCourses(courseDTO));
 
-        }
-        return courseToCourseDTO(theCourse);
-    }
     /*
         Delete
      */
@@ -87,6 +72,7 @@ public class CourseController {
         Course course = courseServices.findByCourseId(courseId);
         courseServices.removeByDbId(course.getId());
     }
+
 
 
 }

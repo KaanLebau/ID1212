@@ -3,14 +3,14 @@ package dev.kadan.kthForum.controller.frontendController;
 import dev.kadan.kthForum.controller.entityController.*;
 import dev.kadan.kthForum.models.*;
 import dev.kadan.kthForum.models.dto.*;
+import dev.kadan.kthForum.utilities.Mapper;
 import jakarta.security.auth.message.AuthException;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static dev.kadan.kthForum.utilities.Mapper.*;
 
@@ -211,22 +211,40 @@ public class FrontendController {
     }
 
     @GetMapping("/api/v1/user/{userId}/courses")
-    public List<CourseDTO> getCourseList(){
-        return courseController.findAllCourses();
+    public List<CourseDTO> getUserCourseList(@PathVariable Integer userId){
+        return userController.getUsersListOfCourses(userId).stream().map(Mapper::courseToCourseDTO).collect(Collectors.toList());
     }
 
+    @GetMapping("/api/v1/user/{userId}/posts")
+    public List<ForumPostDTO> getUserPostList(@PathVariable Integer userId){
+        return userController.getUsersListOfPosts(userId).stream().map(Mapper::forumPostToForumPostDTO).collect(Collectors.toList());
+    }
 
-    @GetMapping("api/v1/user//api/v1/user/{userId}/topic/topicList")
+    /**
+     * <b>Description: </b> Returns list of {@link Topic}.
+     * <br>
+     * <b>Authorization level: </b> All user can get the list.
+     * <br>
+     * <b>RequestBody: </b> Should have the following structure.
+     * <pre>
+     *
+     *     [ topicId_1, topicId_2 , ... ,topicId_n ]
+     *
+     * </pre>
+     * @param topicList
+     * @return
+     */
+    @GetMapping("/api/v1/user/{userId}/topic/topicList")
     public List<Topic> getListOfTopic(@RequestBody List<Integer> topicList){
         return topicController.getListOfTopic(topicList);
     }
 
-    @GetMapping("api/v1/user//api/v1/user/{userId}/post/postList")
+    @GetMapping("/api/v1/user/{userId}/post/postList")
     public List<ForumPost> getListOfPost(@RequestBody List<Integer> postList){
         return postController.getlistOfPosts(postList);
     }
 
-    @GetMapping("api/v1/user//api/v1/user/{userId}/comments/commentList")
+    @GetMapping("/api/v1/user/{userId}/comments/commentList")
     public List<Comment> getListOfComment(@RequestBody List<Integer> commentList){
         return commentController.getlistOfComments(commentList);
     }
@@ -250,12 +268,7 @@ public class FrontendController {
      */
     @PutMapping("/api/v1/user/update/{userId}")
     public UserEntityDTO updateUserById(@RequestBody UserEntityDTO userEntity,@PathVariable Integer userId) throws AuthException {
-        UserEntityDTO orgUser = userController.getUserById(userId);
-        if(userEntity.id() != orgUser.id()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The user ID does not match the user to be updated");
-        }else {
             return userEntityToUserEntityDTO(userController.updateById(userEntity, userId));
-        }
     }
 
     /**
@@ -266,24 +279,20 @@ public class FrontendController {
      * <b>RequestBody: </b> Should have the following structure.
      * <pre>
      *     {
-     *          <b>id</b>: "This key contains Integer value",
+     *
      *         <b>courseId</b>*: "This key contains String value",
      *         <b>courseName</b>*: "This key contains String value",
      *         <b>courseDesc</b>*: "This key contains String value"
      *     }
-     *     <i>* Only database id is necessary for other fields only the updated fields are necessary</i>
+     *     <i>* Only the updated fields are necessary</i>
      * </pre>
      * @param courseDTO used for update
-     * @param UserId used to determine the authorization level
      * @param courseId used to determine the authorization level
      * @return
      */
     @PutMapping("/api/v1/user/{userId}/course/update/{courseId}")
-    public CourseDTO updateCourseById(@RequestBody CourseDTO courseDTO, @PathVariable Integer UserId, Integer courseId){
-        Course orgCourse = courseController.findbyDbId(courseId);
-        if(orgCourse.getId() != courseDTO.id())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"The course ID does not match the course to be updated");
-        return courseController.updateByCourseDTO(courseId, courseDTO);
+    public CourseDTO updateCourseById(@RequestBody CourseDTO courseDTO, @PathVariable Integer courseId){
+        return courseController.updateByCourse(courseId, courseDTO);
     }
 
     /**
@@ -299,17 +308,12 @@ public class FrontendController {
      *     <i>* Only database id is necessary for other fields only the updated fields are necessary</i>
      * </pre>
      * @param topicDTO used to update topic
-     * @param UserId used to determine the authorization level
      * @param topicId used to determine the topic
-     * @param courseId used to determine the authorization level
      * @return
      */
     @PutMapping("/api/v1/user/{userId}/course/{courseId}/topic/update/{topicId}")
-    public TopicDTO updateTopicById(@RequestBody TopicDTO topicDTO, @PathVariable Integer UserId,@PathVariable Integer topicId,@PathVariable Integer courseId){
-        TopicDTO org = topicController.findByDbId(topicId);
-        if(org.id() != topicDTO.id())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"The topic ID does not match the topic to be updated");
-        return topicController.updateByTopicDTO(topicId, topicDTO);
+    public TopicDTO updateTopicById(@RequestBody TopicDTO topicDTO,@PathVariable Integer topicId){
+        return topicController.updateByTopic(topicId, topicDTO);
     }
     @PutMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/update/{postId}")
     public ForumPostDTO updatePostById(){

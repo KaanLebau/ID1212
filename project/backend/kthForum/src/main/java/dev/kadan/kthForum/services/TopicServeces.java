@@ -20,5 +20,6 @@ public interface TopicServeces {
     void removeById(Integer id);
 
     List<Topic> findListOfTopics(List<Integer> topipIdList);
+    Topic updateByTopic(Topic topic);
 
 }

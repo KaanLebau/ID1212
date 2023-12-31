@@ -17,4 +17,6 @@ public interface UserServices {
     void removeUserById(Integer id);
     List<UserEntity> findListOfUser(List<Integer> userIdList);
 
+    UserEntity updateByDbId(Integer userId, UserEntity user);
+
 }

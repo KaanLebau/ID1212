@@ -13,4 +13,6 @@ public interface CoursesServices {
     void removeByDbId(Integer id);
     void removeByCourseId(String courseId);
     List<Course> findListOfCourses(List<Integer> courseIdList);
+
+    Course updateByDbId(Integer id, Course course);
 }

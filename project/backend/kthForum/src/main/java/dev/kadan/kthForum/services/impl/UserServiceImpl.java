@@ -47,7 +47,6 @@ public class UserServiceImpl implements UserServices {
     @Override
     public void removeUserById(Integer id) {
         userRepository.deleteById(id);
-
     }
 
     @Override
@@ -57,5 +56,13 @@ public class UserServiceImpl implements UserServices {
             userList.add(userRepository.findById(id).get());
         }
         return userList;
+    }
+
+    @Override
+    public UserEntity updateByDbId(Integer userId, UserEntity user) {
+        UserEntity theUser = userRepository.findById(userId).get();
+        theUser.setDisplayName(user.getDisplayName());
+        UserEntity updated = userRepository.save(theUser);
+        return updated;
     }
 }
