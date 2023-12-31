@@ -14,4 +14,5 @@ public interface CommentServices {
     Comment createComment(Comment comment);
     List<Comment> findListOfComments(List<Integer> commentIdList);
     void removeCommentById(Integer commentId);
+    Comment updateByComment(Comment comment);
 }

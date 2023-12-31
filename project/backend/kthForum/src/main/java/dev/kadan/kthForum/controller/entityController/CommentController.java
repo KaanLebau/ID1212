@@ -76,9 +76,18 @@ public class CommentController {
      * @param commentId
      * @return
      */
-    public CommentDTO updateComment(CommentDTO commentDTO, Integer commentId, Integer userId) throws AuthException {
 
-        return null;
+    /**
+     *
+     * @param commentId
+     * @param commentDTO
+     * @return
+     */
+    public CommentDTO updateByComment(Integer commentId, CommentDTO commentDTO) {
+        Comment updated = commentService.getByDbId(commentId);
+        updated.setComment(commentDTO.comment());
+        updated.setUpdated(LocalDate.now());
+        return commentToCommentDTO(commentService.updateByComment(updated));
     }
 
     /**
@@ -101,4 +110,6 @@ public class CommentController {
     public List<Comment> getlistOfComments(List<Integer> commentList) {
         return commentService.findListOfComments(commentList);
     }
+
+
 }

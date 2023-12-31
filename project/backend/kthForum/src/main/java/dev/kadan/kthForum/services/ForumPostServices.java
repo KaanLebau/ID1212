@@ -18,4 +18,6 @@ public interface ForumPostServices {
     void removePostById(Integer postId);
 
     List<ForumPost> findListOfPosts(List<Integer> postIdList);
+
+    ForumPost updateByForumPost(ForumPost post);
 }

@@ -60,4 +60,10 @@ public class CommentServiceImpl implements CommentServices {
     public void removeCommentById(Integer commentId) {
         commentRepository.deleteById(commentId);
     }
+
+    @Override
+    public Comment updateByComment(Comment comment) {
+        Comment updated = commentRepository.save(comment);
+        return updated;
+    }
 }

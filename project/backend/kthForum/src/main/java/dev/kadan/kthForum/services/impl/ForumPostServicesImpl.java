@@ -52,4 +52,10 @@ public class ForumPostServicesImpl implements ForumPostServices {
         return postList;
     }
 
+    @Override
+    public ForumPost updateByForumPost(ForumPost post) {
+        ForumPost updated = forumPostRepository.save(post);
+        return updated;
+    }
+
 }

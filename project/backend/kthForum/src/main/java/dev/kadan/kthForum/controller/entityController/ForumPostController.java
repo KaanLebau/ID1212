@@ -76,30 +76,21 @@ public class ForumPostController {
     /*
         UPDATE
      */
-    @PutMapping(BASE_PATH + "update/{postId}")
-    public ForumPostDTO updatePost(@RequestBody ForumPostDTO forumPostDTO, @PathVariable Integer postId) throws AuthException {
-        ForumPost newPost = null;
-        ForumPost oldPost = postServices.getByDbId(postId);
-        if(oldPost.getUser().getId() != forumPostDTO.userId()){
-            throw new AuthException();
-        }else {
-            UserEntity theUser = userService.findByDbId(forumPostDTO.userId());
-            Topic theTopic = topicServeces.getByDbId(forumPostDTO.topicId());
-            LocalDate created = oldPost.getCreated();
-            newPost = forumPostDTOToForumPost(forumPostDTO);
-            newPost.setTopic(theTopic);
-            newPost.setUser(theUser);
-            newPost.setCreated(created);
-            newPost.setUpdated(LocalDate.now());
-            postServices.removePostById(postId);
-            return forumPostToForumPostDTO(postServices.createPost(newPost));
-        }
+
+    public ForumPostDTO updateByTopic(Integer postId, ForumPostDTO forumPostDTO) {
+        ForumPost updated = postServices.getByDbId(postId);
+        updated.setTitle(forumPostDTO.title());
+        updated.setContent(forumPostDTO.content());
+        updated.setUpdated(LocalDate.now());
+        return forumPostToForumPostDTO(postServices.createPost(updated));
+
     }
 
 
     public void removePostByPostId(Integer postId){
         postServices.removePostById(postId);
     }
+
 
 
 }

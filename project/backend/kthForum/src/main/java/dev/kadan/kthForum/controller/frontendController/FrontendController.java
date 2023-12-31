@@ -316,8 +316,8 @@ public class FrontendController {
         return topicController.updateByTopic(topicId, topicDTO);
     }
     @PutMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/update/{postId}")
-    public ForumPostDTO updatePostById(){
-        return null;
+    public ForumPostDTO updatePostById(@RequestBody ForumPostDTO postDTO, @PathVariable Integer postId){
+        return postController.updateByTopic(postId, postDTO);
     }
 
     /**
@@ -333,23 +333,11 @@ public class FrontendController {
      * </pre>
      * @param commentDTO
      * @param commentId
-     * @param userId
      * @return
      */
     @PutMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/{postId}/comment/update/{commentId}")
-    public CommentDTO updateCommentById(@RequestBody CommentDTO commentDTO, @PathVariable Integer commentId, @PathVariable Integer userId) throws AuthException {
-        CommentDTO commentOrg = commentController.getByDbId(commentId);
-        LocalDate created = commentOrg.created();
-        ForumPost thePost = postController.getByDbId(commentOrg.postId());
-        UserEntity theUser = userController.getByDbId(commentOrg.userId());
-        if(commentOrg.userId() != userId){
-            throw new AuthException();
-        }else{
-
-            commentController.deleteCommentById(commentId, userId);
-            return commentController.createComment(new Comment(null, commentOrg.comment(), created,LocalDate.now(),thePost,theUser));
-        }
-
+    public CommentDTO updateCommentById(@RequestBody CommentDTO commentDTO, @PathVariable Integer commentId){
+        return commentController.updateByComment(commentId, commentDTO);
     }
 
 
@@ -362,8 +350,8 @@ public class FrontendController {
         courseController.deleteByCourseDbId(courseId);
     }
     @DeleteMapping("/api/v1/user/{userId}/course/{courseId}/topic/delete/{topicId}")
-    public void deleteTopicById(@PathVariable Integer postId){
-        topicController.deleteByTopicDbId(postId);
+    public void deleteTopicById(@PathVariable Integer topicId){
+        topicController.deleteByTopicDbId(topicId);
     }
     @DeleteMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/delete/{postId}")
     public void deletePostById(@PathVariable Integer postId){

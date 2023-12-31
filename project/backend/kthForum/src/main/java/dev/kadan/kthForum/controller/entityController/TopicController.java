@@ -55,9 +55,6 @@ public class TopicController {
     public TopicDTO updateByTopic(Integer topicId, TopicDTO topicDTO){
         Topic org = topicServeces.getByDbId(topicId);
         org.setTopicName(topicDTO.topicName());
-        org.setCourses(courseServices.findByDbId(topicDTO.courseId()));
-        org.setPostList(postServices.findListOfPosts(topicDTO.postIdList()));
-
         return topicToTopicDTO(topicServeces.updateByTopic(org));
     }
 
