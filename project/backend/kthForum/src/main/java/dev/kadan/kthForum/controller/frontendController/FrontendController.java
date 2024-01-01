@@ -231,22 +231,27 @@ public class FrontendController {
      *     [ topicId_1, topicId_2 , ... ,topicId_n ]
      *
      * </pre>
-     * @param topicList
+     *
      * @return
      */
-    @GetMapping("/api/v1/user/{userId}/topic/topicList")
-    public List<Topic> getListOfTopic(@RequestBody List<Integer> topicList){
-        return topicController.getListOfTopic(topicList);
+    @GetMapping("/api/v1/user/{userId}/course/{courseId}/topic/topicList")
+    public List<Topic> getListOfTopic(@PathVariable Integer courseId){
+        CourseDTO course = courseToCourseDTO(courseController.findbyDbId(courseId));
+        return topicController.getListOfTopic(course.topicIdList());
     }
 
-    @GetMapping("/api/v1/user/{userId}/post/postList")
-    public List<ForumPost> getListOfPost(@RequestBody List<Integer> postList){
-        return postController.getlistOfPosts(postList);
+
+
+    @GetMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/postList")
+    public List<ForumPost> getListOfPost(@PathVariable Integer topicId){
+        TopicDTO topic = topicController.findByDbId(topicId);
+        return postController.getlistOfPosts(topic.postIdList());
     }
 
-    @GetMapping("/api/v1/user/{userId}/comments/commentList")
-    public List<Comment> getListOfComment(@RequestBody List<Integer> commentList){
-        return commentController.getlistOfComments(commentList);
+    @GetMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/{postId}/comments/commentList")
+    public List<Comment> getListOfComment(@PathVariable Integer postId){
+        ForumPostDTO thePost = forumPostToForumPostDTO(postController.getByDbId(postId));
+        return commentController.getlistOfComments(thePost.commentIdList());
     }
 
 

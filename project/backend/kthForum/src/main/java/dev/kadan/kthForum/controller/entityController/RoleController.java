@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static dev.kadan.kthForum.utilities.Mapper.roleToRoleDTO;
+
 @Controller
 public class RoleController {
     private final RoleServicesImpl roleServices;
@@ -20,5 +22,9 @@ public class RoleController {
     public List<RoleDTO> getAllRoles(){
         List<Role> roleList = roleServices.findAll();
         return roleList.stream().map(Mapper::roleToRoleDTO).collect(Collectors.toList());
+    }
+
+    public RoleDTO getByRoleName(String roleName){
+        return roleToRoleDTO(roleServices.findByRoleName(roleName));
     }
 }
