@@ -2,6 +2,7 @@ package dev.kadan.kthForum.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import dev.kadan.kthForum.config.AESEncryptor;
 import dev.kadan.kthForum.models.dto.CommentDTO;
 import dev.kadan.kthForum.models.dto.CourseUserRolesDTO;
 import dev.kadan.kthForum.models.dto.ForumPostDTO;
@@ -40,10 +41,15 @@ public class UserEntity {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "id")
         private Integer id;
+
+        @Convert(converter = AESEncryptor.class)
         @Column(name = "username",length = 30)
         private String username;
+
         @Column(name = "displayName", length = 20)
         private String displayName;
+
+        @Convert(converter = AESEncryptor.class)
         @Column(name = "email", length = 20)
         private String email;
 
