@@ -243,15 +243,17 @@ public class FrontendController {
 
 
     @GetMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/postList")
-    public List<ForumPost> getListOfPost(@PathVariable Integer topicId){
+    public List<ForumPostDTO> getListOfPost(@PathVariable Integer topicId){
         TopicDTO topic = topicController.findByDbId(topicId);
-        return postController.getlistOfPosts(topic.postIdList());
+        List<ForumPost> posts = postController.getlistOfPosts(topic.postIdList());
+        return posts.stream().map(Mapper::forumPostToForumPostDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/api/v1/user/{userId}/course/{courseId}/topic/{topicId}/post/{postId}/comments/commentList")
-    public List<Comment> getListOfComment(@PathVariable Integer postId){
+    public List<CommentDTO> getListOfComment(@PathVariable Integer postId){
         ForumPostDTO thePost = forumPostToForumPostDTO(postController.getByDbId(postId));
-        return commentController.getlistOfComments(thePost.commentIdList());
+        List<Comment> comments =commentController.getlistOfComments(thePost.commentIdList());
+        return comments.stream().map(Mapper::commentToCommentDTO).collect(Collectors.toList());
     }
 
 
