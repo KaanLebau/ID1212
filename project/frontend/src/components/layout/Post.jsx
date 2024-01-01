@@ -1,12 +1,36 @@
 import React from "react";
 import "../../assets/styles/Post.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getUser } from "../../services/ApiService";
 
-function Post({ user, post, handleUpdatePost, handleDeletePost, handleCreateComment, handleUpdateComment, handleDeleteComment }) {
+function Post({ user, post, comments, handleUpdatePost, handleDeletePost, handleCreateComment, handleUpdateComment, handleDeleteComment }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(post.content);
   const [editedTitle, setEditedTitle] = useState(post.title);
   const [editingComments, setEditingComments] = useState({});
+  const [userDisplayNames, setUserDisplayNames] = useState({});
+
+  useEffect(() => {
+    if (!userDisplayNames[post.userId]) {
+      getUser(post.userId).then((user) => {
+        setUserDisplayNames((prevNames) => ({
+          ...prevNames,
+          [post.userId]: user ? user.displayName : "Anonymous",
+        }));
+      });
+    }
+
+    comments.forEach((comment) => {
+      if (!userDisplayNames[comment.userId]) {
+        getUser(comment.userId).then((user) => {
+          setUserDisplayNames((prevNames) => ({
+            ...prevNames,
+            [comment.userId]: user ? user.displayName : "Anonymous",
+          }));
+        });
+      }
+    });
+  }, [post, comments]);
 
   const handleCommentSubmit = (event) => {
     event.preventDefault();
@@ -75,7 +99,7 @@ function Post({ user, post, handleUpdatePost, handleDeletePost, handleCreateComm
         ) : (
           <h1 className="post-title">{post.title}</h1>
         )}
-        <div className="post-author">{`by ${post.user.displayName}`}</div>
+        <div className="post-author">{`by ${userDisplayNames[post.userId] || "Loading..."}`}</div>
 
         {isEditing ? (
           <textarea
@@ -88,7 +112,7 @@ function Post({ user, post, handleUpdatePost, handleDeletePost, handleCreateComm
           <p className="post-content">{post.content}</p>
         )}
 
-        {post.user.id == user.id && (
+        {post.userId == user.id && (
           <div className="post-management">
             {!isEditing ? (
               <>
@@ -116,9 +140,9 @@ function Post({ user, post, handleUpdatePost, handleDeletePost, handleCreateComm
           </div>
         )}
         <div className="comments-section">
-          {post.comments.map((comment) => (
+          {comments.map((comment) => (
             <div key={comment.id} className="comment">
-              <div className="comment-author">{comment.user.displayName}</div>
+              <div className="comment-author">{userDisplayNames[post.userId] || "Loading..."}</div>
               {editingComments[comment.id] ? (
                 <textarea
                   defaultValue={comment.comment}

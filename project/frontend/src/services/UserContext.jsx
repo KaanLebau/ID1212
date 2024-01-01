@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getUser } from './ApiService';
+import { login } from './ApiService';
 
 const UserContext = createContext(null);
 
@@ -18,7 +18,7 @@ export const UserProvider = ({ children }) => {
 
   const loginUser = async (username, password) => {
     try {
-      const user = await getUser(username, password);
+      const user = await login(username, password);
 
       setUser(user);
       sessionStorage.setItem('user', JSON.stringify(user));

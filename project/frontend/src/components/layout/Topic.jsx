@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../../assets/styles/Topic.css";
+import { getUser } from "../../services/ApiService";
 
 function Topic({topic, posts, handlePostClick}) {
+  const [userDisplayNames, setUserDisplayNames] = useState({});
+
+  useEffect(() => {
+    posts.forEach((post) => {
+      if (!userDisplayNames[post.userId]) {
+        getUser(post.userId).then((user) => {
+          setUserDisplayNames((prevNames) => ({
+            ...prevNames,
+            [post.userId]: user ? user.displayName : "Anonymous",
+          }));
+        });
+      }
+    });
+  }, [posts, userDisplayNames]);
+
   return (
     <>
       <p className="topic-title">{topic.topicName}</p>
@@ -9,13 +25,13 @@ function Topic({topic, posts, handlePostClick}) {
       {posts.map((post, index) => (
         <div key={post.id} onClick={() => handlePostClick(post.id)} className="post-container">
           <div className="post-header">
-            <span className="post-author">{post.comments[0].author}</span>
+            <span className="post-author">{userDisplayNames[post.userId] || "Loading..."}</span>
             <h2 className="post-title">{post.title}</h2>
           </div>
           <div className="post-footer">
             <span className="post-date">{post.created}</span>
             <span className="post-comments">
-              {post.comments.length} comments
+              {post.commentIdList.length} comments
             </span>
           </div>
         </div>

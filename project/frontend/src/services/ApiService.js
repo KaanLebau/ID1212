@@ -2,37 +2,90 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api/v1'; // Your API endpoint
 
-const apiCall = async (url) => {
+export const login = async (username, password) => {
   try {
-    const response = await axios.get(API_URL + url);
+    const response = await axios.post(`${API_URL}/login`, {
+      username: username,
+      password: password
+    });
     return response.data;
   } catch (error) {
-    console.error('An error occurred while fetching the data:', error);
+    console.error('An error occurred during login:', error.response || error);
+    throw error;
+  }
+};
+
+export const getUser = async (userId) => {
+  try {
+    const response = await axios.get(`${API_URL}/user/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error('An error occurred during user retrieval:', error.response || error);
+    throw error;
+  }
+}
+
+export const setUserDisplayName = async (userId, displayName) => {
+  try {
+    const response = await axios.put(`${API_URL}/user/update/${userId}`, {
+      displayName: displayName
+    });
+  } catch (error) {
+    console.error('An error occurred during display name setting:', error.response || error);
+    throw error;
   }
 }
 
 export const getCourses = async (userId) => {
-  return apiCall(`/user/${userId}/courses`);
-}
-
-export const getCourse = async (courseId) => {
-  return apiCall(`/course/${courseId}`);
-}
-
-export const getUserCourses = async (user) => {
-  return apiCall(`/user/${user.id}/courses`);
+  try {
+    const response = await axios.get(`${API_URL}/user/${userId}/courses`);
+    return response.data;
+  } catch (error) {
+    console.error('An error occurred during course retrieval:', error.response || error);
+    throw error;
+  }
 }
 
 export const getTopics = async (userId) => {
-  return apiCall(`/user/${userId}/topics`);
+  try {
+    const response = await axios.get(`${API_URL}/user/${userId}/topics`)
+    return response.data;
+  } catch (error) {
+    console.error('An error occurred during topic retrieval:', error.response || error);
+    throw error;
+  }
 }
 
-export const getPostsByTopic = async (topicId) => {
-  return apiCall(`/posts/postbytopic/${topicId}`);
+export const getTopicList = async (userId, topicList) => {
+  try {
+    const response = await axios.get(`${API_URL}/user/${userId}/topic/topicList`, {
+      topicList
+    });
+    return response.data;
+  } catch (error) {
+    console.error('An error occurred during topic list retrieval:', error.response || error);
+    throw error;
+  }
 }
 
-export const getTopicByName = async (topicName) => {
-  return apiCall(`/topics/topicbyname/${topicName}`);
+export const getPosts = async (userId, courseId, topicId) => {
+  try {
+    const response = await axios.get(`${API_URL}/user/${userId}/course/${courseId}/topic/${topicId}/posts`);
+    return response.data;
+  } catch (error) {
+    console.error('An error occurred during posts retrieval for topic:', error.response || error);
+    throw error;
+  }
+};
+
+export const getComments = async (userId) => {
+  try {
+    const response = await axios.get(`${API_URL}/user/${userId}/comments`);
+    return response.data;
+  } catch (error) {
+    console.error('An error occurred during comment retrieval:', error.response || error);
+    throw error;
+  }
 }
 
 export const createCourse = async (userId, id, name, desc) => {
@@ -51,7 +104,7 @@ export const createCourse = async (userId, id, name, desc) => {
 export const createTopic = async (userId, courseId, name) => {
   try {
     const response = await axios.post(`${API_URL}/user/${userId}/course/${courseId}/topic/new`, {
-      name: name
+      topicName: name
     });
   } catch (error) {
     console.error('An error occurred during topic creation:', error.response || error);
@@ -82,9 +135,10 @@ export const createComment = async (userId, courseId, topicId, postId, comment) 
   }
 }
 
-export const updateCourse = async (userId, courseId, name, desc) => {
+export const updateCourse = async (userId, courseId, id, name, desc) => {
   try {
     const response = await axios.put(`${API_URL}/user/${userId}/course/update/${courseId}`, {
+      courseId: id,
       courseName: name,
       courseDesc: desc
     });
@@ -97,7 +151,7 @@ export const updateCourse = async (userId, courseId, name, desc) => {
 export const updateTopic = async (userId, courseId, topicId, name) => {
   try {
     const response = await axios.put(`${API_URL}/user/${userId}/course/${courseId}/topic/update/${topicId}`, {
-      name: name
+      topicName: name
     });
   } catch (error) {
     console.error('An error occurred during topic update:', error.response || error);
@@ -142,6 +196,7 @@ export const deleteCourse = async (userId, courseId) => {
 export const deleteTopic = async (userId, courseId, topicId) => {
   try {
     const response = await axios.delete(`${API_URL}/user/${userId}/course/${courseId}/topic/delete/${topicId}`);
+    console.log(response);
   } catch (error) {
     console.error('An error occurred during topic deletion:', error.response || error);
     throw error;
@@ -165,54 +220,3 @@ export const deleteComment = async (userId, courseId, topicId, postId, commentId
     throw error;
   }
 }
-
-export const setUserDisplayName = async (userId, displayName) => {
-  try {
-    const response = await axios.put(`${API_URL}/user/update/${userId}`, {
-      displayName: displayName
-    });
-  } catch (error) {
-    console.error('An error occurred during display name setting:', error.response || error);
-    throw error;
-  }
-}
-
-  export const getCommentsByTopic = async (topicId) => {
-    return Promise.resolve(mockData.topics[topicId - 1].comments);
-  }
-
-  export const getUser = async (username, password) => {
-    try {
-      const response = await axios.post(`${API_URL}/login`, {
-        username: username,
-        password: password
-      });
-      return response.data;
-    } catch (error) {
-      console.error('An error occurred during login:', error.response || error);
-      throw error;
-    }
-  };
-
-  export const getPosts = async (userId) => {
-    try{
-      const response = await axios.get(`${API_URL}/user/${userId}/post/postList`);
-      return response.data;
-    } catch (error) {
-      console.error('An error occurred during post retrieval:', error.response || error);
-      throw error;
-    }
-  }
-
-  export const getComments = async (userId) => {
-    try{
-      const response = await axios.get(`${API_URL}/user/${userId}/comment/commentList`);
-      return response.data;
-    } catch (error) {
-      console.error('An error occurred during comment retrieval:', error.response || error);
-      throw error;
-    }
-  }
-
-
-

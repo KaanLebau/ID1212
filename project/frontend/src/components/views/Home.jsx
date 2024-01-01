@@ -8,7 +8,7 @@ import CreatePost from "../layout/CreatePost";
 import CourseIntro from "../layout/CourseIntro";
 import "../../assets/styles/Home.css";
 import {
-  getCourses, getTopics, getPosts, getComments,
+  getCourses, getTopics, getPosts, getComments, getTopicList, 
   createCourse, createTopic, createPost, createComment,
   updateCourse, updateTopic, updatePost, updateComment,
   deleteCourse, deleteTopic, deletePost, deleteComment,
@@ -18,43 +18,50 @@ import { useParams } from "react-router-dom";
 import { useUserContext } from "../../services/UserContext";
 
 function Home() {
-
   let navigate = useNavigate();
   let { courseId, topicId, postId } = useParams();
   const [courses, setCourses] = useState([]);
   const [topics, setTopics] = useState([]);
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
-  const [userCourses, setUserCourses] = useState([]);
-  const [update, setUpdate] = useState(false)
   const {user, logoutUser} = useUserContext();
-  const [updateCourses, setUpdateCourses] = useState(false)
-  const [updateTopics, setUpdateTopics] = useState(false)
-  const [updatePosts, setUpdatePosts] = useState(false)
-  const [updateComments, setUpdateComments] = useState(false)
 
-  useEffect(() => {
+  const updateCourses = () => {
     getCourses(user.id).then(setCourses);
-  }, [ updateCourses ]);
+  }
 
-  useEffect(() => {
-      getTopics(user.id).then(setTopics);
-  }, [ updateTopics ])
+  const updateTopics = () => {
+    if(courses.find(course => course.id == courseId))
+      getTopicList(user.id, courses.find(course => course.id == courseId).topicIdList);
+  }
 
-  useEffect(() => {
-      getPosts(user.id).then(setPosts);
-  }, [ updatePosts ])
-
-  useEffect(() => {
-      getComments(user.id).then(setComments);
-  }, [ updateComments ])
-
-  useEffect(() => {
-    if (user && courses) {
-      const userCourseIds = user.courseRoles.map(courseUserRole => courseUserRole.courseId);
-      setUserCourses(courses.filter(course => userCourseIds.includes(course.id)));
+  const updatePosts = () => {
+    if(topics.find(topic => topic.id == topicId)){
+      getPosts(user.id, courseId, topicId).then(setPosts);
     }
-  }, [user, courses]);
+  }
+
+  const updateComments = () => {
+    if(posts.find(post => post.id == postId))
+      getComments(user.id).then(setComments);
+    console.log(comments)
+  }
+
+  useEffect(() => {
+    updateCourses();
+  }, [ user ]);
+
+  useEffect(() => {
+    updateTopics();
+  }, [ courseId ])
+
+  useEffect(() => {
+    updatePosts();
+  }, [ topicId ])
+
+  useEffect(() => {
+    updateComments();
+  }, [ postId ])
 
   const handleLogout = () => {
     logoutUser();
@@ -74,73 +81,59 @@ function Home() {
   };
 
   const handleCreateCourse = (id, name, desc) => {
-    createCourse(user.id, id, name, desc);
-    setUpdateCourses(!updateCourses)
-    navigate(`/home/`);
+    createCourse(user.id, id, name, desc).then(updateCourses);
   }
 
   const handleCreateTopic = (name) => {
-    createTopic(user.id, courseId, name);
-    setUpdateTopics(!updateTopics)
-    navigate(`/home/${courseId}/`);
+    createTopic(user.id, courseId, name).then(updateTopics);
   }
 
   const handleCreatePost = (title, content) => {
-    createPost(user.id, courseId, topicId, title, content);
-    setUpdatePosts(!updatePosts)
+    createPost(user.id, courseId, topicId, title, content).then(updatePosts);
     navigate(`/home/${courseId}/${topicId}/`);
   }
 
   const handleCreateComment = (content) => {
-    createComment(user.id, courseId, topicId, postId, content);
-    setUpdateComments(!updateComments)
+    createComment(user.id, courseId, topicId, postId, content).then(updateComments);
     navigate(`/home/${courseId}/${topicId}/${postId}`);
   }
 
-  const handleUpdateCourse = (name, desc) => {
-    updateCourse(user.id, courseId, name, desc);
-    setUpdateCourses(!updateCourses)
+  const handleUpdateCourse = (id, name, desc) => {
+    updateCourse(user.id, courseId, id, name, desc).then(updateCourses);
     navigate(`/home/${courseId}/`);
   }
 
   const handleUpdateTopic = (topicId, name) => {
-    updateTopic(user.id, courseId, topicId, name);
-    setUpdateTopics(!updateTopics)
+    updateTopic(user.id, courseId, topicId, name).then(updateTopics);
+    navigate(`/home/${courseId}/`);
   }
 
   const handleUpdatePost = (title, content) => {
-    updatePost(user.id, courseId, topicId, postId, title, content);
-    setUpdatePosts(!updatePosts)
+    updatePost(user.id, courseId, topicId, postId, title, content).then(updatePosts);
     navigate(`/home/${courseId}/${topicId}/${postId}`);
   }
 
   const handleUpdateComment = (content) => {
-    updateComment(user.id, courseId, topicId, postId, content);
-    setUpdateComments(!updateComments)
+    updateComment(user.id, courseId, topicId, postId, content).then(updateComments);
     navigate(`/home/${courseId}/${topicId}/${postId}`);
   }
 
   const handleDeleteCourse = () => {
-    deleteCourse(user.id, courseId);
-    setUpdateCourses(!updateCourses)
+    deleteCourse(user.id, courseId).then(updateCourses);
     navigate(`/home/`);
   }
 
-  const handleDeleteTopic = () => {
-    deleteTopic(user.id, courseId, topicId);
-    setUpdateTopics(!updateTopics)
-    navigate(`/home/${courseId}/`);
+  const handleDeleteTopic = (id) => {
+    deleteTopic(user.id, courseId, id).then(updateTopics);
   }
 
   const handleDeletePost = () => {
-    deletePost(user.id, courseId, topicId, postId);
-    setUpdatePosts(!updatePosts)
+    deletePost(user.id, courseId, topicId, postId).then(updatePosts);
     navigate(`/home/${courseId}/${topicId}/`);
   }
 
   const handleDeleteComment = () => {
-    deleteComment(user.id, courseId, topicId, postId);
-    setUpdateComments(!updateComments)
+    deleteComment(user.id, courseId, topicId, postId).then(updateComments);
     navigate(`/home/${courseId}/${topicId}/${postId}`);
   }
 
@@ -148,7 +141,7 @@ function Home() {
     <div className="home">
      <Navbar
         roleId={user.courseRoles[0]?.roleId}
-        courses={userCourses}
+        courses={courses}
         onCourseSelect={handleSelectCourse}
         handleLogout={handleLogout}
       />
@@ -169,7 +162,7 @@ function Home() {
         <Sidebar
           roleId={user.courseRoles[0]?.roleId}
           topics={topics.filter(topic => topic.courseId == courseId)}
-          course={userCourses.find(course => course.id == courseId)}
+          course={courses.find(course => course.id == courseId)}
           onTopicSelect={handleSelectTopic}
           handleCreateTopic={handleCreateTopic}
           handleUpdateTopic={handleUpdateTopic}
@@ -178,10 +171,10 @@ function Home() {
       )}
 
       {/*Course intro/course edit*/}
-      {!topicId && userCourses.find(course => course.id == courseId) && 
+      {!topicId && courses.find(course => course.id == courseId) && 
         <CourseIntro 
           roleId={user?.courseRoles[0]?.roleId}
-          course={userCourses.find(course => course.id == courseId)} 
+          course={courses.find(course => course.id == courseId)} 
           handleUpdateCourse={handleUpdateCourse}
           handleDeleteCourse={handleDeleteCourse}
         />
