@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../assets/styles/CourseIntro.css';
 
 function CourseIntro({roleId, course, handleUpdateCourse, handleDeleteCourse}) {
@@ -6,6 +6,12 @@ function CourseIntro({roleId, course, handleUpdateCourse, handleDeleteCourse}) {
     const [editedCourseId, setEditedCourseId] = useState(course.courseId);
     const [editedCourseName, setEditedCourseName] = useState(course.courseName);
     const [editedCourseDesc, setEditedCourseDesc] = useState(course.courseDesc);
+
+     useEffect (() => {
+        setEditedCourseId(course.courseId);
+        setEditedCourseName(course.courseName);
+        setEditedCourseDesc(course.courseDesc);
+     }, [ course.courseId ])
 
     const handleEditToggle = () => {
         setIsEditing(!isEditing);
@@ -27,21 +33,21 @@ function CourseIntro({roleId, course, handleUpdateCourse, handleDeleteCourse}) {
                 <header className='course-intro-edit'>Edit Course</header>
                 <header className="course-intro-logo">
                     <input 
-                        type="text" 
-                        value={editedCourseId} 
+                        type="text"
+                        value={editedCourseId}
                         onChange={(e) => setEditedCourseId(e.target.value)} 
                         className="course-intro-id-input"
                     /> - 
                     <input 
                         type="text" 
-                        value={editedCourseName} 
-                        onChange={(e) => setEditedCourseName(e.target.value)} 
+                        value={editedCourseName}
+                        onChange={(e) => setEditedCourseName(e.target.value)}
                         className="course-intro-name-input"
                     />
                     </header>
                     <textarea 
-                        value={editedCourseDesc} 
-                        onChange={(e) => setEditedCourseDesc(e.target.value)} 
+                        value={editedCourseDesc}
+                        onChange={(e) => setEditedCourseDesc(e.target.value)}
                         className="course-intro-desc-textarea"
                     />
                     <div>

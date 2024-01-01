@@ -8,10 +8,10 @@ import CreatePost from "../layout/CreatePost";
 import CourseIntro from "../layout/CourseIntro";
 import "../../assets/styles/Home.css";
 import {
-  getCourses, getTopics, getPosts, getComments, getTopicList, 
+  getCourses, getTopics, getPosts, getComments, 
   createCourse, createTopic, createPost, createComment,
   updateCourse, updateTopic, updatePost, updateComment,
-  deleteCourse, deleteTopic, deletePost, deleteComment,
+  deleteCourse, deleteTopic, deletePost, deleteComment, getPostByTopic,
 } from "../../services/ApiService";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -26,25 +26,29 @@ function Home() {
   const [comments, setComments] = useState([]);
   const {user, logoutUser} = useUserContext();
 
+  const dateSort = (data) => data.sort((a, b) => {
+    return new Date(a.created) - new Date(b.created); // For descending order
+  });
+
   const updateCourses = () => {
     getCourses(user.id).then(setCourses);
   }
 
   const updateTopics = () => {
     if(courses.find(course => course.id == courseId))
-      getTopicList(user.id, courses.find(course => course.id == courseId).topicIdList);
+      getTopics(user.id, courseId).then(setTopics);
   }
 
   const updatePosts = () => {
     if(topics.find(topic => topic.id == topicId)){
-      getPosts(user.id, courseId, topicId).then(setPosts);
+      getPosts(user.id, courseId, topicId).then(data => setPosts(dateSort(data)));
+      console.log(posts)
     }
   }
 
   const updateComments = () => {
     if(posts.find(post => post.id == postId))
-      getComments(user.id).then(setComments);
-    console.log(comments)
+      getComments(user.id, courseId, topicId, postId).then(data => setComments(dateSort(data)));
   }
 
   useEffect(() => {
@@ -94,7 +98,7 @@ function Home() {
   }
 
   const handleCreateComment = (content) => {
-    createComment(user.id, courseId, topicId, postId, content).then(updateComments);
+    createComment(user.id, courseId, topicId, postId, content).then(updateComments).then(updatePosts);
     navigate(`/home/${courseId}/${topicId}/${postId}`);
   }
 
@@ -113,8 +117,8 @@ function Home() {
     navigate(`/home/${courseId}/${topicId}/${postId}`);
   }
 
-  const handleUpdateComment = (content) => {
-    updateComment(user.id, courseId, topicId, postId, content).then(updateComments);
+  const handleUpdateComment = (commentId, content) => {
+    updateComment(user.id, courseId, topicId, postId, commentId, content).then(updateComments);
     navigate(`/home/${courseId}/${topicId}/${postId}`);
   }
 
@@ -132,10 +136,12 @@ function Home() {
     navigate(`/home/${courseId}/${topicId}/`);
   }
 
-  const handleDeleteComment = () => {
-    deleteComment(user.id, courseId, topicId, postId).then(updateComments);
+  const handleDeleteComment = (commentId) => {
+    deleteComment(user.id, courseId, topicId, postId, commentId).then(updateComments);
     navigate(`/home/${courseId}/${topicId}/${postId}`);
   }
+
+console.log(user)
 
   return (
     <div className="home">
@@ -161,7 +167,7 @@ function Home() {
       {courses.find(course => course.id == courseId) && (
         <Sidebar
           roleId={user.courseRoles[0]?.roleId}
-          topics={topics.filter(topic => topic.courseId == courseId)}
+          topics={topics}
           course={courses.find(course => course.id == courseId)}
           onTopicSelect={handleSelectTopic}
           handleCreateTopic={handleCreateTopic}
@@ -187,7 +193,7 @@ function Home() {
       {topics.find(topic => topic.id == topicId) && !postId && 
         <Topic 
           topic={topics.find(topic => topic.id == topicId)}
-          posts={posts.filter(post => post.topicId == topicId)}
+          posts={posts}
           handlePostClick={handlePostClick}
         />
       }
@@ -200,7 +206,7 @@ function Home() {
         <Post 
           user={user}
           post={posts.find(post => post.id == postId)}
-          comments={comments.filter(comment => comment.postId == postId)}
+          comments={comments}
           handleUpdatePost={handleUpdatePost}
           handleDeletePost={handleDeletePost}
           handleCreateComment={handleCreateComment}

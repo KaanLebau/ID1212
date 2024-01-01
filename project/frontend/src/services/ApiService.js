@@ -46,41 +46,39 @@ export const getCourses = async (userId) => {
   }
 }
 
-export const getTopics = async (userId) => {
+export const getTopics = async (userId, courseId) => {
   try {
-    const response = await axios.get(`${API_URL}/user/${userId}/topics`)
+    const response = await axios.get(`${API_URL}/user/${userId}/course/${courseId}/topic/topicList`);
     return response.data;
   } catch (error) {
-    console.error('An error occurred during topic retrieval:', error.response || error);
-    throw error;
-  }
-}
-
-export const getTopicList = async (userId, topicList) => {
-  try {
-    const response = await axios.get(`${API_URL}/user/${userId}/topic/topicList`, {
-      topicList
-    });
-    return response.data;
-  } catch (error) {
-    console.error('An error occurred during topic list retrieval:', error.response || error);
+    console.error('An error occurred during topics retrieval for course:', error.response || error);
     throw error;
   }
 }
 
 export const getPosts = async (userId, courseId, topicId) => {
   try {
-    const response = await axios.get(`${API_URL}/user/${userId}/course/${courseId}/topic/${topicId}/posts`);
+    const response = await axios.get(`${API_URL}/user/${userId}/course/${courseId}/topic/${topicId}/post/postList`);
     return response.data;
   } catch (error) {
-    console.error('An error occurred during posts retrieval for topic:', error.response || error);
+    console.error('An error occurred during posts retrieval:', error.response || error);
     throw error;
   }
 };
 
-export const getComments = async (userId) => {
+export const getPostByTopic = async (userId, courseId, topicId) => {
   try {
-    const response = await axios.get(`${API_URL}/user/${userId}/comments`);
+    const response = await axios.get(`${API_URL}/user/${userId}/course/${courseId}/topic/${topicId}/posts`);
+    return response.data;
+  } catch (error) {
+    console.error('An error occurred during posts retrieval:', error.response || error);
+    throw error;
+  }
+};
+
+export const getComments = async (userId, courseId, topicId, postId) => {
+  try {
+    const response = await axios.get(`${API_URL}/user/${userId}/course/${courseId}/topic/${topicId}/post/${postId}/comments/commentList`);
     return response.data;
   } catch (error) {
     console.error('An error occurred during comment retrieval:', error.response || error);
@@ -173,9 +171,10 @@ export const updatePost = async (userId, courseId, topicId, postId, title, conte
 }
 
 export const updateComment = async (userId, courseId, topicId, postId, commentId, content) => {
+  console.log()
   try {
     const response = await axios.put(`${API_URL}/user/${userId}/course/${courseId}/topic/${topicId}/post/${postId}/comment/update/${commentId}`, {
-      content: content
+      comment: content
     });
   } catch (error) {
     console.error('An error occurred during comment update:', error.response || error);

@@ -11,11 +11,11 @@ function Post({ user, post, comments, handleUpdatePost, handleDeletePost, handle
   const [userDisplayNames, setUserDisplayNames] = useState({});
 
   useEffect(() => {
-    if (!userDisplayNames[post.userId]) {
+    if (!userDisplayNames[post.userId] && post.userId) {
       getUser(post.userId).then((user) => {
         setUserDisplayNames((prevNames) => ({
           ...prevNames,
-          [post.userId]: user ? user.displayName : "Anonymous",
+          [post.userId]: user.displayName ? user.displayName : "Anonymous",
         }));
       });
     }
@@ -25,7 +25,7 @@ function Post({ user, post, comments, handleUpdatePost, handleDeletePost, handle
         getUser(comment.userId).then((user) => {
           setUserDisplayNames((prevNames) => ({
             ...prevNames,
-            [comment.userId]: user ? user.displayName : "Anonymous",
+            [comment.userId]: user.displayName ? user.displayName : "Anonymous",
           }));
         });
       }
@@ -40,15 +40,8 @@ function Post({ user, post, comments, handleUpdatePost, handleDeletePost, handle
     event.target.reset();
   };
 
-  const handleTitleChange = (e) => {
-    setEditedTitle(e.target.value);
-  };
-
-  const handleContentChange = (e) => {
-    setEditedContent(e.target.value);
-  };
-
   const handlePostUpdateSubmit = () => {
+    console.log(editedTitle, editedContent)
     handleUpdatePost(editedTitle, editedContent);
     setIsEditing(false);
   };
@@ -57,13 +50,21 @@ function Post({ user, post, comments, handleUpdatePost, handleDeletePost, handle
     handleDeletePost();
   }
 
-  const handleCommentUpdateSubmit = (commentId) => {
-    handleUpdateComment(commentId, editedContent);
+  const handleCommentContentChange = (commentId, newContent) => {
     setEditingComments((prev) => ({
       ...prev,
-      [commentId]: false,
+      [commentId]: { ...prev[commentId], content: newContent },
     }));
-  }
+  };
+
+  const handleCommentUpdateSubmit = (commentId) => {
+    const updatedContent = editingComments[commentId].content;
+    handleUpdateComment(commentId, updatedContent);
+    setEditingComments((prev) => ({
+      ...prev,
+      [commentId]: { ...prev[commentId], isEditing: false },
+    }));
+  };
 
   const handleCommentDelete = (commentId) => {
     handleDeleteComment(commentId);
@@ -77,34 +78,43 @@ function Post({ user, post, comments, handleUpdatePost, handleDeletePost, handle
     setIsEditing(!isEditing);
   };
 
-  const toggleEditComment = (commentId) => {
-    setEditingComments((prev) => ({
-      ...prev,
-      [commentId]: !prev[commentId],
-    }));
+  const toggleEditComment = (commentId, currentContent) => {
+    setEditingComments((prev) => {
+      if (!prev[commentId] || !prev[commentId].isEditing) {
+        return {
+          ...prev,
+          [commentId]: { isEditing: true, content: currentContent },
+        };
+      } else {
+        return {
+          ...prev,
+          [commentId]: { ...prev[commentId], isEditing: false },
+        };
+      }
+    });
   };
 
   return (
     <div className="post-detail-container">
       <div className="post-detail">
         <span className="timestamp-created">{`Created: ${post.created}`}</span>
-        <span className="timestamp-updated">{`Updated: ${post.updated}`}</span>
+        {post.updated && <span className="timestamp-updated">{`Updated: ${post.updated}`}</span>}
         {isEditing ? (
           <input
             type="text"
             value={editedTitle}
-            onChange={handleTitleChange}
+            onChange={e => setEditedTitle(e.target.value)}
             className="post-title-editable"
           />
         ) : (
           <h1 className="post-title">{post.title}</h1>
         )}
-        <div className="post-author">{`by ${userDisplayNames[post.userId] || "Loading..."}`}</div>
+        <div className="post-author">{`by ${userDisplayNames[post.userId]}`}</div>
 
         {isEditing ? (
           <textarea
             value={editedContent}
-            onChange={handleContentChange}
+            onChange={e => setEditedContent(e.target.value)}
             className="post-content-editable"
             rows={3}
           />
@@ -142,26 +152,27 @@ function Post({ user, post, comments, handleUpdatePost, handleDeletePost, handle
         <div className="comments-section">
           {comments.map((comment) => (
             <div key={comment.id} className="comment">
-              <div className="comment-author">{userDisplayNames[post.userId] || "Loading..."}</div>
-              {editingComments[comment.id] ? (
-                <textarea
-                  defaultValue={comment.comment}
-                  className="comment-text-editable"
-                  rows={3}
-                />
+              <div className="comment-author">{userDisplayNames[comment.userId]}</div>
+              {editingComments[comment.id]?.isEditing ? (
+              <textarea
+                value={editingComments[comment.id].content}
+                onChange={(e) => handleCommentContentChange(comment.id, e.target.value)}
+                className="comment-text-editable"
+                rows={3}
+              />
               ) : (
                 <div className="comment-text">{comment.comment}</div>
               )}
 
               <div className="comment-management">
                 <div className="comment-buttons">
-                  {user.id === comment.user.id && (
+                  {user.id === comment.userId && (
                     <>
-                      {!editingComments[comment.id] ? (
+                      {!editingComments[comment.id]?.isEditing ? (
                         <>
                           <span
                             className="comment-edit-btn"
-                            onClick={() => toggleEditComment(comment.id)}
+                            onClick={() => toggleEditComment(comment.id, comment.comment)}
                           >
                             Edit
                           </span>

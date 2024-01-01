@@ -11,7 +11,7 @@ function Topic({topic, posts, handlePostClick}) {
         getUser(post.userId).then((user) => {
           setUserDisplayNames((prevNames) => ({
             ...prevNames,
-            [post.userId]: user ? user.displayName : "Anonymous",
+            [post.userId]: user.displayName ? user.displayName : "Anonymous",
           }));
         });
       }
@@ -25,7 +25,7 @@ function Topic({topic, posts, handlePostClick}) {
       {posts.map((post, index) => (
         <div key={post.id} onClick={() => handlePostClick(post.id)} className="post-container">
           <div className="post-header">
-            <span className="post-author">{userDisplayNames[post.userId] || "Loading..."}</span>
+            <span className="post-author">{userDisplayNames[post.userId]}</span>
             <h2 className="post-title">{post.title}</h2>
           </div>
           <div className="post-footer">

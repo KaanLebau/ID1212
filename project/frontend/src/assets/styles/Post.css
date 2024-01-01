@@ -45,7 +45,7 @@
 .post-author {
   font-size: 0.9rem;
   color: #888;
-  margin-bottom: 4em;
+  margin-bottom: 3em;
   padding-left: 5px;
 }
 
@@ -112,7 +112,7 @@
   border-top: 1px solid #e1e1e1;
   padding-top: 10px;
   padding-left: 5px;
-  margin-bottom: -20px;
+  margin-bottom: 50px;
 }
 
 .post-delete-btn{
@@ -271,7 +271,7 @@
 
 .comment {
   padding: 10px;
-  padding-top: 30px;
+  padding-top: 00px;
   padding-left: 5px;
 }
 
@@ -299,7 +299,7 @@
 .new-comment-form {
   display: flex;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .new-comment-textarea {
