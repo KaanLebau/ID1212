@@ -109,10 +109,10 @@
 }
 
 .post-management{
-  border-top: 1px solid #e1e1e1;
+  border-top: 2px solid #e1e1e1;
   padding-top: 10px;
   padding-left: 5px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 .post-delete-btn{
@@ -266,7 +266,7 @@
 }
 
 .comments-section {
-  margin-top: 2em;
+  margin-top: 3em;
 }
 
 .comment {

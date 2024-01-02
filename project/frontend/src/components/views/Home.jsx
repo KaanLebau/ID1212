@@ -26,12 +26,18 @@ function Home() {
   const [comments, setComments] = useState([]);
   const {user, logoutUser} = useUserContext();
 
-  const dateSort = (data) => data.sort((a, b) => {
-    return new Date(a.created) - new Date(b.created); // For descending order
+  const dateSort = (data, order) => data.sort((a, b) => {
+    if(order == "desc")
+      return new Date(b.created) - new Date(a.created);
+    else
+      return new Date(a.created) - new Date(b.created);
   });
 
   const updateCourses = () => {
-    getCourses(user.id).then(setCourses);
+    if(!user)
+      navigate("/");
+    else
+      getCourses(user.id).then(setCourses);
   }
 
   const updateTopics = () => {
@@ -41,7 +47,7 @@ function Home() {
 
   const updatePosts = () => {
     if(topics.find(topic => topic.id == topicId)){
-      getPosts(user.id, courseId, topicId).then(data => setPosts(dateSort(data)));
+      getPosts(user.id, courseId, topicId).then(data => setPosts(dateSort(data, "desc")));
       console.log(posts)
     }
   }
@@ -141,12 +147,10 @@ function Home() {
     navigate(`/home/${courseId}/${topicId}/${postId}`);
   }
 
-console.log(user)
-
   return (
     <div className="home">
      <Navbar
-        roleId={user.courseRoles[0]?.roleId}
+        roleId={user?.courseRoles[0]?.roleId}
         courses={courses}
         onCourseSelect={handleSelectCourse}
         handleLogout={handleLogout}

@@ -122,9 +122,9 @@ function Post({ user, post, comments, handleUpdatePost, handleDeletePost, handle
           <p className="post-content">{post.content}</p>
         )}
 
-        {post.userId == user.id && (
           <div className="post-management">
-            {!isEditing ? (
+          {post.userId == user.id && (
+            (!isEditing ? (
               <>
                 <span className="post-edit-btn" onClick={handleEditToggle}>
                   Edit
@@ -146,9 +146,9 @@ function Post({ user, post, comments, handleUpdatePost, handleDeletePost, handle
                   Abort
                 </span>
               </>
-            )}
+            ))
+          )}
           </div>
-        )}
         <div className="comments-section">
           {comments.map((comment) => (
             <div key={comment.id} className="comment">

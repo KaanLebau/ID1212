@@ -93,7 +93,7 @@ function Sidebar({ course, topics, roleId, onTopicSelect, handleCreateTopic, han
             )}
           </div>
         ))}
-        {isCreating ? (
+        {roleId <= 2 ? (isCreating ? (
           <div className="topic-item-container creating">
             <input
               type="text"
@@ -107,7 +107,7 @@ function Sidebar({ course, topics, roleId, onTopicSelect, handleCreateTopic, han
           </div>
         ) : (
           <a onClick={startCreating} className="create-topic">Create new topic</a>
-        )}
+        )) : null}
       </div>
     </aside>
   );

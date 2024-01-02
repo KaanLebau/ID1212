@@ -61,8 +61,8 @@ function CourseIntro({roleId, course, handleUpdateCourse, handleDeleteCourse}) {
                     <p className="course-intro-description">{course.courseDesc}</p>
                     <p className='course-intro-message'>Please select a topic to get started.</p>
                     <div>
-                        {roleId === 1 && <button onClick={handleEditToggle} className='course-intro-edit-btn'>Edit Course</button>}
-                        {roleId === 1 && <button onClick={handleDeleteCourse} className='course-intro-delete-btn'>Delete Course</button>}
+                        {roleId <= 2 && <button onClick={handleEditToggle} className='course-intro-edit-btn'>Edit Course</button>}
+                        {roleId == 1 && <button onClick={handleDeleteCourse} className='course-intro-delete-btn'>Delete Course</button>}
                     </div>
                 </>
             )}
