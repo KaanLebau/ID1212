@@ -170,7 +170,7 @@ function Home() {
       {/*Sidebar showing all topics*/}
       {courses.find(course => course.id == courseId) && (
         <Sidebar
-          roleId={user.courseRoles[0]?.roleId}
+          roleId={user.courseRoles.find(role => role.courseId == courseId)?.roleId}
           topics={topics}
           course={courses.find(course => course.id == courseId)}
           onTopicSelect={handleSelectTopic}
@@ -183,7 +183,7 @@ function Home() {
       {/*Course intro/course edit*/}
       {!topicId && courses.find(course => course.id == courseId) && 
         <CourseIntro 
-          roleId={user?.courseRoles[0]?.roleId}
+          roleId={user?.courseRoles.find(role => role.courseId == courseId)?.roleId}
           course={courses.find(course => course.id == courseId)} 
           handleUpdateCourse={handleUpdateCourse}
           handleDeleteCourse={handleDeleteCourse}
