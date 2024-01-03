@@ -8,12 +8,13 @@ body, input, button, label, textarea {
 
 body {
     margin: 0px;
+    padding-top: 70px;
+    background: #34495E;
 }
 
 .home {
     margin: 0;
     padding: 0;
-    height: 100vh;
     background: #34495E;
 }
 
@@ -30,3 +31,22 @@ body {
     font-weight: 500;
     color: #FFFFFF;
 }
+
+::-webkit-scrollbar {
+    background: #34495E;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #47627c;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #5e83a5;
+  }
+  

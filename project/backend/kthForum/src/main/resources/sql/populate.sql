@@ -1,30 +1,47 @@
-INSERT INTO roles(role_name)VALUES('ADMIN');
-INSERT INTO roles(role_name)VALUES('TEACHER');
-INSERT INTO roles(role_name)VALUES('TA');
-INSERT INTO roles(role_name)VALUES('STUDENT');
+TRUNCATE TABLE 
+    course_user_roles,
+    roles,
+	comments,
+	posts,
+    users,
+    topics,
+    courses,
+	users;
 
-INSERT INTO users(display_name, email, username)VALUES('Dan L', 'danljun@kth.se', 'danljun');
-INSERT INTO users(display_name, email, username)VALUES('Admin', 'admin@kth.se', 'admin');
-INSERT INTO users(display_name, email, username)VALUES('Stefan', 'stefan@kth.se', 'stefan');
-INSERT INTO users(display_name, email, username)VALUES('Alice', 'alice@kth.se', 'alice');
-INSERT INTO users(display_name, email, username)VALUES('Johan', 'johan@kth.se', 'johan');
-INSERT INTO users(display_name, email, username)VALUES('Sarah', 'sarah@kth.se', 'sarah');
-INSERT INTO users(display_name, email, username)VALUES('Jocke', 'jocke@kth.se', 'jocke');
-INSERT INTO users(display_name, email, username)VALUES('Per', 'per@kth.se', 'per');
-INSERT INTO users(display_name, email, username)VALUES('Sofia', 'sofia@kth.se', 'sofia');
-INSERT INTO users(display_name, email, username)VALUES('Johanna', 'johanna@kth.se', 'johanna');
+ALTER SEQUENCE courses_id_seq RESTART WITH 1;
+ALTER SEQUENCE topics_id_seq RESTART WITH 1;
+ALTER SEQUENCE posts_id_seq RESTART WITH 1;
+ALTER SEQUENCE comments_id_seq RESTART WITH 1;
+ALTER SEQUENCE users_id_seq RESTART WITH 1;
+ALTER SEQUENCE roles_id_seq RESTART WITH 1;
 
-INSERT INTO course_user_roles(course_id, user_id, role_id)VALUES(1,1,1);
-INSERT INTO course_user_roles(course_id, user_id, role_id)VALUES(2,1,1);
-INSERT INTO course_user_roles(course_id, user_id, role_id)VALUES(3,1,1);
-INSERT INTO course_user_roles(course_id, user_id, role_id)VALUES(4,1,1);
-INSERT INTO course_user_roles(course_id, user_id, role_id)VALUES(5,2,1);
+INSERT INTO roles (role_name) VALUES ('ADMIN');
+INSERT INTO roles (role_name) VALUES ('TEACHER');
+INSERT INTO roles (role_name) VALUES ('TA');
+INSERT INTO roles (role_name) VALUES ('STUDENT');
+ 
+INSERT INTO users (display_name, email, username) VALUES ('Dan L', 'danljun@kth.se', 'danljun');
+INSERT INTO users (display_name, email, username) VALUES ('Admin', 'admin@kth.se', 'admin');
+INSERT INTO users (display_name, email, username) VALUES ('Stefan', 'stefan@kth.se', 'stefan');
+INSERT INTO users (display_name, email, username) VALUES ('Alice', 'alice@kth.se', 'alice');
+INSERT INTO users (display_name, email, username) VALUES ('Johan', 'johan@kth.se', 'johan');
+INSERT INTO users (display_name, email, username) VALUES ('Sarah', 'sarah@kth.se', 'sarah');
+INSERT INTO users (display_name, email, username) VALUES ('Jocke', 'jocke@kth.se', 'jocke');
+INSERT INTO users (display_name, email, username) VALUES ('Per', 'per@kth.se', 'per');
+INSERT INTO users (display_name, email, username) VALUES ('Sofia', 'sofia@kth.se', 'sofia');
+INSERT INTO users (display_name, email, username) VALUES ('Johanna', 'johanna@kth.se', 'johanna');
 
-INSERT INTO courses(course_id, course_name, course_desc)VALUES('ID1206', 'Operating Systems', 'This course will deepen students knowledge in designing Operating Systems (OS) and Systems Programming. The course consists of five modules each focusing on a specific topic: Process management, Process synchronization, Memory management, Storage management and file systems, I/O management');
-INSERT INTO courses(course_id, course_name, course_desc)VALUES('ID1212', 'Nätverkprogrammering', 'Kursen behandlar grundläggande begrepp för program som kommunicerar över sockets med TCP och UDP (+ HTTP), Hantering av trådar, Krypterade sockets med SMTP/IMAP/HTTPS, Introduktion till applikationsservrar, Distribuerade program som kommunicerar över RMI (SMTP/POP/IMAP), HTTP/2 och websockets.');
-INSERT INTO courses(course_id, course_name, course_desc)VALUES('IE1204', 'Digital design', 'I den här kursen lär vi oss att bygga kombinatoriska och sekvensiella digitala kretsar, som utgör grunden för att i senare kurser bygga datorer. Vi lär oss både att analysera och designa med grundläggande byggblock som OR, NOR, AND, NAND och olika vippor, och prövar våra kretsar i datorsimuleringar och i praktiska kopplingar.')
-INSERT INTO courses(course_id, course_name, course_desc)VALUES('IX1500', 'Diskret matematik', 'Kursen ger en introduktion till diskret matematik och dess tillämpningar. Matematikundervisningen sker problemorienterat och med datorstöd. Kursen är uppdelad i fyra delområden: Kombinatorik och mängdlära, heltal, relationer och ringar och grafteori. Undervisningen består av föreläsningar, övningar och projekt med redovisning.')
-INSERT INTO courses(course_id, course_name, course_desc)VALUES('IL1331', 'VHDL Design', 'VHDL design, design, analysis, simulation, and synthesis in digital electronics.')
+INSERT INTO courses (course_id, course_name, course_desc) VALUES ('ID1206', 'Operating Systems', 'This course will deepen students knowledge in designing Operating Systems (OS) and Systems Programming. The course consists of five modules each focusing on a specific topic: Process management, Process synchronization, Memory management, Storage management and file systems, I/O management');
+INSERT INTO courses (course_id, course_name, course_desc) VALUES ('ID1212', 'Nätverkprogrammering', 'Kursen behandlar grundläggande begrepp för program som kommunicerar över sockets med TCP och UDP (+ HTTP), Hantering av trådar, Krypterade sockets med SMTP/IMAP/HTTPS, Introduktion till applikationsservrar, Distribuerade program som kommunicerar över RMI (SMTP/POP/IMAP), HTTP/2 och websockets.');
+INSERT INTO courses (course_id, course_name, course_desc) VALUES ('IE1204', 'Digital design', 'I den här kursen lär vi oss att bygga kombinatoriska och sekvensiella digitala kretsar, som utgör grunden för att i senare kurser bygga datorer. Vi lär oss både att analysera och designa med grundläggande byggblock som OR, NOR, AND, NAND och olika vippor, och prövar våra kretsar i datorsimuleringar och i praktiska kopplingar.');
+INSERT INTO courses (course_id, course_name, course_desc) VALUES ('IX1500', 'Diskret matematik', 'Kursen ger en introduktion till diskret matematik och dess tillämpningar. Matematikundervisningen sker problemorienterat och med datorstöd. Kursen är uppdelad i fyra delområden: Kombinatorik och mängdlära, heltal, relationer och ringar och grafteori. Undervisningen består av föreläsningar, övningar och projekt med redovisning.');
+INSERT INTO courses (course_id, course_name, course_desc) VALUES ('IL1331', 'VHDL Design', 'VHDL design, design, analysis, simulation, and synthesis in digital electronics.');
+
+INSERT INTO course_user_roles (courses_id, user_id, role_id) VALUES (1,1,1);
+INSERT INTO course_user_roles (courses_id, user_id, role_id) VALUES (2,1,1);
+INSERT INTO course_user_roles (courses_id, user_id, role_id) VALUES (3,1,1);
+INSERT INTO course_user_roles (courses_id, user_id, role_id) VALUES (4,1,1);
+INSERT INTO course_user_roles (courses_id, user_id, role_id) VALUES (5,2,1);
 
 -- Topics for Operating Systems
 INSERT INTO topics (topic_name, courses_id) VALUES ('Process management', 1);
@@ -128,30 +145,49 @@ INSERT INTO posts (title, content, created, updated, topic_id, user_id) VALUES (
 -- Comments for Post ID 1 (Process management)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Fascinating discussion on scheduling. Looking forward to more insights.', '2021-06-11', '2021-08-22', 1, 1);
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Can we apply these algorithms in distributed systems as well?', '2021-06-12', 1, 3);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Really appreciate this detailed explanation of process scheduling.', '2021-06-13', 1, 6);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Great insights into process scheduling algorithms.', '2021-06-14', 1, 7);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Would love more posts like this.', '2021-06-15', 1, 8);
 
 -- Comments for Post ID 2 (Process management)
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Concurrency is often misunderstood. Thanks for shedding light on this.', '2021-07-02', 2, 4);
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Your pros and cons list is very clear and helpful.', '2021-07-03', 2, 5);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('I found the discussion on concurrency enlightening.', '2021-07-04', 2, 9);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('This post really helped clear up some misconceptions.', '2021-07-05', 2, 7);
 
 -- Comments for Post ID 3 (Process management)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Process termination is a critical concept. Thanks for explaining!', '2021-07-16', '2021-08-12', 3, 1);
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('What happens to the child processes when a parent process is terminated?', '2021-07-17', 3, 7);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Great insights on process creation. Really helpful for beginners.', '2021-07-19', 3, 8);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Very detailed explanation on process life cycle.', '2021-07-20', 3, 6);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('What''s the difference between killing and terminating a process?', '2021-07-21', 3, 9);
 
 -- Comments for Post ID 4 (Process synchronization)
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Mutexes and semaphores are key in sync, great comparison.', '2021-08-11', 4, 3);
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('How can we choose between mutexes and semaphores in a new project?', '2021-08-12', 4, 1);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Mutexes vs Semaphores - always a classic debate.', '2021-08-13', 4, 2);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Could use more examples for practical implementation.', '2021-08-14', 4, 5);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('A very comprehensive look at synchronization tools.', '2021-08-15', 4, 6);
 
 -- Comments for Post ID 5 (Process synchronization)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Deadlocks are tricky. This prevention strategy list is a lifesaver.', '2021-09-23', '2021-10-12', 5, 4);
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Could you also touch upon deadlock detection?', '2021-09-24', 5, 1);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Your strategy list for deadlock prevention is very comprehensive. Thanks!', '2021-09-25', 5, 2);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Very valuable information on avoiding deadlocks.', '2021-09-26', 5, 3);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('This will definitely help in my current project.', '2021-09-27', 5, 10);
 
 -- Comments for Post ID 6 (Process synchronization)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Condition variables are a new topic for me. Thanks for the info!', '2021-10-02', '2021-11-12', 6, 6);
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Is there a performance impact when using condition variables?', '2021-10-03', 6, 1);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Could you provide more examples on implementing condition variables?', '2021-10-04', 6, 2);
 
 -- Comments for Post ID 7 (Memory management)
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Paging techniques are so important in OS design.', '2021-12-02', 7, 1);
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Could you explain more about page replacement algorithms?', '2021-12-03', 7, 8);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Paging is so crucial yet challenging in OS.', '2021-12-04', 7, 6);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('How does paging impact system performance?', '2021-12-05', 7, 2);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Really informative post on paging techniques.', '2021-12-06', 7, 9);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Can you also discuss memory fragmentation?', '2021-12-07', 7, 10);
 
 -- Comments for Post ID 8 (Memory management)
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Segmentation is a complex topic, but this post clarifies a lot!', '2022-01-06', 8, 5);
@@ -160,14 +196,18 @@ INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('How does seg
 -- Comments for Post ID 9 (Memory management)
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Virtual memory is such an interesting concept in computing.', '2022-01-26', 9, 6);
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('I would love to see more on swapping techniques!', '2022-01-27', 9, 1);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Interesting take on virtual memory. It''s a complex but vital concept.', '2022-01-28', 9, 3);
 
 -- Comments for Post ID 10 (Storage)
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('RAID is a game-changer for data redundancy and performance.', '2022-03-03', 10, 8);
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Great breakdown of the different RAID levels!', '2022-03-04', 10, 1);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('RAID levels are essential for data security. Good explanation.', '2022-03-05', 10, 3);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('A very clear explanation of RAID. Thanks for this!', '2022-03-06', 10, 2);
 
 -- Comments for Post ID 11 (Storage)
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('File system design is so crucial for efficiency. Loved this read.', '2022-04-05', 11, 5);
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Can you talk about distributed file systems in the future?', '2022-04-06', 11, 1);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Looking forward to more such insightful posts on file systems.', '2022-04-07', 11, 7);
 
 -- Comments for Post ID 12 (Storage)
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Disk scheduling can get complex, this exploration is helpful.', '2022-05-01', 12, 4);
@@ -176,6 +216,8 @@ INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Any tips on 
 -- Comments for Post ID 13 (I/O management)
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Interrupts are a cornerstone of I/O. Thanks for this post!', '2022-05-31', 13, 7);
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('I never understood I/O management until this post, thanks!', '2022-06-01', 13, 1);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('I/O management is fascinating. This post was very informative.', '2022-06-02', 13, 4);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Great insights into how interrupts work.', '2022-06-03', 13, 8);
 
 -- Comments for Post ID 14 (I/O management)
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('DMA really speeds things up for I/O, doesn''t it?', '2022-06-22', 14, 10);
@@ -184,6 +226,8 @@ INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('It would be 
 -- Comments for Post ID 15 (I/O management)
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Device drivers are so underrated. This was an informative read.', '2022-07-26', 15, 3);
 INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Could you delve into kernel vs user space drivers?', '2022-07-27', 15, 1);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Device drivers play such an important role. Great post!', '2022-07-28', 15, 2);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Would love to see more on this topic.', '2022-07-29', 15, 4);
 
 -- Comments for Post ID 16 (TCP och UDP)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('TCP garanterar att alla paket kommer fram i rätt ordning.', '2021-07-02', NULL, 16, 3);
@@ -193,6 +237,7 @@ INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Fö
 -- Comments for Post ID 17 (TCP och UDP)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('TCP:s flödeskontroll är en viktig egenskap för tillförlitliga nätverk.', '2021-07-16', NULL, 17, 6);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Hur balanserar man bäst mellan TCP och UDP i en applikation?', '2021-07-17', '2021-07-24', 17, 7);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Bra diskussion om TCP och UDP. Mycket informativt.', '2021-07-18', 17, 8);
 
 -- Comments for Post ID 18 (TCP och UDP)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('UDP används ofta för streaming och spel.', '2021-07-15', NULL, 18, 8);
@@ -205,6 +250,8 @@ INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Mik
 -- Comments for Post ID 20 (Applikationsservrar)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Hur skalar man en applikationsserver effektivt?', '2021-09-03', '2021-09-10', 20, 4);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Kubernetes verkar vara en bra passning för att hantera applikationsservrar.', '2021-09-04', NULL, 20, 5);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Intressant syn på microservices arkitektur.', '2021-09-05', 20, 7);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Bra poänger om skalbarhet.', '2021-09-06', 20, 6);
 
 -- Comments for Post ID 21 (Distribuerade program)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Consistency, Availability, Partition tolerance - CAP-teoremet är nyckeln.', '2021-10-22', NULL, 21, 3);
@@ -217,6 +264,7 @@ INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Fin
 -- Comments for Post ID 23 (Websockets)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Websockets är perfekta för chattapplikationer.', '2021-12-22', NULL, 23, 7);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Kan websockets användas tillsammans med REST API:er?', '2021-12-23', '2021-12-30', 23, 8);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Websockets är verkligen en game-changer för realtidskommunikation.', '2021-12-24', 23, 10);
 
 -- Comments for Post ID 24 (Websockets)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Polling fungerar, men websockets är så mycket bättre för realtid.', '2022-01-26', NULL, 24, 9);
@@ -226,63 +274,93 @@ INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Med
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Flip-flops är grundstenar i tidsberoende kretsar.', '2022-03-16', NULL, 25, 1);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Finns det goda resurser för att lära sig mer om sekvensiella kretsar?', '2022-03-17', NULL, 25, 3);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Att förstå sekvensiella kretsar är nyckeln till att utforma effektiva digitala system.', '2022-03-18', '2022-03-25', 25, 4);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Sekvensiella kretsar är en grundpelare i elektronik.', '2022-03-19', 25, 2);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Hur fungerar sekvensiella kretsar med moderna mikroprocessorer?', '2022-03-20', 25, 9);
 
 -- Comments for Post ID 26 (Sekvensiella Kretsar)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Jag har alltid undrat hur data lagras i sekvensiella kretsar.', '2022-04-11', NULL, 26, 1);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Flip-flops och latches är så intressanta!', '2022-04-12', '2022-04-19', 26, 5);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Flip-flop kretsar är fascinerande i deras enkelhet.', '2022-04-13', 26, 7);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Kan du förklara mer om JK och T-flip-flops?', '2022-04-14', 26, 6);
 
 -- Comments for Post ID 27 (Grundläggande Byggblock)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Integrerade kretsar har revolutionerat elektronikbranschen.', '2022-05-21', NULL, 27, 1);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Hur började utvecklingen av integrerade kretsar?', '2022-05-22', NULL, 27, 3);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Vad är nästa steg i utvecklingen av integrerade kretsar?', '2022-05-23', 27, 5);
 
 -- Comments for Post ID 28 (Grundläggande Byggblock)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Digitala kretsar är verkligen grunden för all modern teknologi.', '2022-06-16', NULL, 28, 1);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Byggblocken i digitala kretsar är så fascinerande.', '2022-06-17', NULL, 28, 6);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Digitala kretsars byggstenar är fascinerande.', '2022-06-18', 28, 7);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Är det möjligt att bygga egna digitala kretsar hemma?', '2022-06-19', 28, 4);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('En utmärkt översikt av digitala kretsars byggstenar!', '2022-06-20', 28, 5);
 
 -- Comments for Post ID 29 (Praktiska Kopplingar)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Det är viktigt att börja med grundläggande kopplingsscheman.', '2022-07-26', NULL, 29, 1);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Felkällor kan vara frustrerande, men de är också lärorika.', '2022-07-27', '2022-08-03', 29, 7);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Vilka är de vanligaste felen nybörjare gör med kopplingar?', '2022-07-28', 29, 10);
 
 -- Comments for Post ID 30 (Praktiska Kopplingar)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Praktiska kopplingar är ett utmärkt sätt att lära sig elektronik.', '2022-08-21', NULL, 30, 1);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Vilka verktyg rekommenderas för att bygga praktiska kopplingar?', '2022-08-22', NULL, 30, 8);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Praktiska kopplingar är en bra utgångspunkt för elektronikintresserade.', '2022-08-23', 30, 9);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Finns det bra online-kurser för praktiska kopplingar?', '2022-08-24', 30, 4);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Tack för de praktiska tipsen!', '2022-08-25', 30, 7);
 
 -- Comments for Post ID 31 (Datorsimuleringar)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Simuleringar är så användbara för att testa teorier innan praktisk implementering.', '2022-09-16', NULL, 31, 1);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Finns det gratis simuleringprogramvara som rekommenderas för nybörjare?', '2022-09-17', NULL, 31, 9);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Denna översikt av simuleringsprogram är mycket användbar.', '2022-09-18', 31, 2);
 
 -- Comments for Post ID 32 (Datorsimuleringar)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Simuleringar ger oss en förståelse för hur saker kommer att fungera i den verkliga världen.', '2022-10-21', NULL, 32, 1);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Jag föredrar alltid att testa mina kretsar i en simulering först.', '2022-10-22', NULL, 32, 10);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Simuleringar är ovärderliga i elektronikdesign.', '2022-10-23', 32, 8);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Simuleringar sparar så mycket tid och resurser.', '2022-10-24', 32, 5);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Kan du rekommendera några avancerade simuleringstekniker?', '2022-10-25', 32, 7);
 
 -- Comments for Post ID 33 (Kombinatorik)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Kombinatorik är så relevant i många matematiska och tekniska fält.', '2022-11-26', NULL, 33, 1);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Jag har alltid funnit kombinatorik fascinerande, speciellt dess tillämpningar.', '2022-11-27', NULL, 33, 3);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Kombinatorik är så användbar för optimeringsproblem.', '2022-11-28', 33, 4);
 
 -- Comments for Post ID 34 (Kombinatorik)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Kombinatorik hjälper oss att förstå mönster och strukturer på djupet.', '2022-12-16', NULL, 34, 1);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Tillämpningarna av kombinatorik är verkligen breda och varierade.', '2022-12-17', NULL, 34, 4);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Kombinatorik har så många spännande användningsområden.', '2022-12-18', 34, 7);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Kombinatorik och sannolikhetsteori går hand i hand.', '2022-12-19', 34, 5);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Användningen av kombinatorik i datalogiska algoritmer är intressant.', '2022-12-20', 34, 9);
 
 -- Comments for Post ID 35 (Heltal)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Primtal är verkligen mystiska men otroligt viktiga för kryptografi.', '2023-01-21', NULL, 35, 1);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Hur fungerar primtal inom kryptografiska algoritmer?', '2023-01-22', NULL, 35, 5);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Det är så fascinerande hur primtal används inom kryptografi!', '2023-01-23', 35, 7);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Primtalen är nyckeln till så många matematiska mysterier.', '2023-01-24', 35, 8);
 
 -- Comments for Post ID 36 (Heltal)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Talteori ger en sådan fascinerande insikt i egenskaperna hos heltal.', '2023-02-26', NULL, 36, 1);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Jag älskar att utforska heltal och deras unika egenskaper.', '2023-02-27', NULL, 36, 6);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Heltalsstudier är så grundläggande i matematik.', '2023-02-28', 36, 9);
 
 -- Comments for Post ID 37 (Relationer och Ringar)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Algebraiska strukturer som relationer och ringar är så viktiga i matematiken.', '2023-03-31', NULL, 37, 1);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Kan någon rekommendera bra resurser för att lära sig mer om ringteori?', '2023-04-01', NULL, 37, 7);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Relationer och ringar är centrala koncept inom abstrakt algebra.', '2023-04-02', 37, 4);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Kan någon förklara mer om hur ringar används i kryptografi?', '2023-04-03', 37, 5);
 
 -- Comments for Post ID 38 (Relationer och Ringar)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Ringteori är så relevant inom områden som kryptografi.', '2023-05-26', NULL, 38, 1);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Jag är fascinerad av hur matematik appliceras på datasäkerhet.', '2023-05-27', NULL, 38, 8);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Algebraiska strukturer som relationer och ringar är intressanta.', '2023-05-28', 38, 10);
 
 -- Comments for Post ID 39 (Grafteori)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Grafteori är en sådan grundsten inom datavetenskap.', '2023-04-26', NULL, 39, 1);
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Grafer hjälper verkligen till att visualisera komplexa nätverksstrukturer.', '2023-04-27', NULL, 39, 9);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Grafteori och algoritmer är fascinerande.', '2023-04-28', 39, 2);
 
 -- Comments for Post ID 40 (Grafteori)
 INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Användningen av grafer i nätverk är så intressant.', '2023-05-26', NULL, 40, 1);
-INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Jag gillar hur grafteori kan tillämpas för att lösa reala problem.', '2023-05-27', NULL, 40, 10)
+INSERT INTO comments (comment, created, updated, posts_id, user_id) VALUES ('Jag gillar hur grafteori kan tillämpas för att lösa reala problem.', '2023-05-27', NULL, 40, 10);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Grafteori är så användbar i modern nätverksteknik.', '2023-05-28', 40, 3);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Grafteori är en av de viktigaste delarna av nätverksanalys.', '2023-05-29', 40, 4);
+INSERT INTO comments (comment, created, posts_id, user_id) VALUES ('Grafalgoritmer är nyckeln till att förstå komplexa nätverk.', '2023-05-30', 40, 7);
